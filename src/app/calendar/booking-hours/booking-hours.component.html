@@ -1,0 +1,35 @@
+<ng-container *ngIf="currentDate">
+    <ng-container *ngIf="showBookingHours && currentDate.getDay() != 0 && currentDate.getDay() != 6">
+        <div class="md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-gray-50 rounded-b">
+            <div>
+                <div class="transition duration-300 max-w-lg mt-4 mx-auto w-full">
+                    <div class="relative pb-2">
+                        <span class="absolute left-0 top-0 font-bold">
+                            {{monthNames[currentDate.getMonth()]}} {{currentDate | date: 'd, y'}}
+                        </span>
+                        <button type="button" (click)="showBookingHours=false"
+                            class="absolute top-0 right-0 rounded-md p-2text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                            <span class="sr-only">Close menu</span>
+                            <!-- Heroicon name: outline/x -->
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-6 gap-1 justify-center py-8 md:p-8">
+                        <ng-container *ngIf="currentDate.getDay() != 0 && currentDate.getDay() != 6">
+                            <button type="button" *ngFor="let item of bookingHours"
+                                (click)="openCreateBookingDialog(item)"
+                                [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400' : 'bg-white'"
+                                class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                                {{item}}
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>

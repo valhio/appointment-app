@@ -15,6 +15,11 @@ import 'firebase/database';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+ 
+  private dateRef: AngularFirestoreDocument<any> | undefined;
+  numberOfBookedBookings: number = 0;
+  bookedBookings: string[] = [];
+
   public calendar: any = [];
   public showBookingHours: boolean = true;
   private currentNumberOfBookings: number = 0;
@@ -28,34 +33,37 @@ export class CalendarComponent implements OnInit, OnDestroy {
   bookingsForSelectedDateSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   bookingsForSelectedDate$ = this.bookingsForSelectedDateSubject.asObservable();
 
-  constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) { }
+  constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
+  }
 
-  // public readonly monthNames = ["January", "February", "March", "April", "May", "June",
-  //   "July", "August", "September", "October", "November", "December"
-  // ];
+  generateDataForCalendar(): void {    
+    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
+    this.dateRef.collection('data').get().subscribe(querySnapshot => {
+      this.numberOfBookedBookings = querySnapshot.docs.length;
+      this.bookedBookings = querySnapshot.docs.map(doc => doc.id);
+      this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
+    })
+  }
+
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
-  // public days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   public days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-
 
   bookingHours = [] as any;
 
   ngOnInit(): void {
-    this.generateCalendarDays();
-    this.generateAllBookedDays();
-    // this.getBookingHoursFromDb()
+    this.generateCalendar()
     this.bookingHours = this.bookingService.getBookingHours();
+    // this.getBookingHoursFromDb()
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   private generateCalendar(): void {
     this.generateCalendarDays()
     this.generateAllBookedDays()
-    this.getBookingsForSelectedDate()
+    this.generateDataForCalendar();
   }
 
   private generateCalendarDays(): void {
@@ -119,7 +127,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedDateSubject.next(
       new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() + 1))
     );
-    // this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() + 1);
     this.generateCalendar();
   }
 
@@ -136,47 +143,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   onChangeSelectedDate(date: Date) {
     this.selectedDateSubject.next(date);
     this.generateCalendar();
-  }
-
-  isSameDay(date1: Date, date2: Date) {
-    return date1.getDate() === date2.getDate() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getFullYear() === date2.getFullYear();
-  }
-
-  openCreateBookingDialog(bookingTime: any) {
-    this.selectedDateSubject.value.setHours(bookingTime.split(':')[0]);
-    this.selectedDateSubject.value.setMinutes(bookingTime.split(':')[1]);
-
-    this.subscriptions.push(
-      this.bookingService.getNumberOfBookedBookings(this.selectedDateSubject.value).subscribe(res => {
-        const dialogRef = this.dialog.open(AddEventDialogComponent, {
-          data: { date: this.selectedDateSubject.value, bookingTime: bookingTime, numberOfBookedBookings: res }
-          , maxHeight: '90vh'
-        }).afterClosed()
-          .subscribe(() => {
-            this.generateCalendar();
-            dialogRef.unsubscribe();
-          });;
-      })
-    )
-  }
-
-  getBookingsForSelectedDate() {
-    this.subscriptions.push(
-      this.bookingService.getBookingsForDate(this.selectedDateSubject.value).subscribe(querySnapshot => {
-        this.bookingsForSelectedDateSubject.next([]);
-        querySnapshot.forEach(documentSnapshot => {
-          this.bookingsForSelectedDateSubject.next([...this.bookingsForSelectedDateSubject.value, { key: documentSnapshot.id, data: documentSnapshot.data() }]);
-        });
-      })
-    )
-  }
-
-  isBookingHourBooked(bookingHour: any) {
-    return this.bookingsForSelectedDateSubject.value.find((booking: any) => {
-      return booking.key === bookingHour;
-    });
   }
 
   deleteBooking(date: Date, bookingId: string) {
@@ -203,8 +169,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     })
   }
 
-  isDateAllBooked(date?: Date) {
-    date = date || this.selectedDateSubject.value;
+  isDateAllBooked(date: Date) {
     this.bookingService.isDateAllBooked(date).subscribe((res: any) => {
       console.log(res);
     })

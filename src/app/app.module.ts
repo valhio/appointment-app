@@ -18,9 +18,9 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from "../environments/environment";
-import CalendarTwoComponent from './calendar-two/calendar-two.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-header.component';
 import { CalendarBodyComponent } from './calendar/calendar-body/calendar-body.component';
+import { BookingHoursComponent } from './calendar/booking-hours/booking-hours.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +29,9 @@ import { CalendarBodyComponent } from './calendar/calendar-body/calendar-body.co
     CalendarComponent,
     ChunkPipe,
     TestCalendarComponent,
-    CalendarTwoComponent,
     CalendarHeaderComponent,
     CalendarBodyComponent,
+    BookingHoursComponent,
   ],
   imports: [
     BrowserModule,
