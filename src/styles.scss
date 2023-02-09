@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (max-width: 767px) {
+    .fc-toolbar.fc-header-toolbar {
+        display: flex;
+        flex-direction: column;
+        //   font-size: 60%;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-left {
+        order: 3;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-center {
+        order: 1;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-right {
+        order: 2;
+    }
+
+    .fc-view-harness {
+        // display: flex;
+        // flex-direction: column;
+        font-size: 90%;
+    }
+
+    .fc .fc-daygrid-event-harness-abs {
+        top: 20px !important;
+    }
+}
+
+.fc-toolbar {
+    text-transform: capitalize;
+}
+
+.mat-mdc-dialog-container{
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 90vh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: none;
+    --mdc-dialog-container-color: none !important;
+}

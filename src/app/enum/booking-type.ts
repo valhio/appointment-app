@@ -1,0 +1,3 @@
+export enum BookingType {
+    YEARLY_TECHNICAL_EVALUATION = 'YEARLY_TECHNICAL_EVALUATION',
+}
