@@ -18,7 +18,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
  
   private dateRef: AngularFirestoreDocument<any> | undefined;
   numberOfBookedBookings: number = 0;
-  bookedBookings: string[] = [];
 
   public calendar: any = [];
   public showBookingHours: boolean = true;
@@ -115,7 +114,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
     this.dateRef.collection('data').get().subscribe(querySnapshot => {
       this.numberOfBookedBookings = querySnapshot.docs.length;
-      this.bookedBookings = querySnapshot.docs.map(doc => doc.id);
       this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
     })
   }
