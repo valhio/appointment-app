@@ -19,6 +19,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from "../environments/environment";
 import CalendarTwoComponent from './calendar-two/calendar-two.component';
+import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-header.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import CalendarTwoComponent from './calendar-two/calendar-two.component';
     ChunkPipe,
     TestCalendarComponent,
     CalendarTwoComponent,
+    CalendarHeaderComponent,
   ],
   imports: [
     BrowserModule,
