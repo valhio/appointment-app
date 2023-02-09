@@ -36,15 +36,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
   }
 
-  generateDataForCalendar(): void {    
-    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
-    this.dateRef.collection('data').get().subscribe(querySnapshot => {
-      this.numberOfBookedBookings = querySnapshot.docs.length;
-      this.bookedBookings = querySnapshot.docs.map(doc => doc.id);
-      this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
-    })
-  }
-
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
   public days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
@@ -63,7 +54,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private generateCalendar(): void {
     this.generateCalendarDays()
     this.generateAllBookedDays()
-    this.generateDataForCalendar();
+    this.generateDataForCurrentDate();
   }
 
   private generateCalendarDays(): void {
@@ -118,9 +109,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
         })
     )
   }
-
-  getCurrentDay() {
-    return new Date();
+  
+  generateDataForCurrentDate(): void {    
+    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
+    this.dateRef.collection('data').get().subscribe(querySnapshot => {
+      this.numberOfBookedBookings = querySnapshot.docs.length;
+      this.bookedBookings = querySnapshot.docs.map(doc => doc.id);
+      this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
+    })
   }
 
   onNavigateNextMonth() {
@@ -169,9 +165,4 @@ export class CalendarComponent implements OnInit, OnDestroy {
     })
   }
 
-  isDateAllBooked(date: Date) {
-    this.bookingService.isDateAllBooked(date).subscribe((res: any) => {
-      console.log(res);
-    })
-  }
 }
