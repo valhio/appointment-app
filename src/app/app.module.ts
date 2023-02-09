@@ -20,6 +20,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from "../environments/environment";
 import CalendarTwoComponent from './calendar-two/calendar-two.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-header.component';
+import { CalendarBodyComponent } from './calendar/calendar-body/calendar-body.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-hea
     TestCalendarComponent,
     CalendarTwoComponent,
     CalendarHeaderComponent,
+    CalendarBodyComponent,
   ],
   imports: [
     BrowserModule,

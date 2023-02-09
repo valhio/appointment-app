@@ -133,7 +133,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.generateCalendar();
   }
 
-  onUpdateSelectedDate(date: Date) {
+  onChangeSelectedDate(date: Date) {
     this.selectedDateSubject.next(date);
     this.generateCalendar();
   }
