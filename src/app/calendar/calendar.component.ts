@@ -58,22 +58,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   private generateCalendarDays(): void {
-    // we reset our calendar every time
+    // The calendar array will hold all the days that we need to show in our calendar.
+    // We need to clear it every time we generate a new calendar, because we don't want to have the days from the previous calendar.
     this.calendar = [];
 
-    // we set the date 
+    // The day variable is set to the selected date.
     let day: Date = new Date(this.selectedDateSubject.value);
 
-    // here we find the first day that our calendar will start from
-    // it would be the last Monday of the previous month
+    // Here, first day that our calendar will start from, is found.
+    // That would be the last Monday of the previous month.
     let startingDateOfCalendar = this.getStartDateForCalendar(day);
 
-    // dateToAdd is an intermediate variable that will get increased in the following for loop
+    // This is the date that we will add to our calendar array. It will be incremented by 1 day each time in the following loop.
     let dateToAdd = startingDateOfCalendar;
 
-    // since we have our starting date, then we get the next 41 days 
-    // that we need to add in our calendar array
-    // 41 cause our calendar will show 6 weeks and 6 weeks * 7 days = 42
+    // This loop will run 42 times, which is the number of days we need to show in our calendar. 
+    // The reason we need to show 6 weeks is because we want to show the days of the previous and next month as well.
+    // Without this, the calendar will only show the days of the current month and it will look weird.
     for (var i = 0; i < 42; i++) {
       this.calendar.push({ day: new Date(dateToAdd) });
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
@@ -81,20 +82,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   private getStartDateForCalendar(selectedDate: Date) {
-    // for the day we selected let's get the previous month last day
+    // This variable will hold the last day of the previous month.
     let lastDayOfPreviousMonth = new Date(selectedDate.setDate(0));
 
-    // start by setting the starting date of the calendar same as the last day of previous month
+    // This variable will hold the first day of the calendar.
     let startingDateOfCalendar: Date = lastDayOfPreviousMonth;
 
-    // but since we actually want to find the last Monday of previous month
-    // we will start going back in days intil we encounter our last Monday of previous month
+    // If the day is not Monday, we will go back in days until we find the last Monday of previous month.
     if (startingDateOfCalendar.getDay() != 1) {
       do {
         startingDateOfCalendar = new Date(startingDateOfCalendar.setDate(startingDateOfCalendar.getDate() - 1));
       } while (startingDateOfCalendar.getDay() != 1);
     }
 
+    // Now that we have the first day of the calendar, we can return it.
     return startingDateOfCalendar;
   }
 
