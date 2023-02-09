@@ -1,7 +1,7 @@
 <ng-container *ngIf="appState$ | async as state" [ngSwitch]="state.appState">
     <ng-container *ngSwitchCase="'APP_ERROR'">{{state.error | json}}</ng-container>
 
-    <ng-container *ngIf="showBookingHours && currentDate?.getDay() != 0 && currentDate?.getDay() != 6">
+    <ng-container *ngIf="(showBookingHours | async) && currentDate?.getDay() != 0 && currentDate?.getDay() != 6">
         <div class="md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-gray-50 rounded-b">
             <div>
                 <div class="transition duration-300 max-w-lg mt-4 mx-auto w-full">
@@ -9,7 +9,7 @@
                         <span class="absolute left-0 top-0 font-bold">
                             {{monthNames[currentDate!.getMonth()]}} {{currentDate | date: 'd, y'}}
                         </span>
-                        <button type="button" (click)="showBookingHours=false"
+                        <button type="button" (click)="closeBookingHours()"
                             class="absolute top-0 right-0 rounded-md p-2text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                             <span class="sr-only">Close menu</span>
                             <!-- Heroicon name: outline/x -->

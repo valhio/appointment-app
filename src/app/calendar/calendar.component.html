@@ -1,10 +1,13 @@
 <div class="flex items-center justify-center py-8 px-4">
     <div class="max-w-4xl w-full shadow-lg">
         <div class="md:p-8 p-1 dark:bg-gray-800 bg-white rounded-t">
-            <app-calendar-header [currentDate]="selectedDate$ | async" (navigateNext)="onNavigateNextMonth()" (navigatePrevious)="onNavigatePreviousMonth()" ></app-calendar-header>
-            <app-calendar-body [calendarMatrix]="calendar" [currentDate]="selectedDate$ | async" (changeSelectedDate)="onChangeSelectedDate($event)"></app-calendar-body>
+            <app-calendar-header [currentDate]="selectedDate$ | async" (navigateNext)="onNavigateNextMonth()"
+                (navigatePrevious)="onNavigatePreviousMonth()"></app-calendar-header>
+            <app-calendar-body [calendarMatrix]="calendar" [currentDate]="selectedDate$ | async"
+                (showBookingHoursEvent)="onShowBookingHours($event)"
+                (changeSelectedDate)="onChangeSelectedDate($event)"></app-calendar-body>
         </div>
-        <app-booking-hours [currentDate]="selectedDate$ | async" [bookingHours]="bookingHours"></app-booking-hours>
+        <app-booking-hours [currentDate]="selectedDate$ | async" [bookingHours]="bookingHours" [showBookingHours]="showBookingHours"></app-booking-hours>
     </div>
 </div>
 

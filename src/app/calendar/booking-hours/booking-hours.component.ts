@@ -14,6 +14,7 @@ export class BookingHoursComponent implements OnInit, OnChanges {
 
   @Input() currentDate: Date | null | undefined;
   @Input() bookingHours: string[] = [];
+  @Input() showBookingHours: Observable<boolean> | undefined = of(true);
 
   bookedBookingsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
@@ -24,7 +25,6 @@ export class BookingHoursComponent implements OnInit, OnChanges {
   }>;
 
   monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
-  showBookingHours: boolean = true;
 
   constructor(private dialog: MatDialog, private bookingService: BookingService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -53,4 +53,7 @@ export class BookingHoursComponent implements OnInit, OnChanges {
     return this.bookedBookingsSubject.value.includes(bookingHour);
   }
 
+  closeBookingHours() {
+    this.showBookingHours = of(false);
+  }
 }

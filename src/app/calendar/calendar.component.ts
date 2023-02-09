@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   numberOfBookedBookings: number = 0;
 
   public calendar: any = [];
-  public showBookingHours: boolean = true;
+  public showBookingHours: Observable<boolean> | undefined = of(true);
   private currentNumberOfBookings: number = 0;
 
   private subscriptions: Subscription[] = [];
@@ -162,6 +162,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.currentNumberOfBookings, }
       , maxHeight: '90vh'
     })
+  }
+
+  onShowBookingHours(status: boolean){
+    this.showBookingHours = of(status);    
   }
 
 }

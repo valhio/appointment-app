@@ -73,7 +73,7 @@
                                     class="relative inline-flex rounded-full h-3 w-3 bg-indigo-400"></span>
                             </span>
                         </ng-container>
-                        <a tabindex="0" (click)="onChangeSelectedDate(c.day); showBookingHours=true"
+                        <a tabindex="0" (click)="onChangeSelectedDate(c.day); onShowBookingHours()"
                             [ngClass]="{
                                 'bg-indigo-100 text-white focus:bg-indigo-500': isToday(c.day)
                                 ,'bg-indigo-500 text-white': isSameDate(c.day, currentDate!)

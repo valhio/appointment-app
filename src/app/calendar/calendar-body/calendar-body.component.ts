@@ -11,9 +11,9 @@ export class CalendarBodyComponent {
   @Input() currentDate: Date | null | undefined;
 
   @Output() changeSelectedDate = new EventEmitter<Date>();
+  @Output() showBookingHoursEvent = new EventEmitter<boolean>();
 
   public days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-  showBookingHours: boolean = true;
 
   isSameDate(date1: Date, date2: Date): boolean {
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
@@ -25,5 +25,9 @@ export class CalendarBodyComponent {
 
   onChangeSelectedDate(date: Date): void {
     this.changeSelectedDate.emit(date);
+  }
+
+  onShowBookingHours(): void {
+    this.showBookingHoursEvent.emit(true);
   }
 }
