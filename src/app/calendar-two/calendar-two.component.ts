@@ -14,7 +14,7 @@ import 'firebase/database';
   templateUrl: './calendar-two.component.html',
   styleUrls: ['./calendar-two.component.scss']
 })
-export default class CalendarTwoComponent implements OnInit, OnDestroy, OnChanges {
+export default class CalendarTwoComponent implements OnInit, OnDestroy {
 
   private dateRef: AngularFirestoreDocument<any> | undefined;
   numberOfBookedBookings: number = 0;
@@ -36,9 +36,7 @@ export default class CalendarTwoComponent implements OnInit, OnDestroy, OnChange
   constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
   }
 
-  generateDataForCalendar(): void {
-    console.log('generateDataForCalendar');
-    
+  generateDataForCalendar(): void {    
     this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
     this.dateRef.collection('data').get().subscribe(querySnapshot => {
       this.numberOfBookedBookings = querySnapshot.docs.length;
@@ -52,14 +50,7 @@ export default class CalendarTwoComponent implements OnInit, OnDestroy, OnChange
 
   bookingHours = [] as any;
 
-  ngOnChanges(): void {
-    console.log('OnChanges');
-  }
-
-
   ngOnInit(): void {
-    console.log('OnInit');
-    
     this.generateCalendar()
     this.bookingHours = this.bookingService.getBookingHours();
     // this.getBookingHoursFromDb()
@@ -70,17 +61,12 @@ export default class CalendarTwoComponent implements OnInit, OnDestroy, OnChange
   }
 
   private generateCalendar(): void {
-    console.log('generateCalendar');
-    
     this.generateCalendarDays()
     this.generateAllBookedDays()
     this.generateDataForCalendar();
   }
 
   private generateCalendarDays(): void {
-console.log('generateCalendarDays');
-
-
     // we reset our calendar every time
     this.calendar = [];
 
@@ -104,9 +90,6 @@ console.log('generateCalendarDays');
   }
 
   private getStartDateForCalendar(selectedDate: Date) {
-console.log('getStartDateForCalendar');
-
-
     // for the day we selected let's get the previous month last day
     let lastDayOfPreviousMonth = new Date(selectedDate.setDate(0));
 
@@ -125,8 +108,6 @@ console.log('getStartDateForCalendar');
   }
 
   generateAllBookedDays() {
-    console.log('generateAllBookedDays');
-    
     this.subscriptions.push(
       this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
         .subscribe(snapshot => {
@@ -160,8 +141,6 @@ console.log('getStartDateForCalendar');
   }
 
   onUpdateSelectedDate(date: Date) {
-    console.log('update selected date');
-    
     this.selectedDateSubject.next(date);
     this.generateCalendar();
   }
