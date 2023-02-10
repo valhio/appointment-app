@@ -50,7 +50,7 @@
                             <ng-container *ngIf="currentDate!.getDay() != 0 && currentDate!.getDay() != 6">
                                 <button type="button" *ngFor="let item of bookingHours"
                                     (click)="openCreateBookingDialog(item)"
-                                    [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400' : 'bg-white'"
+                                    [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
                                     class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
                                     {{item}}
                                 </button>
