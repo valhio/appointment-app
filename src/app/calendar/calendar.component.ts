@@ -1,13 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription, first, map, take, tap, catchError, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/compat/firestore';
 import 'firebase/database';
-import { BookingService } from '../service/booking.service';
-import { Router } from '@angular/router';
-import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import 'firebase/database';
+import {BookingService} from '../service/booking.service';
+import {Router} from '@angular/router';
+import {AddEventDialogComponent} from '../add-event-dialog/add-event-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-calendar',
@@ -15,9 +14,10 @@ import 'firebase/database';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit, OnDestroy {
- 
+
   private dateRef: AngularFirestoreDocument<any> | undefined;
   numberOfBookedBookings: number = 0;
+  isWorkDay: boolean | null = null;
 
   public calendar: any = [];
   public showBookingHours: Observable<boolean> | undefined = of(true);
@@ -56,28 +56,36 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.generateDataForCurrentDate();
   }
 
-  private generateCalendarDays(): void {
-    // The calendar array will hold all the days that we need to show in our calendar.
-    // We need to clear it every time we generate a new calendar, because we don't want to have the days from the previous calendar.
-    this.calendar = [];
+  generateAllBookedDays() {
+    this.subscriptions.push(
+      this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
+        .subscribe(snapshot => {
+          snapshot.docs
+            .filter(doc => doc.data()['numberOfBookedBookings'] >= this.bookingHours.length) // Filter only fully booked days
+            .map(doc => doc.id) // Get the id of the fully booked days
+            .map(id => this.calendar.find((day: any) => day.day.getDate() == id).fullyBooked = true) // Set the fullyBooked property to true for the fully booked days
+        })
+    )
 
-    // The day variable is set to the selected date.
-    let day: Date = new Date(this.selectedDateSubject.value);
+    this.subscriptions.push(
+      this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
+        .subscribe(snapshot => {
+          snapshot.docs
+            .filter(doc => doc.data()['isWorkDay'] != null)
+            .forEach(doc => {
+              this.calendar.find((day: any) => day.day.getDate() == doc.id).isWorkDay = doc.data()['isWorkDay']
+            }) // Set the fullyBooked property to true for the fully booked days
+        })
+    )
 
-    // Here, first day that our calendar will start from, is found.
-    // That would be the last Monday of the previous month.
-    let startingDateOfCalendar = this.getStartDateForCalendar(day);
+    // this.db.collection<Booking>(`bookings/${this.selectedDateSubject.value.getFullYear()}/${this.selectedDateSubject.value.getMonth()}/${this.selectedDateSubject.value.getDate()}`,ref => ref.where('isWorkDay', '==', true))
+    // .get().subscribe(querySnapshot => {
+    //   // querySnapshot.docs.map(doc => doc.data())
+    //   console.log('asd',querySnapshot);
 
-    // This is the date that we will add to our calendar array. It will be incremented by 1 day each time in the following loop.
-    let dateToAdd = startingDateOfCalendar;
 
-    // This loop will run 42 times, which is the number of days we need to show in our calendar. 
-    // The reason we need to show 6 weeks is because we want to show the days of the previous and next month as well.
-    // Without this, the calendar will only show the days of the current month and it will look weird.
-    for (var i = 0; i < 42; i++) {
-      this.calendar.push({ day: new Date(dateToAdd) });
-      dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
-    }
+    // })
+
   }
 
   private getStartDateForCalendar(selectedDate: Date) {
@@ -98,24 +106,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return startingDateOfCalendar;
   }
 
-  generateAllBookedDays() {
+  generateDataForCurrentDate(): void {
+
+    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
     this.subscriptions.push(
-      this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
-        .subscribe(snapshot => {
-          snapshot.docs
-            .filter(doc => doc.data()['numberOfBookedBookings'] >= this.bookingHours.length) // Filter only fully booked days
-            .map(doc => doc.id) // Get the id of the fully booked days
-            .map(id => this.calendar.find((day: any) => day.day.getDate() == id).fullyBooked = true) // Set the fullyBooked property to true for the fully booked days
-        })
+      this.dateRef.collection('data').get().subscribe(querySnapshot => {
+        this.numberOfBookedBookings = querySnapshot.docs.length;
+        this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
+      })
+    )
+
+    this.subscriptions.push(
+      this.bookingService.isWorkDay(this.selectedDateSubject.value).subscribe(isWorkDay => {
+        this.isWorkDay = isWorkDay ? isWorkDay : null;
+      })
     )
   }
-  
-  generateDataForCurrentDate(): void {    
-    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
-    this.dateRef.collection('data').get().subscribe(querySnapshot => {
-      this.numberOfBookedBookings = querySnapshot.docs.length;
-      this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
-    })
+
+  onShowBookingHours(status: boolean) {
+    this.showBookingHours = of(status);
   }
 
   onNavigateNextMonth() {
@@ -159,13 +168,33 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   updateBookingDialog(bookingId: string, booking: any) {
     const dialogRef = this.dialog.open(AddEventDialogComponent, {
-      data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.currentNumberOfBookings, }
+      data: {date: this.selectedDateSubject.value, numberOfBookedBookings: this.currentNumberOfBookings,}
       , maxHeight: '90vh'
     })
   }
 
-  onShowBookingHours(status: boolean){
-    this.showBookingHours = of(status);    
+  private generateCalendarDays(): void {
+    // The calendar array will hold all the days that we need to show in our calendar.
+    // We need to clear it every time we generate a new calendar, because we don't want to have the days from the previous calendar.
+    this.calendar = [];
+
+    // The day variable is set to the selected date.
+    let day: Date = new Date(this.selectedDateSubject.value);
+
+    // Here, first day that our calendar will start from, is found.
+    // That would be the last Monday of the previous month.
+    let startingDateOfCalendar = this.getStartDateForCalendar(day);
+
+    // This is the date that we will add to our calendar array. It will be incremented by 1 day each time in the following loop.
+    let dateToAdd = startingDateOfCalendar;
+
+    // This loop will run 42 times, which is the number of days we need to show in our calendar.
+    // The reason we need to show 6 weeks is because we want to show the days of the previous and next month as well.
+    // Without this, the calendar will only show the days of the current month and it will look weird.
+    for (var i = 0; i < 42; i++) {
+      this.calendar.push({day: new Date(dateToAdd)});
+      dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
+    }
   }
 
 }

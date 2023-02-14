@@ -1,15 +1,15 @@
-import { JsonPipe } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, DocumentData, DocumentSnapshot, QuerySnapshot } from '@angular/fire/compat/firestore';
-import { catchError, map, Observable, of } from 'rxjs';
-import { Booking } from '../model/booking';
+import {Injectable} from '@angular/core';
+import {AngularFirestore, AngularFirestoreDocument, DocumentData, QuerySnapshot} from '@angular/fire/compat/firestore';
+import {catchError, map, Observable, of} from 'rxjs';
+import {Booking} from '../model/booking';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore) {
+  }
 
   getBookingsForMonth(date: Date): Observable<QuerySnapshot<DocumentData>> {
     return this.db
@@ -78,6 +78,22 @@ export class BookingService {
           allBooked = snapshot.get("numberOfBookedBookings") === this.getBookingHours().length;
         }
         return allBooked;
+      }),
+      catchError(error => {
+        console.error(error);
+        return of(false);
+      })
+    )
+  }
+
+  isWorkDay(date: Date): Observable<boolean | null> {
+    let isWorkDay: any = null;
+    return this.getDay(date).pipe(
+      map(snapshot => {
+        if (snapshot.exists) { // If the day exists in the database
+          isWorkDay = snapshot.get("isWorkDay");
+        }
+        return isWorkDay;
       }),
       catchError(error => {
         console.error(error);

@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { map, Observable, startWith, catchError, BehaviorSubject, of } from 'rxjs';
-import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
-import { BookingService } from '../../service/booking-service-two.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {BehaviorSubject, catchError, map, Observable, of, startWith} from 'rxjs';
+import {AddEventDialogComponent} from 'src/app/add-event-dialog/add-event-dialog.component';
+import {BookingService} from '../../service/booking-service-two.service';
 
 @Component({
   selector: 'app-booking-hours',
@@ -13,6 +13,7 @@ import { BookingService } from '../../service/booking-service-two.service';
 export class BookingHoursComponent implements OnInit, OnChanges {
 
   @Input() currentDate: Date | null | undefined;
+  @Input() isWorkDay: boolean | null = null;
   @Input() bookingHours: string[] = [];
   @Input() showBookingHours: Observable<boolean> | undefined = of(true);
 
