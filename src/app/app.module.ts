@@ -22,6 +22,7 @@ import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-hea
 import { CalendarBodyComponent } from './calendar/calendar-body/calendar-body.component';
 import { BookingHoursComponent } from './calendar/booking-hours/booking-hours.component';
 import { HeaderComponent } from './components/header/header.component';
+import { CalendarManagementComponent } from './components/management/calendar-management/calendar-management.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { HeaderComponent } from './components/header/header.component';
     CalendarBodyComponent,
     BookingHoursComponent,
     HeaderComponent,
+    CalendarManagementComponent,
   ],
   imports: [
     BrowserModule,

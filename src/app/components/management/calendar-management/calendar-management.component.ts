@@ -3,17 +3,17 @@ import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import 'firebase/database';
-import { BookingService } from '../service/booking.service';
 import { Router } from '@angular/router';
-import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BookingService } from 'src/app/service/booking.service';
+import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  selector: 'app-calendar-management',
+  templateUrl: './calendar-management.component.html',
+  styleUrls: ['./calendar-management.component.scss']
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarManagementComponent {
 
   private dateRef: AngularFirestoreDocument<any> | undefined;
   numberOfBookedBookings: number = 0;
