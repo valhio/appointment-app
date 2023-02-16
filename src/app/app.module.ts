@@ -25,6 +25,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { CalendarManagementComponent } from './components/management/calendar-management/calendar-management.component';
 import { ManagementCalendarBodyComponent } from './components/management/management-calendar-body/management-calendar-body.component';
 import { ManagementBookingHoursComponent } from './components/management/management-booking-hours/management-booking-hours.component';
+import { AppointmentComponent } from './components/home/appointment/appointment.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ManagementBookingHoursComponent } from './components/management/managem
     CalendarManagementComponent,
     ManagementCalendarBodyComponent,
     ManagementBookingHoursComponent,
+    AppointmentComponent,
   ],
   imports: [
     BrowserModule,

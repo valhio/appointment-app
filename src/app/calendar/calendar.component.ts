@@ -42,7 +42,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.generateCalendar()
-    this.bookingHours = this.bookingService.getBookingHours();
+    this.bookingHours = this.bookingService.getDefaultBookingHours();
     // this.getBookingHoursFromDb()
   }
 
@@ -164,20 +164,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   deleteBooking(date: Date, bookingId: string) {
-    let deleted = false;
-    this.bookingService.deleteBookingById(date, bookingId)
-      .then(function () {
-        deleted = true;
-      })
-      .finally(() => {
-        if (deleted) {
-          this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => {
-            this.currentNumberOfBookings = res - 1;
-            this.bookingService.updateNumberOfBookedBookings(date, this.currentNumberOfBookings);
-            this.generateCalendar();
-          });
-        }
-      });
+    // Because we need to update the number of booked bookings, we need to check if the booking exists first. 
+    // Otherwise if some error happens and we send a booking id that does not exist (for example - undefined), the number of booked bookings will be decreased by 1, even though the booking was not deleted (because it does not exist).
+    // After that, we are going to have a problem, because the number of booked bookings will be less than the actual number of booked bookings.
+    // To avoid this, we first check if the booking exists, and if it does, we delete it and then update the number of booked bookings.
+    this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
+      if (res.exists) { // If the booking exists, delete it
+        this.bookingService.deleteBookingById(date, res.id) // Delete the booking
+          .then(() => {
+            this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
+              this.currentNumberOfBookings = res - 1; // Decrease the number of booked bookings by 1
+              this.bookingService.updateNumberOfBookedBookings(date, this.currentNumberOfBookings); // Update the number of booked bookings for the selected date
+              this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
+            });
+          })
+          .catch(err => console.log(err))
+      } else {
+        console.log('Booking does not exist')
+      }
+    })
   }
 
   updateBookingDialog(bookingId: string, booking: any) {
