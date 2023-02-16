@@ -7,8 +7,7 @@
                 (showBookingHoursEvent)="onShowBookingHours($event)"
                 (changeSelectedDate)="onChangeSelectedDate($event)"></app-management-calendar-body>
         </div>
-        <app-management-booking-hours [bookingHours]="bookingHours" [currentDate]="selectedDate$ | async" [isWorkDay]="isWorkDay"
-            [showBookingHours]="showBookingHours">
+        <app-management-booking-hours [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async" [showBookingHours]="showBookingHours">
             <p>asd</p>
         </app-management-booking-hours>
     </div>
@@ -29,10 +28,10 @@
             <div class="flex justify-center">
                 <button type="button" *ngIf="selectedDate$ | async as selected"
                     class="block my-4 p-8 max-h-10 mx-1 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'"
-                    (click)="updateBookingDialog(booking.key, booking)">Update</button>
+                    (click)="updateBookingDialog(booking.bookingTime, booking)">Update</button>
                 <button type="button" *ngIf="selectedDate$ | async as selected"
                     class="block my-4 p-8 max-h-10 mx-1 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'"
-                    (click)="deleteBooking(selected,booking.key)">Delete</button>
+                    (click)="deleteBooking(selected,booking.bookingTime)">Delete</button>
             </div>
         </div>
         <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
