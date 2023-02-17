@@ -115,6 +115,14 @@ export class AppointmentComponent {
             })
         })
     )
+
+    // Set the isWorkDay property to true/false for the days that don't have the isWorkDay property set
+    this.calendar.forEach((day: any) => {
+      if (day.isWorkDay == undefined) { // If the isWorkDay property does not exist
+        if (day.day.getDay() == 0 || day.day.getDay() == 6) day.isWorkDay = false; // If the day is Saturday or Sunday, set the isWorkDay property to false
+        else day.isWorkDay = true; // If the day is not Saturday or Sunday, set the isWorkDay property to true
+      }
+    })
   }
 
   setCurrentDateData() {

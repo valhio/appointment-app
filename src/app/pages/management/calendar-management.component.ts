@@ -111,10 +111,18 @@ export class CalendarManagementComponent {
               day.numberOfBookedBookings = dayData.numberOfBookedBookings // Set the number of booked bookings for the day
               day.bookingHours = dayData.bookingHours // Set the available booking hours for the day
               day.isWorkDay = dayData.isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
-              day.isFullyBooked = dayData.isFullyBooked // Set the fullyBooked property to true for the fully booked days
+              day.isFullyBooked = dayData.isFullyBooked // Set the isFullyBooked property to true for the fully booked days
             })
         })
     )
+
+    // Set the isWorkDay property to true/false for the days that don't have the isWorkDay property set
+    this.calendar.forEach((day: any) => {
+      if (day.isWorkDay == undefined) { // If the isWorkDay property does not exist
+        if (day.day.getDay() == 0 || day.day.getDay() == 6) day.isWorkDay = false; // If the day is Saturday or Sunday, set the isWorkDay property to false
+        else day.isWorkDay = true; // If the day is not Saturday or Sunday, set the isWorkDay property to true
+      }
+    })
   }
 
   setCurrentDateData() {
@@ -123,7 +131,7 @@ export class CalendarManagementComponent {
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
     day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.getDefaultBookingHours() // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
     day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
-    day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
+    day.isFullyBooked == undefined ? day.isFullyBooked = false : day.isFullyBooked
     this.currentDateDataSubject.next(day)
   }
 
