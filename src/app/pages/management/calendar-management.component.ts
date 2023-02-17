@@ -122,6 +122,13 @@ export class CalendarManagementComponent {
         if (day.day.getDay() == 0 || day.day.getDay() == 6) day.isWorkDay = false; // If the day is Saturday or Sunday, set the isWorkDay property to false
         else day.isWorkDay = true; // If the day is not Saturday or Sunday, set the isWorkDay property to true
       }
+      // TODO: Remove this workaround when calendar component has an Appstate (LOADED, LOADING, ERROR)================================================================================================================================================================================================================================================================================== 
+      // If the day is a work day, set the available booking hours to an empty array. 
+      // In production, when the "make appointment" button, from the home page, is clicked, if the current day is a non-work day, the available booking hours, for some reason, are not hidden. 
+      // So as a workaround, I set the available booking hours to an empty array. Now even if the booking hours are not hidden, the user can't select any of them, because there are no booking hours to select.
+      if(day.isWorkDay){
+        day.bookingHours = []; 
+      }
     })
   }
 
