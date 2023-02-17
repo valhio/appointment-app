@@ -68,8 +68,8 @@
                         <a tabindex="0" (click)="onChangeSelectedDate(c.day); onShowBookingHours()" [ngClass]="{
                                 'bg-indigo-100 text-white': (!isSelectedDate(c.day) && isToday(c.day)) 
                                 ,'bg-indigo-500 text-white': isSelectedDate(c.day)
-                                , 'cursor-not-allowed text-gray-400 pointer-events-none':c.day.getDay() == 0 && c.isWorkDay != true || c.day.getDay() == 6 && c.isWorkDay !=true || c.isWorkDay == false
-                                , 'bg-red-400 text-white hover:bg-red-600 focus:ring-red-200 focus:bg-red-700' : c.fullyBooked
+                                , 'cursor-not-allowed text-gray-400 pointer-events-none':(c.day.getDay() == 0 && c.isWorkDay != true) || (c.day.getDay() == 6 && c.isWorkDay !=true) || c.isWorkDay == false
+                                , 'bg-red-400 text-white hover:bg-red-600 focus:ring-red-200 focus:bg-red-700' : c.isFullyBooked
                             }"
                             class="cursor-pointer md:hover:bg-indigo-100 text-lg md:text-xl p-2 w-11 h-11 md:h-16 md:w-16 flex items-center justify-center font-medium rounded-xl">
                             {{c.day.getDate()}}</a>

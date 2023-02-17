@@ -20,19 +20,9 @@ export class BookingService {
   }
 
   getBookingsForDate(date: Date): Observable<Booking[]> {
-    console.log('getBookingsForDate');
-
-    // this.getDayRef(date).collection('data').get().subscribe(querySnapshot => {
-    //   this.numberOfBookedBookings = querySnapshot.docs.length;
-    //   this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
-    // })
-
     return this.getDayRef(date).collection('data').get().pipe(
       map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as Booking)),
     )
-
-    return of([]);
-
     // return this.db.collection<any>(`bookings/${ date.getFullYear().toString() }/${ date.getMonth().toString() }/${ date.getDate().toString() }`).valueChanges()
   }
 
@@ -70,7 +60,7 @@ export class BookingService {
   }
 
   deleteBookingById(date: Date, id: string) {
-    return this.getDayRef(date).collection('data').doc(id).delete()
+    return this.getDayRef(date).collection('data').doc(id).ref.delete()
       .catch(error => {
         console.error("Error removing booking: ", error);
       })
@@ -130,8 +120,8 @@ export class BookingService {
   }
 
   updateNumberOfBookedBookings(date: Date, numberOfBookedBookings: number) {
-    if (numberOfBookedBookings <= 0) this.deleteDay(date);
-    else this.getDayRef(date).set({ numberOfBookedBookings }, { merge: true });
+    // if (numberOfBookedBookings <= 0) this.deleteDay(date);
+    this.getDayRef(date).set({ numberOfBookedBookings }, { merge: true });
   }
 
   getDefaultBookingHours(): string[] {

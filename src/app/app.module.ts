@@ -9,7 +9,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddEventDialogComponent } from './add-event-dialog/add-event-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
-import { CalendarComponent } from './calendar/calendar.component';
 import { ChunkPipe } from './chunk.pipe';
 import { TestCalendarComponent } from './test-calendar/test-calendar.component';
 import { AngularFireModule } from "@angular/fire/compat";
@@ -18,20 +17,21 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from "../environments/environment";
-import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-header.component';
-import { CalendarBodyComponent } from './calendar/calendar-body/calendar-body.component';
-import { BookingHoursComponent } from './calendar/booking-hours/booking-hours.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CalendarHeaderComponent } from './pages/appointment/components/calendar-header/calendar-header.component';
+import { CalendarBodyComponent } from './pages/appointment/components/calendar-body/calendar-body.component';
+import { BookingHoursComponent } from './pages/appointment/components/booking-hours/booking-hours.component';
 import { HeaderComponent } from './components/header/header.component';
-import { CalendarManagementComponent } from './components/management/calendar-management/calendar-management.component';
-import { ManagementCalendarBodyComponent } from './components/management/management-calendar-body/management-calendar-body.component';
-import { ManagementBookingHoursComponent } from './components/management/management-booking-hours/management-booking-hours.component';
-import { AppointmentComponent } from './components/home/appointment/appointment.component';
+import { CalendarManagementComponent } from './pages/management/calendar-management.component';
+import { ManagementCalendarBodyComponent } from './pages/management/components/management-calendar-body/management-calendar-body.component';
+import { ManagementBookingHoursComponent } from './pages/management/components/management-booking-hours/management-booking-hours.component';
+import { AppointmentComponent } from './pages/appointment/appointment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddEventDialogComponent,
-    CalendarComponent,
+    HomeComponent,
     ChunkPipe,
     TestCalendarComponent,
     CalendarHeaderComponent,

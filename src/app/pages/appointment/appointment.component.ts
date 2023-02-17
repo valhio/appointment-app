@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from 'src/app/service/booking.service';
 import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
+import { Booking } from 'src/app/model/booking';
 
 @Component({
   selector: 'app-appointment',
@@ -14,34 +15,29 @@ import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dial
   styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent {
-  private dateRef: AngularFirestoreDocument<any> | undefined;
-  numberOfBookedBookings: number = 0;
-  isWorkDay: boolean | null = null;
-
   public calendar: any = [];
-  public showBookingHours: Observable<boolean> | undefined = of(true);
-  private currentNumberOfBookings: number = 0;
-
   private subscriptions: Subscription[] = [];
-  destroy$ = new Subject<boolean>();
+
+  public showBookingHours: Observable<boolean> | undefined = of(true);
 
   private selectedDateSubject = new BehaviorSubject<Date>(new Date());
   readonly selectedDate$ = this.selectedDateSubject.asObservable();
 
-  bookingsForSelectedDateSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  bookingsForSelectedDate$ = this.bookingsForSelectedDateSubject.asObservable();
+  currentDateDataSubject = new BehaviorSubject<any>(null);
+  currentDateData$ = this.currentDateDataSubject.asObservable();
 
   constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
   }
 
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
-  public days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+  public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
-  bookingHours = [] as any;
+  bookingHoursSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  bookingHours$: Observable<string[]> = this.bookingHoursSubject.asObservable();
 
   ngOnInit(): void {
     this.generateCalendar()
-    this.bookingHours = this.bookingService.getDefaultBookingHours();
+    // this.bookingHours = this.bookingService.getBookingHours();
     // this.getBookingHoursFromDb()
   }
 
@@ -49,10 +45,11 @@ export class AppointmentComponent {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  private generateCalendar(): void {
+  private async generateCalendar(): Promise<void> {
     this.generateCalendarDays()
-    this.generateAllBookedDays()
-    this.generateDataForCurrentDate();
+    this.generateCalendarData();
+    this.setCurrentDateData();
+    this.getBookedBookingsForSelectedDate();
   }
 
   private getStartDateForCalendar(selectedDate: Date) {
@@ -97,44 +94,45 @@ export class AppointmentComponent {
     }
   }
 
-  generateAllBookedDays() {
+  generateCalendarData() {
     this.subscriptions.push(
       this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
         .subscribe(snapshot => {
           snapshot.docs
-            .filter(doc => doc.data()['numberOfBookedBookings'] >= this.bookingHours.length) // Filter only fully booked days
-            .map(doc => doc.id) // Get the id of the fully booked days
-            .map(id => this.calendar.find((day: any) => day.day.getDate() == id).fullyBooked = true) // Set the fullyBooked property to true for the fully booked days
-        })
-    )
-
-    this.subscriptions.push(
-      this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
-        .subscribe(snapshot => {
-          snapshot.docs
-            .filter(doc => doc.data()['isWorkDay'] != null)
-            .forEach(doc => {
-              this.calendar.find((day: any) => day.day.getDate() == doc.id).isWorkDay = doc.data()['isWorkDay']
-            }) // Set the fullyBooked property to true for the fully booked days
+            .map(doc => {
+              const numberOfBookedBookings = doc.data()['numberOfBookedBookings'] ? doc.data()['numberOfBookedBookings'] : 0 // Get the number of booked bookings for the day
+              const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.getDefaultBookingHours() // Get all available booking hours for the day
+              const isWorkDay = doc.data()['isWorkDay'] != undefined ? doc.data()['isWorkDay'] : true // Get the isWorkDay property(field) for the day, if it is null, set it to true by default
+              const isFullyBooked = numberOfBookedBookings >= bookingHours.length // Check if the day is fully booked
+              return { day: doc.id, numberOfBookedBookings, bookingHours, isWorkDay, isFullyBooked } // Return the data for the day
+            })
+            .forEach(dayData => {
+              const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day) // Search the calendar for the day
+              day.numberOfBookedBookings = dayData.numberOfBookedBookings // Set the number of booked bookings for the day
+              day.bookingHours = dayData.bookingHours // Set the available booking hours for the day
+              day.isWorkDay = dayData.isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
+              day.isFullyBooked = dayData.isFullyBooked // Set the fullyBooked property to true for the fully booked days
+            })
         })
     )
   }
 
-  generateDataForCurrentDate(): void {
-    this.dateRef = this.bookingService.getDayRef(this.selectedDateSubject.value);
-    this.subscriptions.push(
-      this.dateRef.collection('data').get().subscribe(querySnapshot => {
-        this.numberOfBookedBookings = querySnapshot.docs.length;
-        this.bookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()));
-      })
-    )
-
-    this.subscriptions.push(
-      this.bookingService.isWorkDay(this.selectedDateSubject.value).subscribe(isWorkDay => {
-        this.isWorkDay = isWorkDay ? isWorkDay : null;
-      })
-    )
+  setCurrentDateData() {
+    let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()) // Search the calendar for the day
+    if (!day) return // Safety check (should never happen, but just in case)
+    day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
+    day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.getDefaultBookingHours() // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
+    day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
+    day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
+    this.currentDateDataSubject.next(day)
   }
+
+  getBookedBookingsForSelectedDate() {
+    this.bookingsForSelectedDate$ = this.bookingService.getBookingsForDate(this.selectedDateSubject.value)
+  }
+
+  bookingsForSelectedDateSubject = new BehaviorSubject<Booking[]>([]);
+  bookingsForSelectedDate$ = new Observable<Booking[]>();
 
   onShowBookingHours(status: boolean) {
     this.showBookingHours = of(status);
@@ -172,8 +170,8 @@ export class AppointmentComponent {
         this.bookingService.deleteBookingById(date, res.id) // Delete the booking
           .then(() => {
             this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
-              this.currentNumberOfBookings = res - 1; // Decrease the number of booked bookings by 1
-              this.bookingService.updateNumberOfBookedBookings(date, this.currentNumberOfBookings); // Update the number of booked bookings for the selected date
+              let newCount = res - 1; // Decrease the number of booked bookings by 1
+              this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
               this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
             });
           })
@@ -184,9 +182,13 @@ export class AppointmentComponent {
     })
   }
 
+  getDefaultBookingHours() {
+    return this.bookingService.getDefaultBookingHours();
+  }
+
   updateBookingDialog(bookingId: string, booking: any) {
     const dialogRef = this.dialog.open(AddEventDialogComponent, {
-      data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.currentNumberOfBookings, }
+      data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()).numberOfBookedBookings }
       , maxHeight: '90vh'
     })
   }

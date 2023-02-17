@@ -7,7 +7,7 @@
                            (showBookingHoursEvent)="onShowBookingHours($event)"
                            (changeSelectedDate)="onChangeSelectedDate($event)"></app-calendar-body>
       </div>
-      <app-booking-hours [bookingHours]="bookingHours" [currentDate]="selectedDate$ | async" [isWorkDay]="isWorkDay"
-                         [showBookingHours]="showBookingHours"></app-booking-hours>
+      <app-booking-hours [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async"
+      [showBookingHours]="showBookingHours"></app-booking-hours>
     </div>
   </div>

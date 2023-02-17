@@ -30,7 +30,7 @@ export class CalendarManagementComponent {
   }
 
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
-  public days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+  public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
   bookingHoursSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   bookingHours$: Observable<string[]> = this.bookingHoursSubject.asObservable();
@@ -47,8 +47,6 @@ export class CalendarManagementComponent {
 
   private async generateCalendar(): Promise<void> {
     this.generateCalendarDays()
-    // await this.generateDataForCurrentDate();
-    // await this.generateAllBookedDays()
     this.generateCalendarData();
     this.setCurrentDateData();
     this.getBookedBookingsForSelectedDate();
@@ -95,62 +93,6 @@ export class CalendarManagementComponent {
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
     }
   }
-
-  // async generateDataForCurrentDate(): Promise<any> {
-  //   console.log('generateDataForCurrentDate');
-
-  //   this.subscriptions.push(
-  //     this.bookingService.getDayRef(this.selectedDateSubject.value).get().subscribe(doc => { // Get the document for the selected date
-  //       if (doc.exists) {
-  //         console.log('exists');
-
-  //         doc.ref.collection('data').get().then(querySnapshot => { // Get the bookings data for the selected date
-  //           this.numberOfBookedBookings = querySnapshot.size // How many bookings are booked for the selected date          
-  //           this.bookedBookingsForSelectedDateSubject.next(querySnapshot.docs.map(doc => doc.data()).map(data => data['bookingTime'])); // At what time are the bookings booked for the selected date 
-  //         })
-  //         this.bookingHoursSubject.next(doc.get('bookingHours') != null ? doc.get('bookingHours') : this.getDefaultBookingHours()); // If bookingHours field exists, set the bookingHours property to the value of the field. If it doesn't exist, set it to the default booking hours.
-  //         this.isWorkDay = doc.get('isWorkDay') != null ? doc.get('isWorkDay') : true; // If isWorkDay field exists, set the isWorkDay property to the value of the field. If it doesn't exist, set it to true.
-  //       } else { // If the document for the selected date doesn't exist, set the properties to their default values
-  //         console.log('No such document!');
-
-  //         this.numberOfBookedBookings = 0;
-  //         this.bookedBookingsForSelectedDateSubject.next([]);
-  //         this.bookingHoursSubject.next(this.getDefaultBookingHours());
-  //         this.isWorkDay = true;
-  //       }
-  //     })
-  //   )
-  // }
-
-  // async generateAllBookedDays() {
-  //   console.log('then generateAllBookedDays');
-
-  //   this.subscriptions.push(
-  //     this.bookingService.getBookingsForMonth(this.selectedDateSubject.value) // Get all bookings for the selected month
-  //       .subscribe(snapshot => {
-  //         snapshot.docs
-  //           .filter(doc => {
-  //             const numberOfBookedBookings = doc.data()['numberOfBookedBookings'] ? doc.data()['numberOfBookedBookings'] : 0 // Get the number of booked bookings for the day
-  //             const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.getDefaultBookingHours() // Get all available booking hours for the day
-  //             return numberOfBookedBookings >= bookingHours.length // Filter only fully booked days, where the number of booked bookings is equal to the number of available booking hours
-  //           })
-  //           .map(doc => doc.id) // Get the id of the fully booked days, where the id represents the day of the month (1, 2, 3, 4, etc.)
-  //           .map(id => this.calendar.find((day: any) => day.day.getDate() == id).fullyBooked = true) // Search the calendar for the fully booked days and set the fullyBooked property to true for the fully booked days
-
-  //         // Set the isWorkDay property to true/false for the days that are work days or not
-  //         snapshot.docs
-  //           // .filter(doc => doc.data()['isWorkDay'] != null)
-  //           .forEach(doc => {
-  //             console.log('isWorkDay', doc.data()['isWorkDay']);
-
-
-  //             const isWorkDay = doc.data()['isWorkDay'] != undefined ? doc.data()['isWorkDay'] : true // Get the isWorkDay property(field) for the day, if it is null, set it to true by default
-  //             this.calendar.find((day: any) => day.day.getDate() == doc.id).isWorkDay = isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
-  //             console.log(this.calendar);
-  //           }) // Set the fullyBooked property to true for the fully booked days
-  //       })
-  //   )
-  // }
 
   generateCalendarData() {
     this.subscriptions.push(
