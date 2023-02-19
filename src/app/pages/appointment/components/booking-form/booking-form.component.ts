@@ -97,20 +97,21 @@ export class BookingFormComponent {
         // If the booking(collection) does not exist, add it. Otherwise, alert the user that the booking already exists.
         if (!querySnapshot.exists) {
           this.bookingService.addBooking(booking as Booking);
-          // this.bookingService.updateNumberOfBookedBookings(this.date, this.numberOfBookedBookings + 1);
+
+          setTimeout(() => {
+            this.isLoading = false;
+            this.router.navigate(['/booking/status'], {
+              queryParams: { action: 'success', time: this.bookingTime, date: this.date },
+            });
+          }, 2000);
           this.updateBookedBookings(year!, month!, day!, this.numberOfBookedBookings! + 1)
         } else {
-          alert('Вече е направена резервация за този часови интервал. Моля, презаредете страницата и опитайте отново.')
+          alert('Вече е направена резервация за този часови интервал. Моля, изберете друг час.')
+          this.isLoading = false;
         }
       })
     );
 
-    setTimeout(() => {
-      this.isLoading = false;
-      this.router.navigate(['/booking/status'], {
-        queryParams: { action: 'success', time: this.bookingTime, date: this.date },
-      });
-    }, 2000);
   }
 
   get f(): { [key: string]: AbstractControl } {
