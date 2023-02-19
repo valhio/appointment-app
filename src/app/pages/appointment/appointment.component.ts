@@ -165,6 +165,7 @@ export class AppointmentComponent {
 
   onChangeSelectedDate(date: Date) {
     this.selectedDateSubject.next(date);
+    this.bookingTimeSubject.next(undefined);
     this.generateCalendar();
   }
 
