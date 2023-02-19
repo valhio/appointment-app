@@ -52,7 +52,7 @@
                             <div class="grid grid-cols-6 gap-1 justify-center py-8 md:p-8">
                                 <ng-container>
                                     <button type="button" *ngFor="let item of dayData.bookingHours"
-                                        (click)="openCreateBookingDialog(item)"
+                                        (click)="onBookingTimeSelect(item)"
                                         [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
                                         class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
                                         {{item}}
@@ -64,5 +64,8 @@
                 </div>
             </ng-container>
         </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!dayData.isWorkDay">
+        <p class="text-center pt-4 text-xl font-semibold">{{monthNames[dayData.day.getMonth()]}} <span>{{dayData.day | date: ' dd, yyyy -'}}</span> Неработен ден.</p>
     </ng-container>
 </ng-container>

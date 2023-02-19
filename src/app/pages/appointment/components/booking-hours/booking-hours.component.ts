@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ export class BookingHoursComponent implements OnInit, OnChanges, OnDestroy {
   @Input() currentDate: Date | null | undefined;
   @Input() dayData$: Observable<any> = of({});
   @Input() showBookingHours: Observable<boolean> | undefined = of(true);
+
+  @Output() bookingTime = new EventEmitter<string>();
 
   bookedBookingsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
@@ -66,5 +68,9 @@ export class BookingHoursComponent implements OnInit, OnChanges, OnDestroy {
 
   closeBookingHours() {
     this.showBookingHours = of(false);
+  }
+
+  onBookingTimeSelect(time: string) {
+    this.bookingTime.emit(time);
   }
 }

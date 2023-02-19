@@ -173,21 +173,23 @@ export class AppointmentComponent {
     // Otherwise if some error happens and we send a booking id that does not exist (for example - undefined), the number of booked bookings will be decreased by 1, even though the booking was not deleted (because it does not exist).
     // After that, we are going to have a problem, because the number of booked bookings will be less than the actual number of booked bookings.
     // To avoid this, we first check if the booking exists, and if it does, we delete it and then update the number of booked bookings.
-    this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
-      if (res.exists) { // If the booking exists, delete it
-        this.bookingService.deleteBookingById(date, res.id) // Delete the booking
-          .then(() => {
-            this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
-              let newCount = res - 1; // Decrease the number of booked bookings by 1
-              this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
-              this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
-            });
-          })
-          .catch(err => console.log(err))
-      } else {
-        console.log('Booking does not exist')
-      }
-    })
+    this.subscriptions.push(
+      this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
+        if (res.exists) { // If the booking exists, delete it
+          this.bookingService.deleteBookingById(date, res.id) // Delete the booking
+            .then(() => {
+              this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
+                let newCount = res - 1; // Decrease the number of booked bookings by 1
+                this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
+                this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
+              });
+            })
+            .catch(err => console.log(err))
+        } else {
+          console.log('Booking does not exist')
+        }
+      })
+    )
   }
 
   getDefaultBookingHours() {
@@ -199,5 +201,12 @@ export class AppointmentComponent {
       data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()).numberOfBookedBookings }
       , maxHeight: '90vh'
     })
+  }
+
+  bookingTimeSubject = new BehaviorSubject<string | undefined>(undefined);
+  bookingTime$ = this.bookingTimeSubject.asObservable();
+
+  onBookingTimeSelected(bookingTime: string) {
+    this.bookingTimeSubject.next(bookingTime);
   }
 }
