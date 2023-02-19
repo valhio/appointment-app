@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking-status',
@@ -13,11 +13,14 @@ export class BookingStatusComponent {
 
   monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     this.bookingTime = this.activatedRoute.snapshot.queryParamMap.get('time') || undefined;
     this.bookingDate = new Date(this.activatedRoute.snapshot.queryParamMap.get('date')!) || undefined;
-
     this.bookingStatus = this.getBookingStatus();
+
+    if (this.bookingStatus === '' || this.bookingTime === undefined || this.bookingDate === undefined) {
+      this.router.navigate(['/']);
+    }
   }
 
   getBookingStatus(): string {
