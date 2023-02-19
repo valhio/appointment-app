@@ -8,7 +8,7 @@
                 (changeSelectedDate)="onChangeSelectedDate($event)"></app-management-calendar-body>
         </div>
         <app-management-booking-hours [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async"
-            [showBookingHours]="showBookingHours"></app-management-booking-hours>
+            [showBookingHours]="showBookingHours" (changes)="onChanges()"></app-management-booking-hours>
     </div>
 </div>
 

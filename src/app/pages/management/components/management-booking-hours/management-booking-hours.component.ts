@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ export class ManagementBookingHoursComponent implements OnInit, OnChanges, OnDes
   @Input() currentDate: Date | null | undefined;
   @Input() dayData$: Observable<any> = of({});
   @Input() showBookingHours: Observable<boolean> | undefined = of(true);
+
+  @Output() changes = new EventEmitter();
 
   bookedBookingsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
@@ -88,14 +90,17 @@ export class ManagementBookingHoursComponent implements OnInit, OnChanges, OnDes
 
   setDayAsNotWorkDay() {
     this.bookingService.setDayAsNotWorkDay(this.currentDate!);
+    this.changes.emit();
   }
 
   setDayAsWorkDay() {
     this.bookingService.setDayAsWorkDay(this.currentDate!);
+    this.changes.emit();
   }
 
   setBookingHours() {
     this.bookingService.setBookingHours(this.currentDate!, this.selectedItems);
+    this.changes.emit();
   }
 
 }

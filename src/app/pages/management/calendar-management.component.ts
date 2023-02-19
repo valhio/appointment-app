@@ -122,13 +122,13 @@ export class CalendarManagementComponent {
         if (day.day.getDay() == 0 || day.day.getDay() == 6) day.isWorkDay = false; // If the day is Saturday or Sunday, set the isWorkDay property to false
         else day.isWorkDay = true; // If the day is not Saturday or Sunday, set the isWorkDay property to true
       }
-      // TODO: Remove this workaround when calendar component has an Appstate (LOADED, LOADING, ERROR)================================================================================================================================================================================================================================================================================== 
-      // If the day is a work day, set the available booking hours to an empty array. 
-      // In production, when the "make appointment" button, from the home page, is clicked, if the current day is a non-work day, the available booking hours, for some reason, are not hidden. 
-      // So as a workaround, I set the available booking hours to an empty array. Now even if the booking hours are not hidden, the user can't select any of them, because there are no booking hours to select.
-      if(day.isWorkDay){
-        day.bookingHours = []; 
-      }
+      // // TODO: Remove this workaround when calendar component has an Appstate (LOADED, LOADING, ERROR)================================================================================================================================================================================================================================================================================== 
+      // // If the day is a work day, set the available booking hours to an empty array. 
+      // // In production, when the "make appointment" button, from the home page, is clicked, if the current day is a non-work day, the available booking hours, for some reason, are not hidden. 
+      // // So as a workaround, I set the available booking hours to an empty array. Now even if the booking hours are not hidden, the user can't select any of them, because there are no booking hours to select.
+      // if(day.isWorkDay){
+      //   day.bookingHours = []; 
+      // }
     })
   }
 
@@ -138,7 +138,7 @@ export class CalendarManagementComponent {
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
     day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.getDefaultBookingHours() // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
     day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
-    day.isFullyBooked == undefined ? day.isFullyBooked = false : day.isFullyBooked
+    day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
     this.currentDateDataSubject.next(day)
   }
 
@@ -206,5 +206,9 @@ export class CalendarManagementComponent {
       data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()).numberOfBookedBookings }
       , maxHeight: '90vh'
     })
+  }
+
+  onChanges(){
+    this.generateCalendar();
   }
 }

@@ -3,7 +3,7 @@
         <ng-container *ngIf="appState$ | async as state" [ngSwitch]="state.appState">
             <ng-container *ngSwitchCase="'APP_ERROR'">{{state.error | json}}</ng-container>
             <ng-container *ngIf="(showBookingHours | async)">
-                <div class="md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-gray-50 rounded-b">
+                <div class="flex w-full flex-col md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-gray-50 rounded-b">
                     <div class="transition duration-300 max-w-lg mt-4 mx-auto w-full">
                         <!-- Header -->
                         <div class="relative pb-2">
