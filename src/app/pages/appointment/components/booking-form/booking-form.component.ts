@@ -37,7 +37,6 @@ export class BookingFormComponent {
   constructor(
     private db: AngularFirestore,
     private bookingService: BookingService,
-    private router: Router,
   ) {
   }
 
@@ -105,10 +104,7 @@ export class BookingFormComponent {
       })
     );
 
-    setTimeout(() => {
-      this.isLoading = false; 
-      this.router.navigate(['/']);
-    }, 2000);
+    this.isLoading = false;
   }
 
   get f(): { [key: string]: AbstractControl } {
