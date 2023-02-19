@@ -27,6 +27,7 @@ import { ManagementCalendarBodyComponent } from './pages/management/components/m
 import { ManagementBookingHoursComponent } from './pages/management/components/management-booking-hours/management-booking-hours.component';
 import { AppointmentComponent } from './pages/appointment/appointment.component';
 import { BookingFormComponent } from './pages/appointment/components/booking-form/booking-form.component';
+import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { BookingFormComponent } from './pages/appointment/components/booking-for
     ManagementBookingHoursComponent,
     AppointmentComponent,
     BookingFormComponent,
+    BookingStatusComponent,
   ],
   imports: [
     BrowserModule,

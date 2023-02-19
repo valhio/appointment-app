@@ -209,4 +209,9 @@ export class AppointmentComponent {
   onBookingTimeSelected(bookingTime: string) {
     this.bookingTimeSubject.next(bookingTime);
   }
+
+  getCurrentDateData(date: Date) {
+    return this.calendar.find((day: any) => day.day.getDate() == date.getDate())
+  }
+
 }

@@ -11,6 +11,7 @@
       [showBookingHours]="showBookingHours" (bookingTime)="onBookingTimeSelected($event)"></app-booking-hours>
   </div>
 
-  <app-booking-form [bookingTime]="(bookingTime$ | async)" [date]="(selectedDate$ | async)!"></app-booking-form>
+  <app-booking-form [bookingTime]="(bookingTime$ | async)" [date]="(selectedDate$ | async)!"
+    [numberOfBookedBookings]="getCurrentDateData((selectedDate$ | async)!).numberOfBookedBookings"></app-booking-form>
 
 </div>
