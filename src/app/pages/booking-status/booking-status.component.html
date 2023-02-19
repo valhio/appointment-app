@@ -7,10 +7,12 @@
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h1 class="text-xl md:text-4xl font-bold">Благодарим Ви за направената резервация!</h1>
-            <p class="text-sm md:text-base font-semibold py-2">Ако имате въпроси или искате да направите промени по вашата резервация, моля, обадете се на телефон:
+
+            <p class="text-base md:text-lg font-semibold pt-2">Вие успешно направихте резервация за:  <span>{{monthNames[bookingDate!.getMonth()]}}{{bookingDate! | date: ' dd, yyyy'}}</span> - {{bookingTime!}}ч.  </p>
+            <p class="text-sm md:text-base font-semibold py-2">Ако виждате нещо нередно, имате въпроси или искате да направите промени по вашата резервация, моля, обадете се на телефон:
                 0884545505</p>
             <a
-                class="inline-flex items-center px-4 py-2 text-white bg-indigo-600 border border-indigo-600 rounded rounded-full hover:bg-indigo-700 focus:outline-none focus:ring">
+                class="inline-flex items-center px-4 py-2 text-white bg-indigo-600 border border-indigo-600 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />

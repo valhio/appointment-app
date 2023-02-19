@@ -106,9 +106,9 @@ export class BookingFormComponent {
     );
 
     setTimeout(() => {
-      this.isLoading = false; 
+      this.isLoading = false;
       this.router.navigate(['/booking/status'], {
-        queryParams: { action: 'success' },
+        queryParams: { action: 'success', time: this.bookingTime, date: this.date },
       });
     }, 2000);
   }

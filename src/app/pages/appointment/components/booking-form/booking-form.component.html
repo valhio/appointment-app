@@ -4,7 +4,7 @@
     <h2 data-test="title" class="md:mb-3 md:text-xl font-semibold text-center">
         {{monthNames[date!.getMonth()]}}
         {{date | date: ' d, yyyy'}}
-        <span *ngIf="bookingTime"> - {{bookingTime}} ч.</span>
+        <span *ngIf="bookingTime"> - {{bookingTime}}ч.</span>
     </h2>
     <div class="flex items-center w-full my-4">
         <hr class="w-full text-gray-600">
@@ -99,7 +99,7 @@
 
         <div class="space-y-1 mb-3">
             <p>Ден: <span>{{monthNames[date!.getMonth()]}}{{date | date: ' dd, yyyy'}}</span></p>
-            <p>Час: <span *ngIf="bookingTime">{{bookingTime}} ч.</span></p>
+            <p>Час: <span *ngIf="bookingTime">{{bookingTime}}ч.</span></p>
         </div>
 
         <!-- Submit Button -->
