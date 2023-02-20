@@ -12,7 +12,7 @@
     <form data-test="form" [formGroup]="form" (ngSubmit)="submit()" class="ng-untouched ng-pristine ng-valid">
         <!-- First Name Form Field -->
         <div class="space-y-1 mb-3 form-group">
-            <label class="block text-sm" for="firstName">Име</label>
+            <label class="block text-sm md:text-base font-semibold" for="firstName">Име</label>
             <input [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
                 class="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-50 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 formControlName="firstName" placeholder="Име" type="text">
@@ -24,7 +24,7 @@
 
         <!-- Last Name Form Field -->
         <div class="space-y-1 mb-3 form-group">
-            <label class="block text-sm pl-1" for="lastName">Фамилия</label>
+            <label class="block text-sm md:text-base font-semibold pl-1" for="lastName">Фамилия</label>
             <input [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
                 class="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-50 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 formControlName="lastName" placeholder="Фамилно име" type="text">
@@ -36,7 +36,7 @@
 
         <!-- Phone Form Field -->
         <div class="space-y-1 mb-3">
-            <label class="text-sm pl-1" for="phone">Телефон</label>
+            <label class="text-sm md:text-base font-semibold pl-1" for="phone">Телефон</label>
             <input [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
                 class="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-50 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 formControlName="phone" placeholder="Телефон #" type="phone">
@@ -52,7 +52,7 @@
 
         <!-- Vehicle Registration Number Field -->
         <div class="space-y-1 mb-3">
-            <label class="text-sm pl-1" for="registrationNumber">Информация за автомобила</label>
+            <label class="text-sm md:text-base font-semibold pl-1" for="registrationNumber">Информация за автомобила</label>
             <input [ngClass]="{ 'is-invalid': submitted && f['registrationNumber'].errors }"
                 class="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-50 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 formControlName="registrationNumber" placeholder="РЕГ. №" type="text">
@@ -64,17 +64,18 @@
 
         <!-- Vehicle Category Form Field -->
         <div class="space-y-1 mb-3">
-            <label class="text-sm pl-1" for="vehicleCategory">Категория</label>
+            <label class="text-sm md:text-base font-semibold pl-1" for="vehicleCategory">Категория</label>
+            <p class="text-xs italic">*За превозни средства с ВНГ/СПГ се доплаща допълнителна такса от 6.00 лв.*</p>
             <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="vehicleCategory" id="vehicleCategory">
-                <option value="PASSENGER_VEHICLE_M1;M1G">Лек автомобил - M1;M1G</option>
-                <option value="JEEPS_MINIBUSES">Джипове и Микробуси</option>
-                <option value="MOTORCYCLES_L1;L3;L3e">Мотоциклети - L1;L3;L3e</option>
-                <option value="CARGO_TRUCKS_UP_TO_3.5_TONS">Товарни автомобили до 3.5 тона - N1;N1G</option>
-                <option value="CAMPERS">Кемпери</option>
-                <option value="TRAILERS">Ремаркета</option>
-                <option value="TAXI">Такси</option>
+                <option value="PASSENGER_VEHICLE_M1;M1G">Лек автомобил - M1;M1G - 55.00 лв.</option>
+                <option value="JEEPS_MINIBUSES">Джипове и Микробуси - 60.00 лв.</option>
+                <option value="MOTORCYCLES_L1;L3;L3e">Мотоциклети - L1;L3;L3e - 55.00 лв.</option>
+                <option value="CARGO_TRUCKS_UP_TO_3.5_TONS">Товарни автомобили до 3.5 тона - N1;N1G - 70.00 лв.</option>
+                <option value="CAMPERS">Кемпери - 70.00 лв.</option>
+                <option value="TRAILERS">Ремаркета - 52.00 лв.</option>
+                <option value="TAXI">Такси - 52.00 лв.</option>
             </select>
             <div *ngIf="submitted && f['vehicleCategory'].errors" class="invalid-feedback">
                 <p *ngIf="f['vehicleCategory'].errors['required']" class="text-red-500 text-sm italic">
@@ -84,7 +85,7 @@
 
         <!-- Booking Type Form Field -->
         <div class="space-y-1 mb-3">
-            <label class="text-sm pl-1" for="bookingType">Услуга</label>
+            <label class="text-sm md:text-base font-semibold pl-1" for="bookingType">Услуга</label>
             <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="bookingType" id="bookingType">
