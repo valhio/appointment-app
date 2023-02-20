@@ -106,7 +106,7 @@ export class BookingFormComponent {
           }, 2000);
           this.updateBookedBookings(year!, month!, day!, this.numberOfBookedBookings! + 1)
         } else {
-          alert('Вече е направена резервация за този часови интервал. Моля, изберете друг час.')
+          alert('Вече съществува резервация за този часови интервал. Моля, изберете друг час.')
           this.isLoading = false;
         }
       })
