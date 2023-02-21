@@ -1,17 +1,32 @@
+
 <nav
-    class="top-0 sticky z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
-    <div class="container flex flex-wrap items-center justify-between">
-            <a class="z-50 text-xl mx-auto md:mx-8 font-bold leading-relaxed inline-block md:py-2 whitespace-nowrap uppercase"
-                href="#/">ФРИ ЛИНК
-            </a>
-            <!-- <button
-                class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
-                type="button">
-                <i class="fas fa-bars"></i>
-            </button> -->
-        <div class="lg:flex lg:space-x-2 md:absolute flex-col justify-center md:flex-row mx-auto w-screen items-center bg-white bg-opacity-0 lg:shadow-none" id="example-navbar-warning">
-            <span class="flex justify-center font-semibold text-xs md:text-base">Стандартно работно време: </span>
-            <span class="flex justify-center font-semibold text-xs md:text-base">Понеделник - Петък: 09:00 - 18:00</span>
+    class="top-0 relative z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
+    <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
+        <div class="flex px-2 font-semibold text-xs md:text-base">
+            <p>Тел. за връзка - 0884545505</p>
         </div>
+        <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
+            <p>Стандартно работно време:</p>
+            <p>Понеделник - Петък: 09:00 - 18:00</p>
+        </div>
+        <div class="flex px-2 font-semibold text-xs md:text-base">
+            <button (click)="openGoogleMaps()" class="ml-2 underline">Адрес: Овча купел, бул. През. Линкълн № 60</button>
+        </div>
+    </div>
+</nav>
+
+<nav
+    class="top-0 sticky z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
+    <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
+        <a href="/" class="flex items-center">
+            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">ГОДИШНИ ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
+        </a>
+        <!-- <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
+            <p>Стандартно работно време:</p>
+            <p>Понеделник - Петък: 09:00 - 18:00</p>
+        </div>
+        <div class="flex px-2 font-semibold text-xs md:text-base">
+            <p>Тел. за връзка - 0884545505</p>
+        </div> -->
     </div>
 </nav>

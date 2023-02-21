@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-
+  openGoogleMaps() {
+    window.open('https://maps.app.goo.gl/bu8iN1tRXcVpa6eu5', '_blank');
+  }
 }

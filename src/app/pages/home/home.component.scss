@@ -50,3 +50,11 @@
 .blue-date {
     color: rgb(16, 110, 190);
 }
+
+.tilt-left {
+    transform: scale(1) perspective(1040px) rotateY(-4deg) rotateX(2deg) rotate(2deg);
+}
+
+.tilt-right{
+    transform: scale(1) perspective(1040px) rotateY(4deg) rotateX(2deg) rotate(-2deg);
+}
