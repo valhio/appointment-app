@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from 'src/app/service/booking.service';
 import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
+import { VehicleCategoryEnum } from '../../enum/vehicle-category';
 
 @Component({
   selector: 'app-calendar-management',
@@ -36,7 +37,7 @@ export class CalendarManagementComponent {
   bookingHours$: Observable<string[]> = this.bookingHoursSubject.asObservable();
 
   ngOnInit(): void {
-    this.generateCalendar()
+    this.generateCalendar();
     // this.bookingHours = this.bookingService.getBookingHours();
     // this.getBookingHoursFromDb()
   }
@@ -161,9 +162,6 @@ export class CalendarManagementComponent {
   }
 
   onNavigatePreviousMonth() {
-    // Do not allow users to navigate to previous months, when the current month and year are selected
-    if (this.selectedDateSubject.value.getMonth() <= new Date().getMonth() && this.selectedDateSubject.value.getFullYear() <= new Date().getFullYear()) return
-
     this.selectedDateSubject.next(
       new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() - 1))
     )
@@ -208,7 +206,11 @@ export class CalendarManagementComponent {
     })
   }
 
-  onChanges(){
+  onChanges() {
     this.generateCalendar();
+  }
+
+  getCategory(category: string): string {
+    return VehicleCategoryEnum[category as keyof typeof VehicleCategoryEnum];
   }
 }
