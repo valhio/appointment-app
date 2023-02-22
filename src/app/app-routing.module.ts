@@ -9,7 +9,7 @@ import { BookingStatusComponent } from './pages/booking-status/booking-status.co
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'management', component: CalendarManagementComponent },
+  { path: 'management', component: CalendarManagementComponent, canActivate: [AuthGuard] },
   { path: 'appointment', component: AppointmentComponent },
   { path: 'booking/status', component: BookingStatusComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' },
