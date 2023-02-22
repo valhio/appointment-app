@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import 'firebase/database';
 
 @Component({
@@ -6,6 +6,18 @@ import 'firebase/database';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  showAdditionalService = true;
+
+  ngOnInit(): void {
+    // setTimeout(() => {
+    // this.showAdditionalService = false;
+    // }, 10000);
+  }
+
+  closeAdditionalServiceNotification(): void {
+    this.showAdditionalService = !this.showAdditionalService;
+  }
 
 }

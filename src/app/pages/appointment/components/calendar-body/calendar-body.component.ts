@@ -29,6 +29,7 @@ export class CalendarBodyComponent {
   }
 
   onChangeSelectedDate(date: Date): void {
+    // We also offer an additional service of checking 
     this.changeSelectedDate.emit(date);
   }
 
