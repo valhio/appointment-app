@@ -28,6 +28,7 @@ import { ManagementBookingHoursComponent } from './pages/management/components/m
 import { AppointmentComponent } from './pages/appointment/appointment.component';
 import { BookingFormComponent } from './pages/appointment/components/booking-form/booking-form.component';
 import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { BookingStatusComponent } from './pages/booking-status/booking-status.co
     AppointmentComponent,
     BookingFormComponent,
     BookingStatusComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
