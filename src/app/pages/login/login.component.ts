@@ -24,19 +24,15 @@ export class LoginComponent {
   }
 
   login() {
-    if(this.loginForm?.invalid) return;
+    if (this.loginForm?.invalid) return;
 
     this.authService.loginUser(this.loginForm?.value.email, this.loginForm?.value.password)
       .then((res: any) => {
-        if(res == null){
-          console.log('Logging in');
+        if (res.isValid) {
           this.router.navigate(['/management'])
-        }else if(res == false){
-          console.log('Login error');
-          this.firebaseError = res.message;
+        } else if (!res.isValid) {
+          this.firebaseError = res.errorMessage;
         }
-      }).catch((error) => {
-        this.firebaseError = error.message;
       })
   }
 }

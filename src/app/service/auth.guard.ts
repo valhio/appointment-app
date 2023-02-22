@@ -15,12 +15,12 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return new Promise((resolve, reject) => {
-      this.afAuth.onAuthStateChanged((user) => {
-        if (user) {
-          resolve(true);
-        } else {
-          this.router.navigate(['/login']);
-          resolve(false);
+      this.afAuth.onAuthStateChanged((user) => { // This is a listener that will be called when the user logs in or out
+        if (user) { // If the user is logged in
+          resolve(true); // Allow the user to access the route
+        } else { // If the user is not logged in
+          this.router.navigate(['/login']); // Redirect the user to the login page
+          resolve(false); // Do not allow the user to access the route
         }
       })
     });
