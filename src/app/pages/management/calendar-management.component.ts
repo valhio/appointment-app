@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, NgModule } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import 'firebase/database';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +7,7 @@ import { BookingService } from 'src/app/service/booking.service';
 import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
 import { VehicleCategoryEnum } from '../../enum/vehicle-category';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-calendar-management',
@@ -27,7 +26,7 @@ export class CalendarManagementComponent {
   currentDateDataSubject = new BehaviorSubject<any>(null);
   currentDateData$ = this.currentDateDataSubject.asObservable();
 
-  constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
+  constructor(private dialog: MatDialog, private router: Router, private bookingService: BookingService, private afAuth: AngularFireAuth) {
   }
 
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
@@ -213,4 +212,9 @@ export class CalendarManagementComponent {
   getCategory(category: string): string {
     return VehicleCategoryEnum[category as keyof typeof VehicleCategoryEnum];
   }
+
+  logout(): void {
+    this.afAuth.signOut();
+  }
+
 }
