@@ -6,18 +6,5 @@ import 'firebase/database';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-
-  showAdditionalService = true;
-
-  ngOnInit(): void {
-    // setTimeout(() => {
-    // this.showAdditionalService = false;
-    // }, 10000);
-  }
-
-  closeAdditionalServiceNotification(): void {
-    this.showAdditionalService = !this.showAdditionalService;
-  }
-
+export class HomeComponent {
 }
