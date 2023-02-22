@@ -53,7 +53,7 @@
                                 <button type="button" *ngFor="let item of dayData.bookingHours"
                                     (click)="openCreateBookingDialog(item)"
                                     [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
-                                    class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                                    class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
                                     {{item}}
                                 </button>
                             </ng-container>
@@ -90,15 +90,14 @@
                             class="mx-auto mt-2 mb-4 p-8 border bg-white border-gray-300 font-medium rounded-lg text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
                             Submit</button>
                     </div>
-                    <div class="flex flex-wrap justify-center">
-                        <div *ngFor="let item of times">
+                    <div class="grid grid-cols-6 gap-1 justify-center mx-auto max-w-xl">
+                        <div *ngFor="let item of times" class="h-10">
                             <label
-                                class="block font-semibold md:font-bold text-center border py-2 px-4 mr-2 mb-2 rounded-lg text-gray-700 bg-white"
+                                class="flex justify-center w-full text-xs md:text-sm font-semibold md:font-bold text-center border border-gray-300 py-2.5 mr-1 mb-1 rounded-lg text-gray-900 bg-white"
                                 [class]="selectedItems.includes(item) ? 'border-blue-300 bg-blue-200' : ''">
                                 <input class="appearance-none focus:outline-none" type="checkbox" [value]="item"
                                     (change)="onCheckboxChange($event)" />
-                                {{ item }}
-                            </label>
+                                {{item}}</label>
                         </div>
                     </div>
                 </ng-container>
