@@ -12,6 +12,6 @@
   </div>
 
   <app-booking-form [bookingTime]="(bookingTime$ | async)" [date]="(selectedDate$ | async)!"
-    [numberOfBookedBookings]="getCurrentDateData((selectedDate$ | async)!).numberOfBookedBookings"></app-booking-form>
+    [numberOfBookedBookings]="(currentDateData$ | async).numberOfBookedBookings"></app-booking-form>
 
 </div>

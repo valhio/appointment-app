@@ -15,6 +15,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrls: ['./calendar-management.component.scss']
 })
 export class CalendarManagementComponent {
+  public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
+  public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+
+  public defaultBookingHours = this.bookingService.getDefaultBookingHours();
   public calendar: any = [];
   private subscriptions: Subscription[] = [];
 
@@ -26,19 +30,14 @@ export class CalendarManagementComponent {
   currentDateDataSubject = new BehaviorSubject<any>(null);
   currentDateData$ = this.currentDateDataSubject.asObservable();
 
+  bookingsForSelectedDate$ = new Observable<Booking[]>();
+
   constructor(private dialog: MatDialog, private router: Router, private bookingService: BookingService, private afAuth: AngularFireAuth) {
   }
 
-  public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
-  public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-
-  bookingHoursSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  bookingHours$: Observable<string[]> = this.bookingHoursSubject.asObservable();
 
   ngOnInit(): void {
     this.generateCalendar();
-    // this.bookingHours = this.bookingService.getBookingHours();
-    // this.getBookingHoursFromDb()
   }
 
   ngOnDestroy(): void {
@@ -49,7 +48,7 @@ export class CalendarManagementComponent {
     this.generateCalendarDays()
     this.generateCalendarData();
     this.setCurrentDateData();
-    this.getBookedBookingsForSelectedDate();
+    this.bookingsForSelectedDate$ = this.bookingService.getBookingsForDate(this.selectedDateSubject.value);
   }
 
   private getStartDateForCalendar(selectedDate: Date) {
@@ -101,7 +100,7 @@ export class CalendarManagementComponent {
           snapshot.docs
             .map(doc => {
               const numberOfBookedBookings = doc.data()['numberOfBookedBookings'] ? doc.data()['numberOfBookedBookings'] : 0 // Get the number of booked bookings for the day
-              const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.getDefaultBookingHours() // Get all available booking hours for the day
+              const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.defaultBookingHours // Get all available booking hours for the day
               const isWorkDay = doc.data()['isWorkDay'] != undefined ? doc.data()['isWorkDay'] : true // Get the isWorkDay property(field) for the day, if it is null, set it to true by default
               const isFullyBooked = numberOfBookedBookings >= bookingHours.length // Check if the day is fully booked
               return { day: doc.id, numberOfBookedBookings, bookingHours, isWorkDay, isFullyBooked } // Return the data for the day
@@ -136,18 +135,11 @@ export class CalendarManagementComponent {
     let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()) // Search the calendar for the day
     if (!day) return // Safety check (should never happen, but just in case)
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
-    day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.getDefaultBookingHours() // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
+    day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.defaultBookingHours // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
     day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
     day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
     this.currentDateDataSubject.next(day)
   }
-
-  getBookedBookingsForSelectedDate() {
-    this.bookingsForSelectedDate$ = this.bookingService.getBookingsForDate(this.selectedDateSubject.value)
-  }
-
-  bookingsForSelectedDateSubject = new BehaviorSubject<Booking[]>([]);
-  bookingsForSelectedDate$ = new Observable<Booking[]>();
 
   onShowBookingHours(status: boolean) {
     this.showBookingHours = of(status);
@@ -177,25 +169,23 @@ export class CalendarManagementComponent {
     // Otherwise if some error happens and we send a booking id that does not exist (for example - undefined), the number of booked bookings will be decreased by 1, even though the booking was not deleted (because it does not exist).
     // After that, we are going to have a problem, because the number of booked bookings will be less than the actual number of booked bookings.
     // To avoid this, we first check if the booking exists, and if it does, we delete it and then update the number of booked bookings.
-    this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
-      if (res.exists) { // If the booking exists, delete it
-        this.bookingService.deleteBookingById(date, res.id) // Delete the booking
-          .then(() => {
-            this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
-              let newCount = res - 1; // Decrease the number of booked bookings by 1
-              this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
-              this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
-            });
-          })
-          .catch(err => console.log(err))
-      } else {
-        console.log('Booking does not exist')
-      }
-    })
-  }
-
-  getDefaultBookingHours() {
-    return this.bookingService.getDefaultBookingHours();
+    this.subscriptions.push(
+      this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
+        if (res.exists) { // If the booking exists, delete it
+          this.bookingService.deleteBookingById(date, res.id) // Delete the booking
+            .then(() => {
+              this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
+                let newCount = res - 1; // Decrease the number of booked bookings by 1
+                this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
+                this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
+              });
+            })
+            .catch(err => console.log(err))
+        } else {
+          console.log('Booking does not exist')
+        }
+      })
+    )
   }
 
   updateBookingDialog(bookingId: string, booking: any) {

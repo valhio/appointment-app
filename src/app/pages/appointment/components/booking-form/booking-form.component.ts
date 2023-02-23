@@ -1,8 +1,7 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Subscription, catchError, Observable, BehaviorSubject } from 'rxjs';
+import { of, Subscription, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { BookingType } from 'src/app/enum/booking-type';
 import { BookingService } from 'src/app/service/booking.service';
@@ -13,7 +12,7 @@ import { Booking } from 'src/app/model/booking';
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.scss']
 })
-export class BookingFormComponent {
+export class BookingFormComponent implements OnDestroy, OnInit {
 
   @Input() date: Date | undefined;
   @Input() bookingTime: string | null | undefined = '';
@@ -64,16 +63,10 @@ export class BookingFormComponent {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onNoClick(): void {
-    // this.dialogRef.close();
-  }
-
   submit(): void {
-    this.submitted = true;
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
+    this.submitted = true;
     this.isLoading = true;
     let year = this.date?.getFullYear();
     let month = this.date?.getMonth();
@@ -92,26 +85,42 @@ export class BookingFormComponent {
     }
 
     this.subscriptions.push(
-      // Check if the booking(collection) already exists
-      this.bookingService.getBookingByBookingTime(this.date!, this.bookingTime!).subscribe(querySnapshot => {
-        // If the booking(collection) does not exist, add it. Otherwise, alert the user that the booking already exists.
-        if (!querySnapshot.exists) {
-          this.bookingService.addBooking(booking as Booking);
-
-          setTimeout(() => {
-            this.isLoading = false;
+      // First check if booking exists. If it does, return false. If it doesn't, create booking.
+      // If booking was not created, return false. If it was, get number of booked bookings for that day.
+      // Once we have the number of booked bookings, update the number of booked bookings for that day.
+      this.bookingService.getBookingByBookingTime(this.date!, this.bookingTime!).pipe( // Get booking by booking time
+        switchMap(querySnapshot => {
+          if (!querySnapshot.exists) { // If booking does not exist, create it. Otherwise, return false.
+            return this.bookingService.addBooking(booking as Booking).pipe( // Create booking
+              switchMap(added => {
+                if (added) { // If booking was created, get number of booked bookings for that day. Otherwise, return false.
+                  return this.bookingService.getNumberOfBookedBookings(this.date!).pipe( // Get number of booked bookings for that day
+                    switchMap(bookedHoursCount => {
+                      this.updateBookedBookings(year!, month!, day!, bookedHoursCount + 1) // Update number of booked bookings for that day
+                      return of(true); // Return true to indicate that booking was created (and number of booked bookings was updated)
+                    })
+                  )
+                } else { // If booking was not created, return false to indicate that booking was not created
+                  return of(false);
+                }
+              })
+            )
+          } else { // If booking already exists, return false to indicate that booking was not created
+            return of(false);
+          }
+        })
+      ).subscribe(res => {
+        setTimeout(() => {
+          this.isLoading = false;
+          if (!res) alert('Вече съществува резервация за този часови интервал. Моля, изберете друг час.')
+          else {
             this.router.navigate(['/booking/status'], {
               queryParams: { action: 'success', time: this.bookingTime, date: this.date },
             });
-          }, 2000);
-          this.updateBookedBookings(year!, month!, day!, this.numberOfBookedBookings! + 1)
-        } else {
-          alert('Вече съществува резервация за този часови интервал. Моля, изберете друг час.')
-          this.isLoading = false;
-        }
+          }
+        }, 2000);
       })
-    );
-
+    )
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -124,16 +133,6 @@ export class BookingFormComponent {
       .collection(month.toString())
       .doc(day.toString())
       .set({ numberOfBookedBookings }, { merge: true });
-  }
-
-  deleteBooking(date: Date, bookingId: string) {
-    this.db.collection("bookings").doc(date.getFullYear().toString()).collection(date.getMonth().toString()).doc(date.getDay().toString()).collection("data").doc(bookingId).delete()
-      .then(function () {
-        console.log("Booking successfully deleted!");
-      })
-      .catch(function (error) {
-        console.error("Error removing booking: ", error);
-      });
   }
 
 }

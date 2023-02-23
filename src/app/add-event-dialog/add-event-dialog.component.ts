@@ -1,11 +1,10 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Booking } from '../model/booking';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BookingType } from '../enum/booking-type';
-import { Subscription, catchError } from 'rxjs';
-import { Router } from '@angular/router';
+import { Subscription, map, switchMap, forkJoin, of } from 'rxjs';
 import { BookingService } from '../service/booking.service';
 
 @Component({
@@ -29,14 +28,12 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<AddEventDialogComponent>,
-    private matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: {
       date: Date,
       bookingTime: string,
       numberOfBookedBookings: number,
     },
     private db: AngularFirestore,
-    private router: Router,
     private bookingService: BookingService,
   ) {
   }
@@ -49,7 +46,7 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
     //       let bookingByBookingTime = querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime);
 
     //       console.log('bookingByBookingTime', bookingByBookingTime?.get('firstName'));
-          
+
     //       // console.log('querySnapshot', querySnapshot.docs.length);
     //       // console.log('querySnapshot', querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime)?.get('firstName'));
     //     }
@@ -64,16 +61,10 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   submit(): void {
-    this.submitted = true;
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
+    this.submitted = true;
     this.isLoading = true;
     let year = this.data.date.getFullYear();
     let month = this.data.date.getMonth();
@@ -91,22 +82,38 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
       createdAt: new Date(),
     } as Booking;
 
-    // this.subscriptions.push(
-    // Check if the booking(collection) already exists
-    this.bookingService.getBookingByBookingTime(this.data.date, this.data.bookingTime).subscribe(querySnapshot => {
-      // If the booking(collection) does not exist, add it. Otherwise, alert the user that the booking already exists.
-      if (!querySnapshot.exists) {
-        this.bookingService.addBooking(booking);
-        // this.bookingService.updateNumberOfBookedBookings(this.data.date, this.data.numberOfBookedBookings + 1);
-        this.updateBookedBookings(year, month, day, this.data.numberOfBookedBookings + 1)
-      } else {
-        alert('Booking has already been made for this time slot.')
-      }
-    })
-    // );
 
-    this.isLoading = false;
-    this.dialogRef.close();
+    this.subscriptions.push(
+      // First check if booking exists. If it does, return false. If it doesn't, create booking.
+      // If booking was not created, return false. If it was, get number of booked bookings for that day.
+      // Once we have the number of booked bookings, update the number of booked bookings for that day.
+      this.bookingService.getBookingByBookingTime(this.data.date!, this.data.bookingTime!).pipe( // Get booking by booking time
+        switchMap(querySnapshot => {
+          if (!querySnapshot.exists) { // If booking does not exist, create it. Otherwise, return false.
+            return this.bookingService.addBooking(booking as Booking).pipe( // Create booking
+              switchMap(added => {
+                if (added) { // If booking was created, get number of booked bookings for that day. Otherwise, return false.
+                  return this.bookingService.getNumberOfBookedBookings(this.data.date!).pipe( // Get number of booked bookings for that day
+                    switchMap(bookedHoursCount => {
+                      this.updateBookedBookings(year!, month!, day!, bookedHoursCount + 1) // Update number of booked bookings for that day
+                      return of(true); // Return true to indicate that booking was created (and number of booked bookings was updated)
+                    })
+                  )
+                } else { // If booking was not created, return false to indicate that booking was not created
+                  return of(false);
+                }
+              })
+            )
+          } else { // If booking already exists, return false to indicate that booking was not created
+            return of(false);
+          }
+        })
+      ).subscribe(res => {
+        this.isLoading = false;
+        this.dialogRef.close();
+        if (!res) alert('Вече съществува резервация за този часови интервал. Моля, изберете друг час.')
+      })
+    )
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -119,16 +126,6 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
       .collection(month.toString())
       .doc(day.toString())
       .set({ numberOfBookedBookings }, { merge: true });
-  }
-
-  deleteBooking(date: Date, bookingId: string) {
-    this.db.collection("bookings").doc(date.getFullYear().toString()).collection(date.getMonth().toString()).doc(date.getDay().toString()).collection("data").doc(bookingId).delete()
-      .then(function () {
-        console.log("Booking successfully deleted!");
-      })
-      .catch(function (error) {
-        console.error("Error removing booking: ", error);
-      });
   }
 
 }

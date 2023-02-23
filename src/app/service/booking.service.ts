@@ -42,11 +42,13 @@ export class BookingService {
     return this.getDayRef(date).collection('data').doc(bookingTime).get()
   }
 
-  addBooking(booking: Booking) {
-    return this.getDayRef(booking.bookingDate).collection('data').doc(booking.bookingTime).set(booking)
+  addBooking(booking: Booking): Observable<boolean> {
+    this.getDayRef(booking.bookingDate).collection('data').doc(booking.bookingTime).set(booking)
       .catch(error => {
         console.error("Error adding booking: ", error);
+        return of(false);
       })
+    return of(true);
   }
 
   deleteBookingByBookingTime(date: Date, bookingTime: string) {
