@@ -32,6 +32,7 @@ import { CalendarSettingsComponent } from './pages/management/components/calenda
 import { BookingFormSettingsComponent } from './pages/management/components/booking-form-settings/booking-form-settings.component';
 import { ManagementCalendarBodyComponent } from './pages/management/components/calendar-settings/management-calendar-body/management-calendar-body.component';
 import { ManagementBookingHoursComponent } from './pages/management/components/calendar-settings/management-booking-hours/management-booking-hours.component';
+import { NotificationsSettingsComponent } from './pages/management/components/notifications-settings/notifications-settings.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ManagementBookingHoursComponent } from './pages/management/components/c
     AddDialogComponent,
     CalendarSettingsComponent,
     BookingFormSettingsComponent,
+    NotificationsSettingsComponent,
   ],
   imports: [
     BrowserModule,
