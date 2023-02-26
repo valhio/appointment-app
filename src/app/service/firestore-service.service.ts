@@ -15,18 +15,28 @@ export class FirestoreService {
     );
   }
 
+  updateVehicleCategories(categories: string[]) {
+    this.db.collection('system').doc('vehicle').set({ categories: categories }, { merge: true });
+  }
+
   getServices() {
     return this.db.collection('system').doc('vehicle').get().pipe(
       map((doc: any) => doc.data()['services'])
     );
   }
 
-  updateVehicleCategories(categories: string[]) {
-    this.db.collection('system').doc('vehicle').set({ categories: categories }, { merge: true });
-  }
-
   updateServices(services: string[]) {
     this.db.collection('system').doc('vehicle').set({ services: services }, { merge: true });
+  }
+
+  getNotifications(): Observable<string[]> {
+    return this.db.collection('system').doc('alerts').get().pipe(
+      map((doc: any) => doc.data()['notificationMessages'])
+    );
+  }
+
+  updateNotifications(notifications: string[]) {
+    this.db.collection('system').doc('alerts').set({ notificationMessages: notifications }, { merge: true });
   }
 
 }
