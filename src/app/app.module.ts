@@ -29,6 +29,8 @@ import { AppointmentComponent } from './pages/appointment/appointment.component'
 import { BookingFormComponent } from './pages/appointment/components/booking-form/booking-form.component';
 import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
 import { LoginComponent } from './pages/login/login.component';
+import { BookingFormManagementComponent } from './pages/management/components/booking-form-management/booking-form-management.component';
+import { AddDialogComponent } from './pages/management/components/booking-form-management/add-dialog/add-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { LoginComponent } from './pages/login/login.component';
     BookingFormComponent,
     BookingStatusComponent,
     LoginComponent,
+    BookingFormManagementComponent,
+    AddDialogComponent,
   ],
   imports: [
     BrowserModule,

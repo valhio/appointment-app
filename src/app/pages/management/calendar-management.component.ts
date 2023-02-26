@@ -8,6 +8,7 @@ import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dial
 import { Booking } from 'src/app/model/booking';
 import { VehicleCategoryEnum } from '../../enum/vehicle-category';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { FirestoreService } from '../../service/firestore-service.service';
 
 @Component({
   selector: 'app-calendar-management',
@@ -17,6 +18,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class CalendarManagementComponent {
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
   public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+
+  readonly tabs: string[] = ['date-settings', 'booking-form', 'notifications'];
+  activeTab = this.tabs[0];
+
 
   public defaultBookingHours = this.bookingService.getDefaultBookingHours();
   public calendar: any = [];

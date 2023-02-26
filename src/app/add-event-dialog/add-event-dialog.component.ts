@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BookingType } from '../enum/booking-type';
 import { Subscription, map, switchMap, forkJoin, of } from 'rxjs';
 import { BookingService } from '../service/booking.service';
+import { FirestoreService } from '../service/firestore-service.service';
 
 @Component({
   selector: 'app-add-event-dialog',
@@ -26,6 +27,8 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
   submitted = false;
   subscriptions: Subscription[] = [];
 
+  readonly categories$ = this.firestoreService.getVehicleCategories();
+
   constructor(
     private dialogRef: MatDialogRef<AddEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -35,6 +38,7 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
     },
     private db: AngularFirestore,
     private bookingService: BookingService,
+    private firestoreService : FirestoreService
   ) {
   }
 
