@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FirestoreService } from '../../service/firestore-service.service';
 
 @Component({
   selector: 'app-header',
@@ -10,12 +11,18 @@ export class HeaderComponent implements OnInit {
 
   showAdditionalService = false;
 
-  constructor(public router: Router) { }
+  notifications$ = this.firestoreService.getNotifications();
+
+  constructor(public router: Router, private firestoreService: FirestoreService) { }
 
   ngOnInit(): void {
     setTimeout(() => {
       this.showAdditionalService = true;
     }, 2000);
+  }
+
+  getNotifications(){
+    this.firestoreService.getNotifications();
   }
 
   closeAdditionalServiceNotification(): void {

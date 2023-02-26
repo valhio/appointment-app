@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BookingType } from 'src/app/enum/booking-type';
 import { BookingService } from 'src/app/service/booking.service';
 import { Booking } from 'src/app/model/booking';
+import { FirestoreService } from '../../../../service/firestore-service.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -33,10 +34,14 @@ export class BookingFormComponent implements OnDestroy, OnInit {
   submitted = false;
   subscriptions: Subscription[] = [];
 
+  vehicleCategories$: any = null;
+  vehicleServices$: any = null;
+
   constructor(
     private db: AngularFirestore,
     private bookingService: BookingService,
     private router: Router,
+    private firestoreService: FirestoreService
   ) {
   }
 
@@ -135,4 +140,11 @@ export class BookingFormComponent implements OnDestroy, OnInit {
       .set({ numberOfBookedBookings }, { merge: true });
   }
 
+  getVehicleCategories() {
+    this.vehicleCategories$ = this.firestoreService.getVehicleCategories();
+  }
+
+  getVehicleServices() {
+    this.vehicleServices$ = this.firestoreService.getServices();
+  }
 }
