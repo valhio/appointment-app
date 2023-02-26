@@ -31,6 +31,7 @@ import { BookingStatusComponent } from './pages/booking-status/booking-status.co
 import { LoginComponent } from './pages/login/login.component';
 import { BookingFormManagementComponent } from './pages/management/components/booking-form-management/booking-form-management.component';
 import { AddDialogComponent } from './pages/management/components/booking-form-management/add-dialog/add-dialog.component';
+import { CalendarSettingsComponent } from './pages/management/components/calendar-settings/calendar-settings.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { AddDialogComponent } from './pages/management/components/booking-form-m
     LoginComponent,
     BookingFormManagementComponent,
     AddDialogComponent,
+    CalendarSettingsComponent,
   ],
   imports: [
     BrowserModule,
