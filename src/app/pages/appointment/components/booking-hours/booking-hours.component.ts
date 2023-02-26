@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of, startWith } from 'rxjs';
-import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
+import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
 import { BookingService } from 'src/app/service/booking.service';
 

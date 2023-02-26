@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AddEventDialogComponent } from './add-event-dialog/add-event-dialog.component';
+import { AddEventDialogComponent } from './pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ChunkPipe } from './chunk.pipe';
 import { TestCalendarComponent } from './test-calendar/test-calendar.component';
@@ -23,15 +23,15 @@ import { CalendarBodyComponent } from './pages/appointment/components/calendar-b
 import { BookingHoursComponent } from './pages/appointment/components/booking-hours/booking-hours.component';
 import { HeaderComponent } from './components/header/header.component';
 import { CalendarManagementComponent } from './pages/management/calendar-management.component';
-import { ManagementCalendarBodyComponent } from './pages/management/components/management-calendar-body/management-calendar-body.component';
-import { ManagementBookingHoursComponent } from './pages/management/components/management-booking-hours/management-booking-hours.component';
 import { AppointmentComponent } from './pages/appointment/appointment.component';
 import { BookingFormComponent } from './pages/appointment/components/booking-form/booking-form.component';
 import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
 import { LoginComponent } from './pages/login/login.component';
-import { BookingFormManagementComponent } from './pages/management/components/booking-form-management/booking-form-management.component';
-import { AddDialogComponent } from './pages/management/components/booking-form-management/add-dialog/add-dialog.component';
+import { AddDialogComponent } from './pages/management/components/booking-form-settings/add-dialog/add-dialog.component';
 import { CalendarSettingsComponent } from './pages/management/components/calendar-settings/calendar-settings.component';
+import { BookingFormSettingsComponent } from './pages/management/components/booking-form-settings/booking-form-settings.component';
+import { ManagementCalendarBodyComponent } from './pages/management/components/calendar-settings/management-calendar-body/management-calendar-body.component';
+import { ManagementBookingHoursComponent } from './pages/management/components/calendar-settings/management-booking-hours/management-booking-hours.component';
 
 @NgModule({
   declarations: [
@@ -51,9 +51,9 @@ import { CalendarSettingsComponent } from './pages/management/components/calenda
     BookingFormComponent,
     BookingStatusComponent,
     LoginComponent,
-    BookingFormManagementComponent,
     AddDialogComponent,
     CalendarSettingsComponent,
+    BookingFormSettingsComponent,
   ],
   imports: [
     BrowserModule,

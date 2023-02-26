@@ -5,11 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 
 @Component({
-  selector: 'app-booking-form-management',
-  templateUrl: './booking-form-management.component.html',
-  styleUrls: ['./booking-form-management.component.scss']
+  selector: 'app-booking-form-settings',
+  templateUrl: './booking-form-settings.component.html',
+  styleUrls: ['./booking-form-settings.component.scss']
 })
-export class BookingFormManagementComponent implements OnInit {
+export class BookingFormSettingsComponent {
 
   activeTab = 'vehicle-categories'
 

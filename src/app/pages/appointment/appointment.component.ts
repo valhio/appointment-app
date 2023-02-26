@@ -6,7 +6,7 @@ import 'firebase/database';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from 'src/app/service/booking.service';
-import { AddEventDialogComponent } from 'src/app/add-event-dialog/add-event-dialog.component';
+import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
 
 @Component({

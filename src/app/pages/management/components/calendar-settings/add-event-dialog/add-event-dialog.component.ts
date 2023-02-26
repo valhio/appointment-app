@@ -1,12 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Booking } from '../model/booking';
+import { Booking } from '../../../../../model/booking';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { BookingType } from '../enum/booking-type';
+import { BookingType } from '../../../../../enum/booking-type';
 import { Subscription, map, switchMap, forkJoin, of } from 'rxjs';
-import { BookingService } from '../service/booking.service';
-import { FirestoreService } from '../service/firestore-service.service';
+import { BookingService } from '../../../../../service/booking.service';
+import { FirestoreService } from '../../../../../service/firestore-service.service';
 
 @Component({
   selector: 'app-add-event-dialog',

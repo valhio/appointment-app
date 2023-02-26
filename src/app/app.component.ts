@@ -7,7 +7,7 @@ import { createEventId, INITIAL_EVENTS } from './event.utils';
 import listPlugin from '@fullcalendar/list';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { AddEventDialogComponent } from './add-event-dialog/add-event-dialog.component';
+import { AddEventDialogComponent } from './pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 
 @Component({
   selector: 'app-root',
