@@ -11,10 +11,16 @@ import { AddDialogComponent } from './add-dialog/add-dialog.component';
 })
 export class BookingFormManagementComponent implements OnInit {
 
+  activeTab = 'vehicle-categories'
+
   originalCategories: string[] = [];
+  originalServices: string[] = [];
 
   categoriesSubject = new BehaviorSubject<string[]>([]);
   categories$ = this.categoriesSubject.asObservable();
+
+  servicesSubject = new BehaviorSubject<string[]>([]);
+  services$ = this.servicesSubject.asObservable();
 
   constructor(private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
@@ -23,6 +29,14 @@ export class BookingFormManagementComponent implements OnInit {
       this.categoriesSubject.next(categories);
       this.originalCategories = new Array(...categories);
     });
+  }
+
+  getServices() {
+    this.firestoreService.getServices().subscribe(services => {
+      this.servicesSubject.next(services);
+      this.originalServices = new Array(...services);
+    }
+    );
   }
 
   arraymove(arr: string[], fromIndex: number, toIndex: number) {
@@ -36,37 +50,35 @@ export class BookingFormManagementComponent implements OnInit {
     this.ngOnInit();
   }
 
-  deleteCategory(index: number) {
-    const categories = this.categoriesSubject.value;
-    categories.splice(index, 1);
+  updateServices(services: string[]) {
+    this.firestoreService.updateServices(services);
+    this.getServices();
   }
 
-  openAddDialog() {
+  deleteCategory(collection: string[], index: number) {
+    collection.splice(index, 1);
+  }
+
+  openAddDialog(collection: string[]) {
     this.dialog.open(AddDialogComponent, {
       data: { value: '' },
       width: '90%',
       maxWidth: '500px'
     }).afterClosed().subscribe((value: string) => {
       if (value) {
-        console.log('value', value);
-        
-        const categories = this.categoriesSubject.value;
-        categories.push(value);
-
-        // this.updateCategories(categories);
+        collection.push(value);
       }
     })
   }
 
-  openEditDialog(index: number) {
-    const categories = this.categoriesSubject.value;
+  openEditDialog(collection: string[], index: number) {
     this.dialog.open(AddDialogComponent, {
-      data: { value: categories[index] },
+      data: { value: collection[index] },
       width: '90%',
       maxWidth: '500px'
     }).afterClosed().subscribe((value: string) => {
       if (value) {
-        categories[index] = value;
+        collection[index] = value;
       }
     })
   }
@@ -76,7 +88,7 @@ export class BookingFormManagementComponent implements OnInit {
     return JSON.stringify(a) === JSON.stringify(b);
   }
 
-  cancel() {
-    this.categoriesSubject.next(new Array(...this.originalCategories));
+  cancel(collectionSubject: BehaviorSubject<string[]>, originalCollection: string[]) {
+    collectionSubject.next(new Array(...originalCollection));
   }
 }

@@ -4,7 +4,7 @@
 </a>
 
 <div
-    class="mx-auto my-4 max-w-5xl flex justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+    class="mx-auto my-4 max-w-5xl flex justify-center text-xs sm:text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
     <ul class="flex flex-wrap -mb-px">
         <li class="mr-2">
             <a (click)="activeTab = 'calendar-settings'"
@@ -22,7 +22,6 @@
                 Notifications</a>
         </li>
     </ul>
-
 </div>
 <div [ngSwitch]="activeTab">
     <app-calendar-settings *ngSwitchCase="'calendar-settings'"></app-calendar-settings>

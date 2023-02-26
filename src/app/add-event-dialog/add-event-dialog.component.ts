@@ -29,6 +29,8 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
 
   readonly categories$ = this.firestoreService.getVehicleCategories();
 
+  readonly services$ = this.firestoreService.getServices();
+
   constructor(
     private dialogRef: MatDialogRef<AddEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {

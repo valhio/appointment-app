@@ -66,7 +66,7 @@
             <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="vehicleCategory" id="vehicleCategory">
-                <option [value]="category" *ngFor="let category of categories$ | async" >{{category}}</option>
+                <option [value]="category" *ngFor="let category of categories$ | async">{{category}}</option>
             </select>
             <div *ngIf="submitted && f['vehicleCategory'].errors" class="invalid-feedback">
                 <p *ngIf="f['vehicleCategory'].errors['required']" class="text-red-500 text-sm italic">
@@ -80,8 +80,7 @@
             <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="bookingType" id="bookingType">
-                <option value="YEARLY_TECHNICAL_EVALUATION" class="">Годишен технически преглед
-                </option>
+                <option [value]="service" *ngFor="let service of services$ | async">{{service}}</option>
             </select>
             <div *ngIf="submitted && f['bookingType'].errors" class="invalid-feedback">
                 <p *ngIf="f['bookingType'].errors['required']" class="text-red-500 text-sm italic">

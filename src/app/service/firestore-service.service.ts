@@ -15,8 +15,18 @@ export class FirestoreService {
     );
   }
 
+  getServices() {
+    return this.db.collection('system').doc('vehicle').get().pipe(
+      map((doc: any) => doc.data()['services'])
+    );
+  }
+
   updateVehicleCategories(categories: string[]) {
     this.db.collection('system').doc('vehicle').set({ categories: categories }, { merge: true });
+  }
+
+  updateServices(services: string[]) {
+    this.db.collection('system').doc('vehicle').set({ services: services }, { merge: true });
   }
 
 }
