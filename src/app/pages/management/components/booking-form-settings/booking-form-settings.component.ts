@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from 'src/app/service/firestore-service.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 
@@ -12,6 +12,8 @@ import { AddDialogComponent } from './add-dialog/add-dialog.component';
 export class BookingFormSettingsComponent {
 
   activeTab = 'vehicle-categories'
+
+  subscriptions: Subscription[] = [];
 
   originalCategories: string[] = [];
   originalServices: string[] = [];
@@ -25,18 +27,22 @@ export class BookingFormSettingsComponent {
   constructor(private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.firestoreService.getVehicleCategories().subscribe(categories => {
-      this.categoriesSubject.next(categories);
-      this.originalCategories = new Array(...categories);
-    });
+    this.subscriptions.push(
+      this.firestoreService.getVehicleCategories().subscribe(categories => {
+        this.categoriesSubject.next(categories);
+        this.originalCategories = new Array(...categories);
+      })
+    )
   }
 
   getServices() {
-    this.firestoreService.getServices().subscribe(services => {
-      this.servicesSubject.next(services);
-      this.originalServices = new Array(...services);
-    }
-    );
+    this.subscriptions.push(
+      this.firestoreService.getServices().subscribe(services => {
+        this.servicesSubject.next(services);
+        this.originalServices = new Array(...services);
+      }
+      )
+    )
   }
 
   arraymove(arr: string[], fromIndex: number, toIndex: number) {
@@ -82,7 +88,6 @@ export class BookingFormSettingsComponent {
       }
     })
   }
-
 
   compareArray(a: string[], b: string[]) {
     return JSON.stringify(a) === JSON.stringify(b);

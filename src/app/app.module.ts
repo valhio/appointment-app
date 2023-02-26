@@ -30,9 +30,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { AddDialogComponent } from './pages/management/components/booking-form-settings/add-dialog/add-dialog.component';
 import { CalendarSettingsComponent } from './pages/management/components/calendar-settings/calendar-settings.component';
 import { BookingFormSettingsComponent } from './pages/management/components/booking-form-settings/booking-form-settings.component';
+import { NotificationsSettingsComponent } from './pages/management/components/notifications-settings/notifications-settings.component';
 import { ManagementCalendarBodyComponent } from './pages/management/components/calendar-settings/management-calendar-body/management-calendar-body.component';
 import { ManagementBookingHoursComponent } from './pages/management/components/calendar-settings/management-booking-hours/management-booking-hours.component';
-import { NotificationsSettingsComponent } from './pages/management/components/notifications-settings/notifications-settings.component';
 
 @NgModule({
   declarations: [
