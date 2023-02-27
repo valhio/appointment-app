@@ -26,7 +26,7 @@ export class BookingFormComponent implements OnDestroy, OnInit {
     lastName: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required),
     registrationNumber: new FormControl('', Validators.required),
-    bookingType: new FormControl(BookingType.YEARLY_TECHNICAL_EVALUATION, Validators.required),
+    bookingType: new FormControl('', Validators.required),
     vehicleCategory: new FormControl('', Validators.required),
   })
 
@@ -69,9 +69,9 @@ export class BookingFormComponent implements OnDestroy, OnInit {
   }
 
   submit(): void {
+    this.submitted = true;
     if (this.form.invalid) return;
 
-    this.submitted = true;
     this.isLoading = true;
     let year = this.date?.getFullYear();
     let month = this.date?.getMonth();
