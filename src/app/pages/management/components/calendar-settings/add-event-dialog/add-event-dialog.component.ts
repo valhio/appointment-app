@@ -28,7 +28,6 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
   subscriptions: Subscription[] = [];
 
   readonly categories$ = this.firestoreService.getVehicleCategories();
-
   readonly services$ = this.firestoreService.getServices();
 
   constructor(

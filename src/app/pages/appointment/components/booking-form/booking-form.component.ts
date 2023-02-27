@@ -46,22 +46,8 @@ export class BookingFormComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-
-    // this.bookingService.dateRef?.get().subscribe(querySnapshot => {
-    //   querySnapshot.ref.collection('data').get().then(
-    //     querySnapshot => {
-    //       let bookingByBookingTime = querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime);
-
-    //       console.log('bookingByBookingTime', bookingByBookingTime?.get('firstName'));
-
-    //       // console.log('querySnapshot', querySnapshot.docs.length);
-    //       // console.log('querySnapshot', querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime)?.get('firstName'));
-    //     }
-    //   )
-
-    //   let currentNumberOfBookedBookings = querySnapshot.get('numberOfBookedBookings');
-    //   console.log('numberOfBookedBookings: ' + currentNumberOfBookedBookings);
-    // })
+    this.getVehicleCategories()
+    this.getVehicleServices()
   }
 
   ngOnDestroy(): void {

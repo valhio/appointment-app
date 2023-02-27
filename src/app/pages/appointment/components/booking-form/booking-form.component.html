@@ -67,8 +67,7 @@
         <div class="space-y-1 mb-3">
             <label class="text-sm md:text-base font-semibold pl-1" for="vehicleCategory">Категория</label>
             <p class="text-xs italic">*За превозни средства с ВНГ/СПГ се доплаща допълнителна такса от 6.00 лв.*</p>
-            <select (click)="vehicleCategories$== null ? getVehicleCategories() : ''"
-                [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
+            <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="vehicleCategory" id="vehicleCategory">
                 <option *ngFor="let category of vehicleCategories$ | async" [value]="category">{{category}}</option>
@@ -83,8 +82,7 @@
         <!-- Booking Type Form Field -->
         <div class="space-y-1 mb-3">
             <label class="text-sm md:text-base font-semibold pl-1" for="bookingType">Услуга</label>
-            <select (click)="vehicleServices$ == null ? getVehicleServices(): ''"
-                [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
+            <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="bookingType" id="bookingType">
                 <option *ngFor="let service of vehicleServices$ | async" [value]="service">{{service}}</option>
