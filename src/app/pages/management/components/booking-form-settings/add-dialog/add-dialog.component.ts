@@ -8,12 +8,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class AddDialogComponent {
 
+  input: string = '';
+
   constructor(
     private dialogRef: MatDialogRef<AddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       value: string
     }
   ) {
+    this.input = data.value;
   }
 
   onNoClick(): void {

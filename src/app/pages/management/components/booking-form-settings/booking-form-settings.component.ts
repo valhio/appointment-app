@@ -71,7 +71,7 @@ export class BookingFormSettingsComponent {
       width: '90%',
       maxWidth: '500px'
     }).afterClosed().subscribe((value: string) => {
-      if (value) {
+      if (value) {        
         collection.push(value);
       }
     })
