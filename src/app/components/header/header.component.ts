@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { of, BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { FirestoreService } from '../../service/firestore-service.service';
 
 @Component({
@@ -10,23 +11,25 @@ import { FirestoreService } from '../../service/firestore-service.service';
 export class HeaderComponent implements OnInit {
 
   showAdditionalService = false;
-
-  notifications$ = this.firestoreService.getNotifications();
+  notifications$: Observable<string[]> = of([]);
 
   constructor(public router: Router, private firestoreService: FirestoreService) { }
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.showAdditionalService = true;
+      if (this.router.url === '/' || this.router.url === '/home') {
+        this.notifications$ = this.firestoreService.getNotifications();
+        this.showAdditionalService = true;
+      }
     }, 2000);
   }
 
-  getNotifications(){
+  getNotifications() {
     this.firestoreService.getNotifications();
   }
 
-  closeAdditionalServiceNotification(): void {
-    this.showAdditionalService = false;
+  closeNotification(collection: string[], index: number): void {
+    collection.splice(index, 1);
   }
 
   openGoogleMaps() {
