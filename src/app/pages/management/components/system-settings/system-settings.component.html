@@ -1,0 +1,38 @@
+<div class="m-4">
+    <div class="grid grid-cols-1 mt-6">
+        <h5 class="mx-auto text-xl md:text-2xl font-semibold text-gray-700">
+            Текущият часови диапазон</h5>
+        <p class="mx-auto text-xs md:text-sm text-gray-700">Променя часовия диапазон за всички дни, с изключение на
+            тези, съдържащи
+            ръчно добавен часови диапазон.</p>
+        <div class="w-full grid grid-cols-6 gap-1 justify-center py-8 md:p-2 max-w-lg mx-auto">
+            <button type="button" *ngFor="let item of defaultBookingHours$ | async"
+                class="pointer-events-none border border-gray-300 bg-white font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                {{item}}
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-6">
+        <h5 class="mx-auto my-4 text-xl md:text-2xl font-semibold text-gray-700">Избери нов часови диапазон</h5>
+        <div *ngIf="selectedItems.length >0" class="w-full grid grid-cols-6 gap-1 justify-center md:p-2 max-w-lg mx-auto">
+            <button type="button" *ngFor="let item of selectedItems"
+                class="pointer-events-none border border-gray-300 bg-white font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                {{item}}
+            </button>
+        </div>
+        <button type="button" *ngIf="selectedItems.length >0" (click)="updateDefaultBookingHours()" class=" mx-auto m-4 p-8 border bg-white border-gray-300 font-medium rounded-lg text-sm
+        py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+            Submit</button>
+    </div>
+    <div class=" grid grid-cols-6 gap-1 justify-center mx-auto max-w-xl">
+        <div *ngFor="let item of times" class="h-10">
+            <label
+                class="flex justify-center w-full text-xs md:text-sm font-semibold md:font-bold text-center border border-gray-300 py-2.5 rounded-lg text-gray-900 bg-white"
+                [class]="selectedItems.includes(item) ? 'border-blue-300 bg-blue-200' : ''">
+                <input class="appearance-none focus:outline-none" type="checkbox" [value]="item"
+                    (change)="onCheckboxChange($event)" />
+                {{item}}</label>
+        </div>
+    </div>
+</div>

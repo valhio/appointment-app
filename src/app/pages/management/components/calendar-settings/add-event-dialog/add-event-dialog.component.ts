@@ -13,7 +13,7 @@ import { FirestoreService } from '../../../../../service/firestore-service.servi
   templateUrl: './add-event-dialog.component.html',
   styleUrls: ['./add-event-dialog.component.scss']
 })
-export class AddEventDialogComponent implements OnDestroy, OnInit {
+export class AddEventDialogComponent implements OnDestroy {
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
@@ -41,25 +41,6 @@ export class AddEventDialogComponent implements OnDestroy, OnInit {
     private bookingService: BookingService,
     private firestoreService : FirestoreService
   ) {
-  }
-
-  ngOnInit(): void {
-
-    // this.bookingService.dateRef?.get().subscribe(querySnapshot => {
-    //   querySnapshot.ref.collection('data').get().then(
-    //     querySnapshot => {
-    //       let bookingByBookingTime = querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime);
-
-    //       console.log('bookingByBookingTime', bookingByBookingTime?.get('firstName'));
-
-    //       // console.log('querySnapshot', querySnapshot.docs.length);
-    //       // console.log('querySnapshot', querySnapshot.docs.find(doc => doc.data()['bookingTime'] === this.data.bookingTime)?.get('firstName'));
-    //     }
-    //   )
-
-    //   let currentNumberOfBookedBookings = querySnapshot.get('numberOfBookedBookings');
-    //   console.log('numberOfBookedBookings: ' + currentNumberOfBookedBookings);
-    // })
   }
 
   ngOnDestroy(): void {
