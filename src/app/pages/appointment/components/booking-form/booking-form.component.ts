@@ -17,7 +17,6 @@ export class BookingFormComponent implements OnDestroy, OnInit {
 
   @Input() date: Date | undefined;
   @Input() bookingTime: string | null | undefined = '';
-  @Input() numberOfBookedBookings: number | undefined;
 
   monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
 

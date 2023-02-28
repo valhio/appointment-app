@@ -72,22 +72,22 @@ export class BookingService {
     this.getDayRef(date).delete();
   }
 
-  isDateAllBooked(date: Date): Observable<boolean> {
-    let allBooked = false;
-    return this.getDay(date).pipe(
-      map(snapshot => {
-        if (snapshot.exists) {
-          // TODO: Make this work with custom booking hours ==========================================================================================================================
-          allBooked = snapshot.get("numberOfBookedBookings") === this.getDefaultBookingHours().length;
-        }
-        return allBooked;
-      }),
-      catchError(error => {
-        console.error(error);
-        return of(false);
-      })
-    )
-  }
+  // isDateAllBooked(date: Date): Observable<boolean> {
+  //   let allBooked = false;
+  //   return this.getDay(date).pipe(
+  //     map(snapshot => {
+  //       if (snapshot.exists) {
+  //         // TODO: Make this work with custom booking hours ==========================================================================================================================
+  //         allBooked = snapshot.get("numberOfBookedBookings") === this.getDefaultBookingHours().length;
+  //       }
+  //       return allBooked;
+  //     }),
+  //     catchError(error => {
+  //       console.error(error);
+  //       return of(false);
+  //     })
+  //   )
+  // }
 
   isWorkDay(date: Date): Observable<boolean | null> {
     let isWorkDay: any = null;
@@ -126,48 +126,14 @@ export class BookingService {
     this.getDayRef(date).set({ numberOfBookedBookings }, { merge: true });
   }
 
-  getDefaultBookingHours(): string[] {
-    return ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
-    // const bookingHoursCollection = this.db.collection('bookingHours', ref => ref.orderBy('time'));
-    //   this.subscriptions.push(
-    //     bookingHoursCollection.valueChanges().subscribe((res: any) => {
-    //       this.bookingHours = [];
-    //       res.forEach((element: any) => {
-    //         this.bookingHours.push(element.time);
-    //       });
-    //     })
-    //   );
+  getDefaultBookingHours(): Observable<string[]> {
+    return this.db.collection('system').doc('calendar').get().pipe(
+      map((doc: any) => doc.data()['defaultBookingHours'])
+    );
   }
 
-  getBookingHours(date: Date): Observable<string[]> {
-    return this.getDayRef(date).get().pipe(
-      map(snapshot => {
-        if (snapshot.exists) {
-          return snapshot.get("bookingHours");
-        }
-        return this.getDefaultBookingHours();
-      }),
-      map(bookingHours => {
-        return bookingHours.sort((a: string, b: string) => {
-          const timeA: number = parseInt(a.split(":")[0]) * 60 + parseInt(a.split(":")[1]);
-          const timeB: number = parseInt(b.split(":")[0]) * 60 + parseInt(b.split(":")[1]);
-          return timeA - timeB;
-        });
-      })
-      ,
-      catchError(error => {
-        console.error(error);
-        return of(this.getDefaultBookingHours());
-      })
-    )
-
-    // this.getDayRef(date).get().subscribe((doc: any) => {
-    //   if (doc.exists) {
-    //     console.log(doc.data().bookingHours);
-    //     doc.data().bookingHours ? doc.data().bookingHours : [];
-
-    //   }
-    // })
+  updateDefaultBookingHours(bookingHours: string[]) {
+    this.db.collection('system').doc('calendar').set({ defaultBookingHours: bookingHours }, { merge: true });
   }
 
   setDayAsNotWorkDay(date: Date) {

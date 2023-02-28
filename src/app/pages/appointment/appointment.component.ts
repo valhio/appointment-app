@@ -18,7 +18,7 @@ export class AppointmentComponent {
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
   public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
-  public defaultBookingHours = this.bookingService.getDefaultBookingHours();
+  defaultBookingHoursSubject = new BehaviorSubject<any>([]);
   public calendar: any = [];
   private subscriptions: Subscription[] = [];
 
@@ -37,7 +37,12 @@ export class AppointmentComponent {
   }
 
   ngOnInit(): void {
-    this.generateCalendar()
+    this.subscriptions.push(
+      this.bookingService.getDefaultBookingHours().subscribe(defaultBookingHours => {
+        this.defaultBookingHoursSubject.next(defaultBookingHours);
+        this.generateCalendar();
+      })
+    )
   }
 
   ngOnDestroy(): void {
@@ -99,7 +104,7 @@ export class AppointmentComponent {
           snapshot.docs
             .map(doc => {
               const numberOfBookedBookings = doc.data()['numberOfBookedBookings'] ? doc.data()['numberOfBookedBookings'] : 0 // Get the number of booked bookings for the day
-              const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.defaultBookingHours // Get all available booking hours for the day
+              const bookingHours = doc.data()['bookingHours'] ? doc.data()['bookingHours'] : this.defaultBookingHoursSubject.value // Get all available booking hours for the day
               const isWorkDay = doc.data()['isWorkDay'] != undefined ? doc.data()['isWorkDay'] : true // Get the isWorkDay property(field) for the day, if it is null, set it to true by default
               const isFullyBooked = numberOfBookedBookings >= bookingHours.length // Check if the day is fully booked
               return { day: doc.id, numberOfBookedBookings, bookingHours, isWorkDay, isFullyBooked } // Return the data for the day
@@ -127,7 +132,7 @@ export class AppointmentComponent {
     let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()) // Search the calendar for the day
     if (!day) return // Safety check (should never happen, but just in case)
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
-    day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.defaultBookingHours // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
+    day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.defaultBookingHoursSubject.value // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
     day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
     day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
     this.currentDateDataSubject.next(day)
