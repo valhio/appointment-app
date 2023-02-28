@@ -66,8 +66,8 @@
                             </span>
                         </ng-container>
                         <a tabindex="0" (click)="onChangeSelectedDate(c.day); onShowBookingHours()" [ngClass]="{
-                                'bg-indigo-100 text-white': (!isSelectedDate(c.day) && isToday(c.day)) 
-                                ,'bg-indigo-500 text-white': isSelectedDate(c.day)
+                                'bg-indigo-100': (!isSelectedDate(c.day) && isToday(c.day)) 
+                                ,'bg-indigo-500 text-gray-50': isSelectedDate(c.day)
                                 , 'cursor-not-allowed text-gray-400 pointer-events-none':(c.day.getDay() == 0 && c.isWorkDay != true) || (c.day.getDay() == 6 && c.isWorkDay !=true) || c.isWorkDay == false
                                 , 'bg-red-400 text-white hover:bg-red-600 focus:ring-red-200 focus:bg-red-700' : c.isFullyBooked
                             }"
