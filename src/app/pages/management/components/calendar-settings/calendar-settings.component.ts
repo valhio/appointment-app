@@ -182,7 +182,7 @@ export class CalendarSettingsComponent {
           this.bookingService.deleteBookingById(date, res.id) // Delete the booking
             .then(() => {
               this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
-                let newCount = res - 1; // Decrease the number of booked bookings by 1
+                let newCount = res && res > 0 ? res - 1 : 0; // Decrease the number of booked bookings by 1
                 this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
                 this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
               });
