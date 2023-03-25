@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,16 @@ export class FirestoreService {
 
   updateNotifications(notifications: string[]) {
     this.db.collection('system').doc('alerts').set({ notificationMessages: notifications }, { merge: true });
+  }
+
+  getSystemSettings(): Observable<{ maps: string[], workHours: string[], phone: string }> {
+    return this.db.collection('system').doc('settings').get().pipe(
+      map((doc: any) => doc.data()['navbar']),
+    );
+  }
+
+  updateSystemSettings(settings: { maps: string[], workHours: string[], phone: string }) {
+    this.db.collection('system').doc('settings').set({ navbar: settings }, { merge: true });
   }
 
 }
