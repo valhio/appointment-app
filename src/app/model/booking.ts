@@ -7,6 +7,6 @@ export class Booking {
     bookingType: string = '';
     bookingDate: Date = new Date();
     bookingTime: string = '';
-    createdAt: Date | null = null;
+    createdAt: Date | null = new Date();
  
 }
