@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
 
   showAdditionalService = false;
   notifications$: Observable<string[]> = of([]);
+  systemSettings$: Observable<{ maps: string[], workHours: string[], phone: string }> = this.firestoreService.getSystemSettings();
 
   constructor(public router: Router, private firestoreService: FirestoreService) { }
 
@@ -32,7 +33,7 @@ export class HeaderComponent implements OnInit {
     collection.splice(index, 1);
   }
 
-  openGoogleMaps() {
-    window.open('https://maps.app.goo.gl/bu8iN1tRXcVpa6eu5', '_blank');
+  openGoogleMaps(path: string) {
+    window.open(path, '_blank');
   }
 }

@@ -1,17 +1,18 @@
-<nav
+<nav *ngIf="systemSettings$ | async as systemSettings"
     class="top-0 relative z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
     <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <div class="flex px-2 font-semibold text-xs md:text-base">
-            <p>Тел. за връзка - 0884545505</p>
+            <p>{{systemSettings['phone']}}</p>
+            <!-- <p>Тел. за връзка - 0884545505</p> -->
         </div>
-        <div
-            class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
-            <p>Стандартно работно време:</p>
-            <p>Понеделник - Петък: 09:00 - 18:00</p>
+        <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
+                <p>{{systemSettings['workHours'][0]}}</p>
+                <p>{{systemSettings['workHours'][1]}}</p>
+            <!-- <p>Стандартно работно време:</p> -->
+            <!-- <p>Понеделник - Петък: 09:00 - 18:00</p> -->
         </div>
         <div class="flex px-2 font-semibold text-xs md:text-base">
-            <button (click)="openGoogleMaps()" class="ml-2 underline">Адрес: Овча купел, бул. През. Линкълн №
-                60</button>
+            <button (click)="openGoogleMaps(systemSettings['maps'][1])" class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
         </div>
     </div>
 </nav>

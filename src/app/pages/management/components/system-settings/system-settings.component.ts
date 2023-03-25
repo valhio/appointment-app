@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { of } from 'rxjs';
+import { of, BehaviorSubject, tap, map } from 'rxjs';
 import { BookingService } from 'src/app/service/booking.service';
+import { FirestoreService } from '../../../../service/firestore-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateSystemSettingsComponent } from './update-system-settings/update-system-settings.component';
 
 @Component({
   selector: 'app-system-settings',
@@ -13,8 +16,14 @@ export class SystemSettingsComponent {
   selectedItems: string[] = [];
 
   defaultBookingHours$ = this.bookingService.getDefaultBookingHours();
+  systemSettings$ = this.firestoreService.getSystemSettings().pipe(
+    tap((value: any) => {
+      this.systemSettingsSubject.next(value);
+    })
+  )
+  systemSettingsSubject: BehaviorSubject<any> = new BehaviorSubject<any>({ maps: [], workHours: [], phone: '' });
 
-  constructor(private bookingService: BookingService) { }
+  constructor(private bookingService: BookingService, private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
   onCheckboxChange(event: any): void {
     if (event.target.checked) {
@@ -35,5 +44,27 @@ export class SystemSettingsComponent {
   updateDefaultBookingHours(): void {
     this.bookingService.updateDefaultBookingHours(this.selectedItems);
     this.defaultBookingHours$ = of(Array.from(this.selectedItems));
+  }
+
+  openEditDialog(string: string[], toUpdate: string) {
+    this.dialog.open(UpdateSystemSettingsComponent, {
+      data: { value: string },
+      width: '90%',
+      maxWidth: '500px'
+    }).afterClosed().subscribe((value: string[]) => {
+      if (value) {
+        
+        if (toUpdate === 'maps') {
+          this.systemSettingsSubject.value['maps'] = value;
+        }else if (toUpdate === 'workHours') {
+          this.systemSettingsSubject.value['workHours'] = value;
+        }else if (toUpdate === 'phone') {
+          this.systemSettingsSubject.value['phone'] = value[0];
+        }
+
+        this.firestoreService.updateSystemSettings(this.systemSettingsSubject.value);
+        this.systemSettings$ = of(this.systemSettingsSubject.value);
+      }
+    })
   }
 }

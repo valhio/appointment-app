@@ -34,6 +34,7 @@ import { NotificationsSettingsComponent } from './pages/management/components/no
 import { ManagementCalendarBodyComponent } from './pages/management/components/calendar-settings/management-calendar-body/management-calendar-body.component';
 import { ManagementBookingHoursComponent } from './pages/management/components/calendar-settings/management-booking-hours/management-booking-hours.component';
 import { SystemSettingsComponent } from './pages/management/components/system-settings/system-settings.component';
+import { UpdateSystemSettingsComponent } from './pages/management/components/system-settings/update-system-settings/update-system-settings.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { SystemSettingsComponent } from './pages/management/components/system-se
     BookingFormSettingsComponent,
     NotificationsSettingsComponent,
     SystemSettingsComponent,
+    UpdateSystemSettingsComponent,
   ],
   imports: [
     BrowserModule,
