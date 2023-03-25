@@ -48,12 +48,11 @@ export class SystemSettingsComponent {
 
   openEditDialog(string: string[], toUpdate: string) {
     this.dialog.open(UpdateSystemSettingsComponent, {
-      data: { value: string },
+      data: { value: string, toUpdate: toUpdate },
       width: '90%',
       maxWidth: '500px'
     }).afterClosed().subscribe((value: string[]) => {
       if (value) {
-        
         if (toUpdate === 'maps') {
           this.systemSettingsSubject.value['maps'] = value;
         }else if (toUpdate === 'workHours') {

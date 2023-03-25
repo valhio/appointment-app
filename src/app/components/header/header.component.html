@@ -6,10 +6,9 @@
             <!-- <p>Тел. за връзка - 0884545505</p> -->
         </div>
         <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
-                <p>{{systemSettings['workHours'][0]}}</p>
-                <p>{{systemSettings['workHours'][1]}}</p>
-            <!-- <p>Стандартно работно време:</p> -->
-            <!-- <p>Понеделник - Петък: 09:00 - 18:00</p> -->
+            <p class="hidden lg:block">{{systemSettings['workHours'][0]}}</p>
+            <p class="hidden lg:block">{{systemSettings['workHours'].slice(1).join(", ")}}</p>
+            <p class="block lg:hidden" *ngFor="let item of systemSettings['workHours'] | slice:1">{{item}}</p>
         </div>
         <div class="flex px-2 font-semibold text-xs md:text-base">
             <button (click)="openGoogleMaps(systemSettings['maps'][1])" class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
