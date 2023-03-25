@@ -20,7 +20,14 @@ export class CalendarManagementComponent {
   readonly tabs: string[] = ['date-settings', 'booking-form', 'notifications'];
   activeTab = 'calendar-settings'
 
-  constructor(private afAuth: AngularFireAuth){}
+  constructor(private afAuth: AngularFireAuth){
+    // Get the email of the user
+    this.afAuth.user.subscribe(user => {
+      if (user) {
+        console.log(user.email);
+      }
+    });    
+  }
   
   logout(): void {
     this.afAuth.signOut();

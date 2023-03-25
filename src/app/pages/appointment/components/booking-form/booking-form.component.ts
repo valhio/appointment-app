@@ -1,12 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { of, Subscription, switchMap } from 'rxjs';
+import { of, Subscription, switchMap, tap, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { BookingType } from 'src/app/enum/booking-type';
 import { BookingService } from 'src/app/service/booking.service';
 import { Booking } from 'src/app/model/booking';
 import { FirestoreService } from '../../../../service/firestore-service.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-booking-form',
@@ -29,6 +30,8 @@ export class BookingFormComponent implements OnDestroy, OnInit {
     vehicleCategory: new FormControl('', Validators.required),
   })
 
+  userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   public isLoading = false;
   submitted = false;
   subscriptions: Subscription[] = [];
@@ -40,8 +43,12 @@ export class BookingFormComponent implements OnDestroy, OnInit {
     private db: AngularFirestore,
     private bookingService: BookingService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private afAuth: AngularFireAuth,
   ) {
+    this.afAuth.user.subscribe(user => {
+      this.userSubject.next(user ? user : null);      
+    });
   }
 
   ngOnInit(): void {
@@ -71,6 +78,8 @@ export class BookingFormComponent implements OnDestroy, OnInit {
       bookingType: this.form.get('bookingType')?.value,
       bookingDate: this.date,
       bookingTime: this.bookingTime,
+      createdBy: this.userSubject.value ? this.userSubject.value.email : 'guest',
+      userId: this.userSubject.value ? this.userSubject.value.uid :  'guest',
       createdAt: new Date(),
     }
 

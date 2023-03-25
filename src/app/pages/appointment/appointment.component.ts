@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from 'src/app/service/booking.service';
 import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-appointment',
@@ -33,7 +34,8 @@ export class AppointmentComponent {
   currentDateDataSubject = new BehaviorSubject<any>(null);
   currentDateData$ = this.currentDateDataSubject.asObservable();
 
-  constructor(private http: HttpClient, private db: AngularFirestore, private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
+  constructor(private bookingService: BookingService, private afAuth: AngularFireAuth) {
+   
   }
 
   ngOnInit(): void {
@@ -110,7 +112,7 @@ export class AppointmentComponent {
               return { day: doc.id, numberOfBookedBookings, bookingHours, isWorkDay, isFullyBooked } // Return the data for the day
             })
             .forEach(dayData => {
-              const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day) // Search the calendar for the day
+              const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day && day.day.getMonth() == this.selectedDateSubject.value.getMonth()) // Search the calendar for the day
               day.numberOfBookedBookings = dayData.numberOfBookedBookings // Set the number of booked bookings for the day
               day.bookingHours = dayData.bookingHours // Set the available booking hours for the day
               day.isWorkDay = dayData.isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
@@ -129,7 +131,7 @@ export class AppointmentComponent {
   }
 
   setCurrentDateData() {
-    let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()) // Search the calendar for the day
+    let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate() && day.day.getMonth() == this.selectedDateSubject.value.getMonth()) // Search the calendar for the day
     if (!day) return // Safety check (should never happen, but just in case)
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
     day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.defaultBookingHoursSubject.value // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
@@ -187,13 +189,6 @@ export class AppointmentComponent {
         }
       })
     )
-  }
-
-  updateBookingDialog(bookingId: string, booking: any) {
-    const dialogRef = this.dialog.open(AddEventDialogComponent, {
-      data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()).numberOfBookedBookings }
-      , maxHeight: '90vh'
-    })
   }
 
   onBookingTimeSelected(bookingTime: string) {

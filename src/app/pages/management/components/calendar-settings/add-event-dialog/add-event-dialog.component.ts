@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Booking } from '../../../../../model/booking';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BookingType } from '../../../../../enum/booking-type';
-import { Subscription, map, switchMap, forkJoin, of } from 'rxjs';
+import { Subscription, map, switchMap, forkJoin, of, BehaviorSubject } from 'rxjs';
 import { BookingService } from '../../../../../service/booking.service';
 import { FirestoreService } from '../../../../../service/firestore-service.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-add-event-dialog',
@@ -30,6 +31,8 @@ export class AddEventDialogComponent implements OnDestroy {
   readonly categories$ = this.firestoreService.getVehicleCategories();
   readonly services$ = this.firestoreService.getServices();
 
+  userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   constructor(
     private dialogRef: MatDialogRef<AddEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -39,8 +42,12 @@ export class AddEventDialogComponent implements OnDestroy {
     },
     private db: AngularFirestore,
     private bookingService: BookingService,
-    private firestoreService : FirestoreService
+    private firestoreService: FirestoreService,
+    private afAuth: AngularFireAuth,
   ) {
+    this.afAuth.user.subscribe(user => {
+      this.userSubject.next(user ? user : null);
+    });
   }
 
   ngOnDestroy(): void {
@@ -65,9 +72,10 @@ export class AddEventDialogComponent implements OnDestroy {
       bookingType: this.form.get('bookingType')?.value,
       bookingDate: this.data.date,
       bookingTime: this.data.bookingTime,
+      createdBy: this.userSubject.value ? this.userSubject.value.email : 'guest',
+      userId: this.userSubject.value ? this.userSubject.value.uid : 'guest',
       createdAt: new Date(),
     } as Booking;
-
 
     this.subscriptions.push(
       // First check if booking exists. If it does, return false. If it doesn't, create booking.
