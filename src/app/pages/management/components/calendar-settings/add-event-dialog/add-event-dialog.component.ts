@@ -89,7 +89,7 @@ export class AddEventDialogComponent implements OnDestroy {
                 if (added) { // If booking was created, get number of booked bookings for that day. Otherwise, return false.
                   return this.bookingService.getNumberOfBookedBookings(this.data.date!).pipe( // Get number of booked bookings for that day
                     switchMap(bookedHoursCount => {
-                      bookedHoursCount = bookedHoursCount || 0; // If bookedHoursCount is null/undefined, set it to 0
+                      bookedHoursCount = bookedHoursCount || 0; // If bookedHoursCount is null/undefined/NaN, set it to 0
                       this.updateBookedBookings(year!, month!, day!, bookedHoursCount + 1) // Update number of booked bookings for that day
                       return of(true); // Return true to indicate that booking was created (and number of booked bookings was updated)
                     })
