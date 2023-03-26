@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from 'src/app/service/booking.service';
 import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { Booking } from 'src/app/model/booking';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-appointment',
@@ -34,8 +33,7 @@ export class AppointmentComponent {
   currentDateDataSubject = new BehaviorSubject<any>(null);
   currentDateData$ = this.currentDateDataSubject.asObservable();
 
-  constructor(private bookingService: BookingService, private afAuth: AngularFireAuth) {
-   
+  constructor(private bookingService: BookingService) {
   }
 
   ngOnInit(): void {

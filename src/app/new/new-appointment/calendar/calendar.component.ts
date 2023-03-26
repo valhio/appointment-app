@@ -1,43 +1,50 @@
-import { Component, OnDestroy, OnInit, NgModule } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
-import 'firebase/database';
-import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
-import { BookingService } from 'src/app/service/booking.service';
-import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
-import { Booking } from 'src/app/model/booking';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Subscription, Observable, of } from 'rxjs';
 import { VehicleCategoryEnum } from 'src/app/enum/vehicle-category';
+import { Booking } from 'src/app/model/booking';
+import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
+import { BookingService } from 'src/app/service/booking.service';
 
 @Component({
-  selector: 'app-calendar-settings',
-  templateUrl: './calendar-settings.component.html',
-  styleUrls: ['./calendar-settings.component.scss']
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss']
 })
-export class CalendarSettingsComponent {
+export class CalendarComponent {
+
+  
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
   public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+  private subscriptions: Subscription[] = [];
+  public activeTab = 'calendar-data'
+
+  user$ = this.afAuth.user;
 
   defaultBookingHoursSubject = new BehaviorSubject<any>([]);
 
-  public activeTab = ''
   public calendar: any = [];
-  private subscriptions: Subscription[] = [];
 
   public showBookingHours: Observable<boolean> | undefined = of(true);
 
   private selectedDateSubject = new BehaviorSubject<Date>(new Date());
-  readonly selectedDate$ = this.selectedDateSubject.asObservable();
+  selectedDate$ = this.selectedDateSubject.asObservable(); // This is the currently selected date from the calendar.
 
   currentDateDataSubject = new BehaviorSubject<any>(null);
-  currentDateData$ = this.currentDateDataSubject.asObservable();
+  currentDateData$ = this.currentDateDataSubject.asObservable(); // This is the data for the currently selected date. Includes the bookings, the booking hours, is it a work day, is it fully booked, etc. for the currently selected date.
 
-  bookingsForSelectedDate$ = new Observable<Booking[]>();
+  bookingTimeSubject = new BehaviorSubject<string | null>(null);
 
-  constructor(private dialog: MatDialog, private router: Router, private bookingService: BookingService) {
+  bookingsForSelectedDate$: Observable<Booking[]> = of([]);
+
+  constructor(private bookingService: BookingService, private afAuth: AngularFireAuth) { 
   }
 
 
   ngOnInit() {
+
     this.subscriptions.push(
       this.bookingService.getDefaultBookingHours().subscribe(defaultBookingHours => {
         this.defaultBookingHoursSubject.next(defaultBookingHours);
@@ -51,9 +58,9 @@ export class CalendarSettingsComponent {
   }
 
   private async generateCalendar(): Promise<void> {
-    this.generateCalendarDays()
-    this.generateCalendarData();
-    this.setCurrentDateData();
+    this.generateCalendarDays() // Generate the days for the calendar
+    this.generateCalendarData(); // Generate the data for the calendar. This includes the bookings, the booking hours, is it a work day, is it fully booked, etc. for each day contained in the db.
+    this.setCurrentDateData(); // Set the data for the currently selected date.
     this.bookingsForSelectedDate$ = this.bookingService.getBookingsForDate(this.selectedDateSubject.value);
   }
 
@@ -129,13 +136,6 @@ export class CalendarSettingsComponent {
         if (day.day.getDay() == 0 || day.day.getDay() == 6) day.isWorkDay = false; // If the day is Saturday or Sunday, set the isWorkDay property to false
         else day.isWorkDay = true; // If the day is not Saturday or Sunday, set the isWorkDay property to true
       }
-      // // TODO: Remove this workaround when calendar component has an Appstate (LOADED, LOADING, ERROR)================================================================================================================================================================================================================================================================================== 
-      // // If the day is a work day, set the available booking hours to an empty array. 
-      // // In production, when the "make appointment" button, from the home page, is clicked, if the current day is a non-work day, the available booking hours, for some reason, are not hidden. 
-      // // So as a workaround, I set the available booking hours to an empty array. Now even if the booking hours are not hidden, the user can't select any of them, because there are no booking hours to select.
-      // if(day.isWorkDay){
-      //   day.bookingHours = []; 
-      // }
     })
   }
 
@@ -147,6 +147,7 @@ export class CalendarSettingsComponent {
     day.isWorkDay != undefined ? day.isWorkDay : (day.day.getDay() == 0 || day.day.getDay() == 6) ? day.isWorkDay = false : day.isWorkDay = true // If the isWorkDay property is undefined, set it to true if the day is a work day (Monday - Friday), otherwise set it to false. If the property is defined, do nothing
     day.fullyBooked == undefined ? day.fullyBooked = false : day.fullyBooked
     this.currentDateDataSubject.next(day)
+    this.currentDateData$ = this.currentDateDataSubject.asObservable(); // This new object assignment is needed to trigger the change detection in the calendar-footer component. NgOnChange is not triggered when the object is changed, only when the reference is changed.
   }
 
   onShowBookingHours(status: boolean) {
@@ -169,46 +170,15 @@ export class CalendarSettingsComponent {
 
   onChangeSelectedDate(date: Date) {
     this.selectedDateSubject.next(date);
-    this.generateCalendar();    
-  }
-
-  deleteBooking(date: Date, bookingId: string) {
-    // Because we need to update the number of booked bookings, we need to check if the booking exists first. 
-    // Otherwise if some error happens and we send a booking id that does not exist (for example - undefined), the number of booked bookings will be decreased by 1, even though the booking was not deleted (because it does not exist).
-    // After that, we are going to have a problem, because the number of booked bookings will be less than the actual number of booked bookings.
-    // To avoid this, we first check if the booking exists, and if it does, we delete it and then update the number of booked bookings.
-    this.subscriptions.push(
-      this.bookingService.getBookingByBookingTime(date, bookingId).subscribe((res: any) => { // Get the booking by booking time
-        if (res.exists) { // If the booking exists, delete it
-          this.bookingService.deleteBookingById(date, res.id) // Delete the booking
-            .then(() => {
-              this.bookingService.getNumberOfBookedBookings(date).subscribe((res: any) => { // Get the number of booked bookings for the selected date
-                let newCount = res && res > 0 ? res - 1 : 0; // Decrease the number of booked bookings by 1
-                this.bookingService.updateNumberOfBookedBookings(date, newCount); // Update the number of booked bookings for the selected date
-                this.generateCalendar(); // Generate the calendar again, so that the number of booked bookings will be updated
-              });
-            })
-            .catch(err => console.log(err))
-        } else {
-          console.log('Booking does not exist')
-        }
-      })
-    )
-  }
-
-  updateBookingDialog(bookingId: string, booking: any) {
-    const dialogRef = this.dialog.open(AddEventDialogComponent, {
-      data: { date: this.selectedDateSubject.value, numberOfBookedBookings: this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()).numberOfBookedBookings }
-      , maxHeight: '90vh'
-    })
-  }
-
-  onChanges() {
     this.generateCalendar();
   }
 
-  getCategory(category: string): string {
-    return VehicleCategoryEnum[category as keyof typeof VehicleCategoryEnum];
+  onChanges() {        
+    this.generateCalendar(); 
+  }
+
+  onBookingTimeSelected(bookingTime: string) {
+    this.bookingTimeSubject.next(bookingTime);
   }
 
 }

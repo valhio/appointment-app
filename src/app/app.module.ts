@@ -35,6 +35,18 @@ import { ManagementCalendarBodyComponent } from './pages/management/components/c
 import { ManagementBookingHoursComponent } from './pages/management/components/calendar-settings/management-booking-hours/management-booking-hours.component';
 import { SystemSettingsComponent } from './pages/management/components/system-settings/system-settings.component';
 import { UpdateSystemSettingsComponent } from './pages/management/components/system-settings/update-system-settings/update-system-settings.component';
+import { NewAppointmentComponent } from './new/new-appointment/new-appointment.component';
+import { CalendarComponent } from './new/new-appointment/calendar/calendar.component';
+import { NewCalendarHeaderComponent } from './new/new-appointment/calendar/new-calendar-header/new-calendar-header.component';
+import { NewCalendarBodyComponent } from './new/new-appointment/calendar/new-calendar-body/new-calendar-body.component';
+import { NewCalendarFooterComponent } from './new/new-appointment/calendar/new-calendar-footer/new-calendar-footer.component';
+import { CalendarDataComponent } from './new/new-appointment/calendar/new-calendar-footer/calendar-data/calendar-data.component';
+import { NewCalendarSettingsComponent } from './new/new-appointment/calendar/new-calendar-footer/new-calendar-settings/new-calendar-settings.component';
+import { BookingFormConfigComponent } from './new/new-appointment/booking-form-config/booking-form-config.component';
+import { AddCategoryModalComponent } from './new/new-appointment/booking-form-config/add-category-modal/add-category-modal.component';
+import { NotificationsConfigComponent } from './new/new-appointment/notifications-config/notifications-config.component';
+import { SystemConfigComponent } from './new/new-appointment/system-config/system-config.component';
+import { UpdateFieldModalComponent } from './new/new-appointment/system-config/update-field-modal/update-field-modal.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +72,18 @@ import { UpdateSystemSettingsComponent } from './pages/management/components/sys
     NotificationsSettingsComponent,
     SystemSettingsComponent,
     UpdateSystemSettingsComponent,
+    NewAppointmentComponent,
+    CalendarComponent,
+    NewCalendarHeaderComponent,
+    NewCalendarBodyComponent,
+    NewCalendarFooterComponent,
+    CalendarDataComponent,
+    NewCalendarSettingsComponent,
+    BookingFormConfigComponent,
+    AddCategoryModalComponent,
+    NotificationsConfigComponent,
+    SystemConfigComponent,
+    UpdateFieldModalComponent,
   ],
   imports: [
     BrowserModule,

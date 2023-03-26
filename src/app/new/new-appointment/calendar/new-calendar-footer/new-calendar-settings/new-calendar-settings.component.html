@@ -1,0 +1,49 @@
+<ng-container *ngIf="selectedDate$ | async as selectedDate">
+    <div class="px-4">
+        <p class=" text-sm md:text-lg text-center font-medium">{{selectedDate | date: 'd MMM, y'}} is currently set as:
+            <span *ngIf="dateData$ | async as dateData" class="font-bold">
+                {{dateData.isWorkDay ?'Work day' :'Non-work day'}}</span>
+        </p>
+        <p class="flex justify-center text-sm md:text-lg text-center font-semibold">
+            Click to set {{selectedDate | date: 'd MMM, y'}} as:
+        </p>
+        <div class="grid grid-cols-2 sm:w-6/12 mx-auto gap-2">
+            <button type="button" (click)="setDayAsNotWorkDay(selectedDate)"
+                class=" my-2 p-2 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                Non-work</button>
+            <button type="button" (click)="setDayAsWorkDay(selectedDate)"
+                class=" my-2 p-2 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                Work</button>
+        </div>
+    </div>
+    <div class="mt-6 m-4">
+        <div *ngIf="selectedItems.length >0; else configureBookingHours" class="grid grid-cols-1 m-4">
+            <h5 class="mx-auto text-lg md:text-2xl font-semibold text-gray-700">
+                Preview</h5>
+            <div class="w-full grid grid-cols-6 gap-1 justify-center py-4 md:p-2 max-w-lg mx-auto">
+                <button type="button" *ngFor="let item of selectedItems"
+                    class="pointer-events-none border border-gray-300 bg-white font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                    {{item}}
+                </button>
+            </div>
+            <button type="button" (click)="setBookingHours(selectedDate)"
+                class="w-4/12 mx-auto my-2 p-2 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                Submit
+            </button>
+        </div>
+        <ng-template #configureBookingHours>
+            <p class="justify-center text-sm md:text-lg text-center font-semibold m-4 mt-4">Configure booking hours for
+                {{selectedDate | date: 'd MMM, y'}}</p>
+        </ng-template>
+        <div class="grid grid-cols-6 gap-1 justify-center mx-auto max-w-xl">
+            <div *ngFor="let item of times" class="h-10">
+                <label
+                    class="flex justify-center w-full text-xs md:text-sm font-semibold md:font-bold text-center border py-2.5 rounded-lg text-gray-900"
+                    [class]="selectedItems.includes(item) ? 'border-blue-300 bg-blue-200' : 'border-gray-300 bg-white'">
+                    <input class="appearance-none focus:outline-none" type="checkbox" [value]="item"
+                        (change)="onCheckboxChange($event)" />
+                    {{item}}</label>
+            </div>
+        </div>
+    </div>
+</ng-container>

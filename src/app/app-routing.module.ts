@@ -6,6 +6,7 @@ import { CalendarManagementComponent } from './pages/management/calendar-managem
 import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
 import { AuthGuard } from './service/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
+import { NewAppointmentComponent } from './new/new-appointment/new-appointment.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,9 @@ const routes: Routes = [
   { path: 'management', component: CalendarManagementComponent, canActivate: [AuthGuard] },
   { path: 'appointment', component: AppointmentComponent },
   { path: 'booking/status', component: BookingStatusComponent },
+  
+  { path: 'new/appointment', component: NewAppointmentComponent },
+
   { path: '**', redirectTo: '/home', pathMatch: 'full' },
 
 ];
