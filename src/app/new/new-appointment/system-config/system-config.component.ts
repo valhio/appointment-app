@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { tap, BehaviorSubject, of } from 'rxjs';
-import { UpdateSystemSettingsComponent } from 'src/app/pages/management/components/system-settings/update-system-settings/update-system-settings.component';
 import { BookingService } from 'src/app/service/booking.service';
 import { FirestoreService } from 'src/app/service/firestore-service.service';
+import { UpdateFieldModalComponent } from './update-field-modal/update-field-modal.component';
 
 @Component({
   selector: 'app-system-config',
@@ -47,7 +47,7 @@ export class SystemConfigComponent {
   }
 
   openEditDialog(string: string[], toUpdate: string) {
-    this.dialog.open(UpdateSystemSettingsComponent, {
+    this.dialog.open(UpdateFieldModalComponent, {
       data: { value: string, toUpdate: toUpdate },
       width: '90%',
       maxWidth: '500px'

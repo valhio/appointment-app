@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { AddDialogComponent } from 'src/app/pages/management/components/booking-form-settings/add-dialog/add-dialog.component';
 import { FirestoreService } from 'src/app/service/firestore-service.service';
+import { AddCategoryModalComponent } from '../booking-form-config/add-category-modal/add-category-modal.component';
 
 @Component({
   selector: 'app-notifications-config',
@@ -44,7 +44,7 @@ export class NotificationsConfigComponent {
   }
 
   openAddDialog(collection: string[]) {
-    this.dialog.open(AddDialogComponent, {
+    this.dialog.open(AddCategoryModalComponent, {
       data: { value: '' },
       width: '90%',
       maxWidth: '500px'
@@ -56,7 +56,7 @@ export class NotificationsConfigComponent {
   }
 
   openEditDialog(collection: string[], index: number) {
-    this.dialog.open(AddDialogComponent, {
+    this.dialog.open(AddCategoryModalComponent, {
       data: { value: collection[index] },
       width: '90%',
       maxWidth: '500px'

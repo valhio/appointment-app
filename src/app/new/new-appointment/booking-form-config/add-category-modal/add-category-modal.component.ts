@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AddDialogComponent } from 'src/app/pages/management/components/booking-form-settings/add-dialog/add-dialog.component';
 
 @Component({
   selector: 'app-add-category-modal',
@@ -12,7 +11,7 @@ export class AddCategoryModalComponent {
   input: string = '';
 
   constructor(
-    private dialogRef: MatDialogRef<AddDialogComponent>,
+    private dialogRef: MatDialogRef<AddCategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       value: string
     }

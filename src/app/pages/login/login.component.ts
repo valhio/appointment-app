@@ -29,7 +29,7 @@ export class LoginComponent {
     this.authService.loginUser(this.loginForm?.value.email, this.loginForm?.value.password)
       .then((res: any) => {
         if (res.isValid) {
-          this.router.navigate(['/management'])
+          this.router.navigate(['/appointment'])
         } else if (!res.isValid) {
           this.firebaseError = res.errorMessage;
         }

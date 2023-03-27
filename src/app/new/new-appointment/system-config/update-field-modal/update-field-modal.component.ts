@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AddDialogComponent } from 'src/app/pages/management/components/booking-form-settings/add-dialog/add-dialog.component';
+import { AddCategoryModalComponent } from '../../booking-form-config/add-category-modal/add-category-modal.component';
 
 @Component({
   selector: 'app-update-field-modal',
@@ -13,7 +13,7 @@ export class UpdateFieldModalComponent {
   toUpdate: string;
 
   constructor(
-    private dialogRef: MatDialogRef<AddDialogComponent>,
+    private dialogRef: MatDialogRef<AddCategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       value: string[],
       toUpdate: string
