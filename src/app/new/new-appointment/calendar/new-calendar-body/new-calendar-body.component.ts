@@ -9,6 +9,7 @@ export class NewCalendarBodyComponent {
 
   @Input() calendarMatrix: any[] | undefined;
   @Input() selectedDate: Date | null | undefined;
+  @Input() user: any;
 
   @Output() changeSelectedDate = new EventEmitter<Date>();
   @Output() showBookingHoursEvent = new EventEmitter<boolean>();

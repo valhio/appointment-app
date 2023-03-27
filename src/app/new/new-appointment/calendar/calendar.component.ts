@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, Observable, of } from 'rxjs';
 import { VehicleCategoryEnum } from 'src/app/enum/vehicle-category';
 import { Booking } from 'src/app/model/booking';
-import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { BookingService } from 'src/app/service/booking.service';
 
 @Component({

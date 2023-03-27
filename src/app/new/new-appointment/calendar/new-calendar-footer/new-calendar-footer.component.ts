@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, of, BehaviorSubject, map, startWith, catchError } from 'rxjs';
 import { Booking } from 'src/app/model/booking';
-import { AddEventDialogComponent } from 'src/app/pages/management/components/calendar-settings/add-event-dialog/add-event-dialog.component';
 import { BookingService } from 'src/app/service/booking.service';
+import { AddBookingModalComponent } from './add-booking-modal/add-booking-modal.component';
 
 @Component({
   selector: 'app-new-calendar-footer',
@@ -59,7 +59,7 @@ export class NewCalendarFooterComponent {
 
   openCreateBookingDialog(bookingTime: any) {
     this.subscriptions.push(
-      this.dialog.open(AddEventDialogComponent, {
+      this.dialog.open(AddBookingModalComponent, {
         data: { date: this.currentDate, bookingTime: bookingTime, numberOfBookedBookings: this.bookedBookingsSubject.value.length }
         , maxHeight: '90vh'
       }).afterClosed().subscribe(result => {

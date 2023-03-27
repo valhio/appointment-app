@@ -4,7 +4,7 @@
             <app-new-calendar-header [currentDate]="selectedDate$ | async" (navigateNext)="onNavigateNextMonth()"
                 (navigatePrevious)="onNavigatePreviousMonth()"></app-new-calendar-header>
             <app-new-calendar-body [calendarMatrix]="calendar" [selectedDate]="selectedDate$ | async"
-                (showBookingHoursEvent)="onShowBookingHours($event)"
+                [user]="(user$ | async)" (showBookingHoursEvent)="onShowBookingHours($event)"
                 (changeSelectedDate)="onChangeSelectedDate($event)"></app-new-calendar-body>
         </div>
         <app-new-calendar-footer [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async"
@@ -12,7 +12,7 @@
             (bookingTimeSelected)="onBookingTimeSelected($event)"></app-new-calendar-footer>
     </div>
 
-    <div class="w-full flex flex-col h-screen max-w-4xl md:px-40 bg-white shadow lg:px-0 lg:max-w-lg">
+    <div class="w-full flex flex-col h-[540px] md:h-screen max-w-4xl md:px-40 bg-white shadow lg:px-0 lg:max-w-lg">
         <ng-container *ngIf="user$ |async">
             <div
                 class="flex justify-center mx-auto my-4 max-w-3xl w-10/12 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">

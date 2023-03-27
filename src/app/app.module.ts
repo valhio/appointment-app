@@ -9,7 +9,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { ChunkPipe } from './chunk.pipe';
-import { TestCalendarComponent } from './test-calendar/test-calendar.component';
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
@@ -32,13 +31,14 @@ import { AddCategoryModalComponent } from './new/new-appointment/booking-form-co
 import { NotificationsConfigComponent } from './new/new-appointment/notifications-config/notifications-config.component';
 import { SystemConfigComponent } from './new/new-appointment/system-config/system-config.component';
 import { UpdateFieldModalComponent } from './new/new-appointment/system-config/update-field-modal/update-field-modal.component';
+import { AddBookingModalComponent } from './new/new-appointment/calendar/new-calendar-footer/add-booking-modal/add-booking-modal.component';
+import { BookingFormComponent } from './new/new-appointment/calendar/booking-form/booking-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ChunkPipe,
-    TestCalendarComponent,
     HeaderComponent,
     BookingStatusComponent,
     LoginComponent,
@@ -54,6 +54,8 @@ import { UpdateFieldModalComponent } from './new/new-appointment/system-config/u
     NotificationsConfigComponent,
     SystemConfigComponent,
     UpdateFieldModalComponent,
+    AddBookingModalComponent,
+    BookingFormComponent,
   ],
   imports: [
     BrowserModule,
