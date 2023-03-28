@@ -1,27 +1,79 @@
-# SchedulerApp
+# Appointment App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
+This is an appointment app built using Angular(v 15.0.4.), Typescript, Tailwind, SCSS, Google Firebase and Firestore. The app allows users to schedule appointments. The app also includes authentication-based features that only logged-in users have access to.
 
-## Development server
+## Table of Contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To install the app, you'll need to follow these steps:
 
-## Build
+1. Clone the repository:
+```properties
+git clone https://github.com/valhio/appointment-app.git
+```  
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. Install the dependencies:
+```properties
+npm install
+```  
 
-## Running unit tests
+3. Set up Firebase and Firestore:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Create a new Firebase project
+- Enable email/password authentication in Firebase
+- Create a new Firestore database and configure the rules
 
-## Running end-to-end tests
+4. Set up environment variables:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Copy the `.env.example` file to `.env`
+- Update the values in `.env` with your Firebase project configuration
 
-## Further help
+## Usage
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To run the app, use the following command:
+```properties
+npm start
+```  
+This will start the app and open it in your default browser.
+
+## Features
+
+The appointment app includes the following features:
+
+- Authentication with email/password
+- View appointments
+- Schedule appointments
+- Admin dashboard (only accessible by authenticated users with admin privileges)
+
+## Technologies
+
+The appointment app was built using the following technologies:
+
+- Angular
+- Typescript
+- SCSS
+- Tailwind
+- Google Firebase
+- Firestore
+
+## Contributing
+
+If you'd like to contribute to the appointment app, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Test your changes
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

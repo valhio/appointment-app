@@ -19,20 +19,21 @@ import { HomeComponent } from './pages/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BookingStatusComponent } from './pages/booking-status/booking-status.component';
 import { LoginComponent } from './pages/login/login.component';
-import { NewAppointmentComponent } from './new/new-appointment/new-appointment.component';
-import { CalendarComponent } from './new/new-appointment/calendar/calendar.component';
-import { NewCalendarHeaderComponent } from './new/new-appointment/calendar/new-calendar-header/new-calendar-header.component';
-import { NewCalendarBodyComponent } from './new/new-appointment/calendar/new-calendar-body/new-calendar-body.component';
-import { NewCalendarFooterComponent } from './new/new-appointment/calendar/new-calendar-footer/new-calendar-footer.component';
-import { CalendarDataComponent } from './new/new-appointment/calendar/new-calendar-footer/calendar-data/calendar-data.component';
-import { NewCalendarSettingsComponent } from './new/new-appointment/calendar/new-calendar-footer/new-calendar-settings/new-calendar-settings.component';
-import { BookingFormConfigComponent } from './new/new-appointment/booking-form-config/booking-form-config.component';
-import { AddCategoryModalComponent } from './new/new-appointment/booking-form-config/add-category-modal/add-category-modal.component';
-import { NotificationsConfigComponent } from './new/new-appointment/notifications-config/notifications-config.component';
-import { SystemConfigComponent } from './new/new-appointment/system-config/system-config.component';
-import { UpdateFieldModalComponent } from './new/new-appointment/system-config/update-field-modal/update-field-modal.component';
-import { AddBookingModalComponent } from './new/new-appointment/calendar/new-calendar-footer/add-booking-modal/add-booking-modal.component';
-import { BookingFormComponent } from './new/new-appointment/calendar/booking-form/booking-form.component';
+import { AppointmentComponent } from './pages/appointment/appointment.component';
+import { CalendarComponent } from './pages/appointment/calendar/calendar.component';
+import { CalendarHeaderComponent } from './pages/appointment/calendar/calendar-header/calendar-header.component';
+import { CalendarBodyComponent } from './pages/appointment/calendar/calendar-body/calendar-body.component';
+import { CalendarFooterComponent } from './pages/appointment/calendar/calendar-footer/calendar-footer.component';
+import { CalendarDataComponent } from './pages/appointment/calendar/calendar-footer/calendar-data/calendar-data.component';
+import { CalendarSettingsComponent } from './pages/appointment/calendar/calendar-footer/calendar-settings/calendar-settings.component';
+import { BookingFormConfigComponent } from './pages/appointment/booking-form-config/booking-form-config.component';
+import { AddCategoryModalComponent } from './pages/appointment/booking-form-config/add-category-modal/add-category-modal.component';
+import { NotificationsConfigComponent } from './pages/appointment/notifications-config/notifications-config.component';
+import { SystemConfigComponent } from './pages/appointment/system-config/system-config.component';
+import { UpdateFieldModalComponent } from './pages/appointment/system-config/update-field-modal/update-field-modal.component';
+import { AddBookingModalComponent } from './pages/appointment/calendar/calendar-footer/add-booking-modal/add-booking-modal.component';
+import { BookingFormComponent } from './pages/appointment/calendar/booking-form/booking-form.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -42,13 +43,13 @@ import { BookingFormComponent } from './new/new-appointment/calendar/booking-for
     HeaderComponent,
     BookingStatusComponent,
     LoginComponent,
-    NewAppointmentComponent,
+    AppointmentComponent,
     CalendarComponent,
-    NewCalendarHeaderComponent,
-    NewCalendarBodyComponent,
-    NewCalendarFooterComponent,
+    CalendarHeaderComponent,
+    CalendarBodyComponent,
+    CalendarFooterComponent,
     CalendarDataComponent,
-    NewCalendarSettingsComponent,
+    CalendarSettingsComponent,
     BookingFormConfigComponent,
     AddCategoryModalComponent,
     NotificationsConfigComponent,
@@ -67,6 +68,7 @@ import { BookingFormComponent } from './new/new-appointment/calendar/booking-for
     BrowserAnimationsModule,
     MatDialogModule,
     MatIconModule,
+    MatSelectModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireStorageModule

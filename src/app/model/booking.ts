@@ -5,6 +5,7 @@ export class Booking {
     registrationNumber: string = '';
     vehicleCategory: string = '';
     bookingType: string = '';
+    additionalServices?: string[] = [];
     bookingDate: Date = new Date();
     bookingTime: string = '';
     createdAt: Date | null = new Date();
