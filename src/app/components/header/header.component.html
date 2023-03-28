@@ -4,13 +4,15 @@
         <div class="flex px-2 font-semibold text-xs md:text-base">
             <p>{{systemSettings['phone']}}</p>
         </div>
-        <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
+        <div
+            class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
             <p class="hidden lg:block">{{systemSettings['workHours'][0]}}</p>
             <p class="hidden lg:block">{{systemSettings['workHours'].slice(1).join(", ")}}</p>
             <p class="block lg:hidden" *ngFor="let item of systemSettings['workHours'] | slice:1">{{item}}</p>
         </div>
         <div class="flex px-2 font-semibold text-xs md:text-base">
-            <button (click)="openGoogleMaps(systemSettings['maps'][1])" class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
+            <button (click)="openGoogleMaps(systemSettings['maps'][1])"
+                class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
         </div>
     </div>
 </nav>
@@ -19,8 +21,8 @@
     class="top-0 sticky z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
     <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <a href="/" class="flex items-center">
-            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">ГОДИШНИ
-                ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
+            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">
+                ГОДИШНИ ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
         </a>
     </div>
     <div *ngIf="showAdditionalService && (router.url == '/' || router.url == '/home')"
