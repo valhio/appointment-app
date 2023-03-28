@@ -111,7 +111,9 @@ export class CalendarSettingsComponent {
               return { day: doc.id, numberOfBookedBookings, bookingHours, isWorkDay, isFullyBooked } // Return the data for the day
             })
             .forEach(dayData => {
-              const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day && day.day.getMonth() == this.selectedDateSubject.value.getMonth()) // Search the calendar for the day              
+              // Search the calendar for the day that matches the dayData.day and the selected month. 
+              // If not checked by the month, the first matching day will be returned, which is not what we want (for example, when not checking month, if we have 27th of last month and 27th of this month, the first 27th will be returned which is not what we want)          
+              const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day && day.day.getMonth() == this.selectedDateSubject.value.getMonth())
               day.numberOfBookedBookings = dayData.numberOfBookedBookings // Set the number of booked bookings for the day
               day.bookingHours = dayData.bookingHours // Set the available booking hours for the day
               day.isWorkDay = dayData.isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
