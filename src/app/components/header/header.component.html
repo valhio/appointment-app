@@ -3,7 +3,6 @@
     <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <div class="flex px-2 font-semibold text-xs md:text-base">
             <p>{{systemSettings['phone']}}</p>
-            <!-- <p>Тел. за връзка - 0884545505</p> -->
         </div>
         <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
             <p class="hidden lg:block">{{systemSettings['workHours'][0]}}</p>
@@ -23,13 +22,6 @@
             <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">ГОДИШНИ
                 ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
         </a>
-        <!-- <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
-            <p>Стандартно работно време:</p>
-            <p>Понеделник - Петък: 09:00 - 18:00</p>
-        </div>
-        <div class="flex px-2 font-semibold text-xs md:text-base">
-            <p>Тел. за връзка - 0884545505</p>
-        </div> -->
     </div>
     <div *ngIf="showAdditionalService && (router.url == '/' || router.url == '/home')"
         class="absolute w-full lg:w-auto top-14 right-0 z-50">
