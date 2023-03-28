@@ -24,7 +24,7 @@ export class BookingFormComponent {
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required),
-    registrationNumber: new FormControl('', Validators.required),
+    registrationNumber: new FormControl(''.toUpperCase(), Validators.required),
     bookingType: new FormControl('', Validators.required),
     vehicleCategory: new FormControl('', Validators.required),
   })
@@ -87,7 +87,7 @@ export class BookingFormComponent {
       firstName: this.form.get('firstName')?.value,
       lastName: this.form.get('lastName')?.value,
       phone: this.form.get('phone')?.value,
-      registrationNumber: this.form.get('registrationNumber')?.value,
+      registrationNumber: this.form.get('registrationNumber')?.value?.toUpperCase(),
       vehicleCategory: this.form.get('vehicleCategory')?.value,
       bookingType: this.form.get('bookingType')?.value,
       additionalServices: this.selectedAdditionalServices,

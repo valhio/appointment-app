@@ -78,7 +78,7 @@ export class AddBookingModalComponent {
       firstName: this.form.get('firstName')?.value,
       lastName: this.form.get('lastName')?.value,
       phone: this.form.get('phone')?.value,
-      registrationNumber: this.form.get('registrationNumber')?.value,
+      registrationNumber: this.form.get('registrationNumber')?.value?.toUpperCase(),
       vehicleCategory: this.form.get('vehicleCategory')?.value,
       bookingType: this.form.get('bookingType')?.value,
       bookingDate: this.data.date,
