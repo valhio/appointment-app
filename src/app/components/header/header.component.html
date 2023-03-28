@@ -32,7 +32,7 @@
         </div> -->
     </div>
     <div *ngIf="showAdditionalService && (router.url == '/' || router.url == '/home')"
-        class="absolute w-full md:w-6/12 lg:w-5/12 top-14 right-0 z-50">
+        class="absolute w-full lg:w-auto top-14 right-0 z-50">
         <div *ngFor="let notification of notifications$ | async as notifications; let i = index"
             class="flex pl-4 py-2 m-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
             <span
