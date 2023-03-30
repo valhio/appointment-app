@@ -14,7 +14,7 @@ import { BookingService } from 'src/app/service/booking.service';
 })
 export class CalendarComponent {
 
-  
+
   public readonly monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
   public readonly days = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
   private subscriptions: Subscription[] = [];
@@ -38,7 +38,7 @@ export class CalendarComponent {
 
   bookingsForSelectedDate$: Observable<Booking[]> = of([]);
 
-  constructor(private bookingService: BookingService, private afAuth: AngularFireAuth) { 
+  constructor(private bookingService: BookingService, private afAuth: AngularFireAuth) {
   }
 
 
@@ -154,16 +154,35 @@ export class CalendarComponent {
   }
 
   onNavigateNextMonth() {
+    // If the current date, for example, is 31st of January, and we navigate to the next month, the new date will be 31st of February, which does not exist.
+    // When 31st of January's month is incremented by 1, the new date is set to 3rd of March (I don't know why), which is not what we want.
+    // To fix this, we set the date to 1st of the next month (which is always valid), and then increment the month by 1.
+    // If the new date's month is as expected, we skip this step, and just increment the month by 1.
+    let newDate: Date = new Date(this.selectedDateSubject.value);
+    newDate.setMonth(this.selectedDateSubject.value.getMonth() + 1)
+    if (newDate.getMonth() != this.selectedDateSubject.value.getMonth() + 1) {
+      this.selectedDateSubject.value.setDate(1);
+    }
+
     this.selectedDateSubject.next(
       new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() + 1))
     );
+    console.log(this.selectedDateSubject.value);
     this.generateCalendar();
   }
 
   onNavigatePreviousMonth() {
-    this.selectedDateSubject.next(
-      new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() - 1))
-    )
+    // If the current date, for example, is 31st of March, and we navigate to the previous month, the new date will be 3rd of March, which does not exist.
+    // When 31st of March's month is incremented by 1, the new date is set to 3rd of March (I don't know why), which is not what we want.
+    // To fix this, we set the date to 1st of the previous month (which is always valid), and then increment the month by 1.
+    // If the new date's month is as expected, we skip this step, and just increment the month by 1.
+    let newDate: Date = new Date(this.selectedDateSubject.value);
+    newDate.setMonth(this.selectedDateSubject.value.getMonth() - 1)
+    if (newDate.getMonth() != this.selectedDateSubject.value.getMonth() - 1) {
+      this.selectedDateSubject.value.setDate(1);
+    }
+
+    this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() - 1);
     this.generateCalendar();
   }
 
@@ -172,8 +191,8 @@ export class CalendarComponent {
     this.generateCalendar();
   }
 
-  onChanges() {        
-    this.generateCalendar(); 
+  onChanges() {
+    this.generateCalendar();
   }
 
   onBookingTimeSelected(bookingTime: string) {
