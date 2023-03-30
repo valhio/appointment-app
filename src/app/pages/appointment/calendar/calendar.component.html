@@ -1,7 +1,7 @@
 <div class="flex flex-col lg:flex-row items-center justify-center px-4 pb-2">
     <div class="max-w-4xl md:h-screen bg-gray-50 w-full shadow">
         <div class="md:p-4 p-1 dark:bg-gray-800 bg-white rounded-t">
-            <app-calendar-header [currentDate]="selectedDate$ | async" (navigateNext)="onNavigateNextMonth()"
+            <app-calendar-header [currentDate]="selectedDate$ | async" [user]="(user$ | async)" (navigateNext)="onNavigateNextMonth()"
                 (navigatePrevious)="onNavigatePreviousMonth()"></app-calendar-header>
             <app-calendar-body [calendarMatrix]="calendar" [selectedDate]="selectedDate$ | async"
                 [user]="(user$ | async)" (showBookingHoursEvent)="onShowBookingHours($event)"
@@ -31,7 +31,7 @@
             </div>
             <app-calendar-data *ngIf="activeTab == 'calendar-data'" [date]="(selectedDate$ | async)"
                 [bookings]="(bookingsForSelectedDate$ | async) || []" (changes)="onChanges()"
-                class="h-[540px] md:flex-1 md:h-full overflow-auto"></app-calendar-data>
+                class="flex-1 max-h-[500px] overflow-auto"></app-calendar-data>
             <app-calendar-settings *ngIf="activeTab == 'calendar-settings'" [selectedDate$]="selectedDate$"
                 [dateData$]="currentDateData$" (changes)="onChanges()"
                 class="h-[540px] md:flex-1 md:h-full overflow-auto"></app-calendar-settings>

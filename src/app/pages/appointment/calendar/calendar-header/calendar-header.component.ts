@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class CalendarHeaderComponent {
 
   @Input() currentDate: Date | null | undefined;
+  @Input() user: any = null;
 
   @Output() navigatePrevious = new EventEmitter<void>();
   @Output() navigateNext = new EventEmitter<void>();
@@ -17,6 +18,7 @@ export class CalendarHeaderComponent {
 
 
   onNavigatePreviousMonth(): void {
+    if (!this.user && this.currentDate?.getMonth() == new Date().getMonth()) return;
     this.navigatePrevious.emit();
   }
 
