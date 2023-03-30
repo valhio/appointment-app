@@ -3,11 +3,12 @@
         <ng-container *ngSwitchCase="'APP_ERROR'">{{state.error | json}}</ng-container>
         <ng-container *ngIf="(showBookingHours | async)">
             <div class="md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-gray-50 rounded-b">
-                <div class="transition duration-300 max-w-lg mt-4 mx-auto w-full">
+                <div class="transition duration-300 max-w-lg mx-auto w-full">
                     <!-- Header -->
-                    <div class="relative pb-2">
+                    <div class="relative py-4">
                         <span class="absolute left-0 top-0 font-bold">
                             {{monthNames[currentDate!.getMonth()]}} {{currentDate | date: 'd, y'}}
+                            <span *ngIf="!dayData.isWorkDay"> - Почивен ден</span>
                         </span>
                         <button type="button" (click)="closeBookingHours()"
                             class="absolute top-0 right-0 rounded-md p-2text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -48,24 +49,26 @@
                     </ng-container>
                     <!-- Body -->
                     <ng-container *ngSwitchCase="'APP_LOADED'">
-                        <div class="grid grid-cols-6 gap-1 justify-center py-8 md:p-8">
-                            <ng-container *ngIf="user$ | async">
-                                <button type="button" *ngFor="let item of dayData.bookingHours"
-                                    (click)="openCreateBookingDialog(item)"
-                                    [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
-                                    class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
-                                    {{item}}
-                                </button>
-                            </ng-container>
-                            <ng-container *ngIf="!(user$ | async)">
-                                <button type="button" *ngFor="let item of dayData.bookingHours"
-                                    (click)="onBookingTimeSelect(item)"
-                                    [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
-                                    class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
-                                    {{item}}
-                                </button>
-                            </ng-container>
-                        </div>
+                        <ng-container *ngIf="user || !user && dayData.isWorkDay">
+                            <div class="grid grid-cols-6 gap-1 justify-center py-4 md:p-4">
+                                <ng-container *ngIf="user">
+                                    <button type="button" *ngFor="let item of dayData.bookingHours"
+                                        (click)="openCreateBookingDialog(item)"
+                                        [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
+                                        class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                                        {{item}}
+                                    </button>
+                                </ng-container>
+                                <ng-container *ngIf="!(user) && dayData.isWorkDay">
+                                    <button type="button" *ngFor="let item of dayData.bookingHours"
+                                        (click)="onBookingTimeSelect(item)"
+                                        [ngClass]="isBookingHourBooked(item) ? 'bg-gray-100 text-gray-400 pointer-events-none' : 'bg-white'"
+                                        class="border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'">
+                                        {{item}}
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </div>
             </div>

@@ -18,12 +18,13 @@ export class CalendarFooterComponent {
 
   @Input() currentDate: Date | null | undefined;
   @Input() dayData$: Observable<any> = of(null);
+  @Input() user: any = null;
   @Input() showBookingHours: Observable<boolean> | undefined = of(true);
 
   @Output() changes = new EventEmitter();
   @Output() bookingTimeSelected = new EventEmitter();
 
-  user$?: Observable<any> = this.afAuth.user;
+  // user$?: Observable<any> = this.afAuth.user;
 
   bookedBookingsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 

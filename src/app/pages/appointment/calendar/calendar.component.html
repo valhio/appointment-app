@@ -7,7 +7,7 @@
                 [user]="(user$ | async)" (showBookingHoursEvent)="onShowBookingHours($event)"
                 (changeSelectedDate)="onChangeSelectedDate($event)"></app-calendar-body>
         </div>
-        <app-calendar-footer [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async"
+        <app-calendar-footer [dayData$]="currentDateData$" [currentDate]="selectedDate$ | async" [user]="(user$ | async)"
             [showBookingHours]="showBookingHours" (changes)="onChanges()"
             (bookingTimeSelected)="onBookingTimeSelected($event)"></app-calendar-footer>
     </div>
