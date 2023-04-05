@@ -12,7 +12,7 @@
             (bookingTimeSelected)="onBookingTimeSelected($event)"></app-calendar-footer>
     </div>
 
-    <div class="w-full flex flex-col md:h-screen max-w-4xl md:px-40 bg-white shadow lg:px-0 lg:max-w-lg">
+    <div class="w-full flex flex-col md:h-screen max-w-4xl bg-white shadow lg:px-0 lg:max-w-lg">
         <ng-container *ngIf="user$ |async">
             <div
                 class="flex justify-center mx-auto my-4 max-w-3xl w-10/12 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
@@ -31,7 +31,7 @@
             </div>
             <app-calendar-data *ngIf="activeTab == 'calendar-data'" [date]="(selectedDate$ | async)"
                 [bookings]="(bookingsForSelectedDate$ | async) || []" (changes)="onChanges()"
-                class="flex-1 max-h-[500px] overflow-auto"></app-calendar-data>
+                class="flex-1 max-h-[500px] lg:max-h-full overflow-auto"></app-calendar-data>
             <app-calendar-settings *ngIf="activeTab == 'calendar-settings'" [selectedDate$]="selectedDate$"
                 [dateData$]="currentDateData$" (changes)="onChanges()"
                 class="h-[540px] md:flex-1 md:h-full overflow-auto"></app-calendar-settings>
