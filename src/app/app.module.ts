@@ -24,7 +24,7 @@ import { CalendarComponent } from './pages/appointment/calendar/calendar.compone
 import { CalendarHeaderComponent } from './pages/appointment/calendar/calendar-header/calendar-header.component';
 import { CalendarBodyComponent } from './pages/appointment/calendar/calendar-body/calendar-body.component';
 import { CalendarFooterComponent } from './pages/appointment/calendar/calendar-footer/calendar-footer.component';
-import { CalendarDataComponent } from './pages/appointment/calendar/calendar-footer/calendar-data/calendar-data.component';
+import { CalendarDataComponent } from './pages/appointment/calendar/calendar-data/calendar-data.component';
 import { CalendarSettingsComponent } from './pages/appointment/calendar/calendar-footer/calendar-settings/calendar-settings.component';
 import { BookingFormConfigComponent } from './pages/appointment/booking-form-config/booking-form-config.component';
 import { AddCategoryModalComponent } from './pages/appointment/booking-form-config/add-category-modal/add-category-modal.component';
