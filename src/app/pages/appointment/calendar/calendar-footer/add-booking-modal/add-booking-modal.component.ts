@@ -39,7 +39,12 @@ export class AddBookingModalComponent {
         services: doc.data()['services'] as string[],
         additionalServices: doc.data()['additionalServices'] as string[],
       }
-    })
+    }),
+    tap( // Set default values for vehicleCategory and bookingType. This is done here because it didn't work by setting a selected attribute, to an option element, when item index == 0
+      (data: any) => {
+        this.form.get('vehicleCategory')?.setValue(data['vehicleCategories'][0])
+        this.form.get('bookingType')?.setValue(data['services'][0])
+      })
   )
 
   userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
