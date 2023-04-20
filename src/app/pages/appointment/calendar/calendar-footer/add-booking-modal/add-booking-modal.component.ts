@@ -15,10 +15,10 @@ import { FirestoreService } from 'src/app/service/firestore-service.service';
 })
 export class AddBookingModalComponent {
   form = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    phone: new FormControl('', Validators.required),
-    registrationNumber: new FormControl('', Validators.required),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    phone: new FormControl(''),
+    registrationNumber: new FormControl(''),
     bookingType: new FormControl('', Validators.required),
     vehicleCategory: new FormControl('', Validators.required),
   })
