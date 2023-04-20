@@ -1,0 +1,40 @@
+<ng-container *ngIf="bookings.length>0; else noBookings">
+    <div class="divide-y">
+        <ng-container *ngFor="let booking of bookings">
+            <div class="mx-auto p-4">
+                <div class="px-4 w-full text-xs sm:text-base">
+                    <p><span class="font-medium">Име:</span> {{booking.firstName}} {{booking.lastName}}</p>
+                    <p><span class="font-medium">Телефон:</span> {{booking.phone}}</p>
+                    <p><span class="font-medium">Регистрационен номер:</span> {{booking.registrationNumber}}</p>
+                    <p><span class="font-medium">Категория:</span> {{booking.vehicleCategory}}</p>
+                    <p><span class="font-medium">Услуга:</span> {{booking.bookingType}}</p>
+                    <div *ngIf="booking.additionalServices">
+                        <p *ngIf="booking.additionalServices.length==0" class="font-medium">Допълнителни услуги: -</p>
+                        <ng-container *ngIf="booking.additionalServices.length>0">
+                            <p class="font-medium">Допълнителни услуги:</p>
+                            <ul class="pl-4">
+                                <li *ngFor="let service of booking.additionalServices">• {{service}}</li>
+                            </ul>
+                        </ng-container>
+                    </div>
+                    <p><span class="font-medium">Час:</span> {{booking.bookingTime}}</p>
+                    <!-- <p>Резервацията е направена на: {{booking.data.createdAt.toDate() | date :'dd-MM-yyyy MM:ss'}}</p> -->
+                </div>
+                <div class="grid grid-cols-2">
+                    <button type="button"
+                        class="block my-4 p-8 max-h-10 mx-1 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'"
+                        (click)="updateBookingDialog(booking.bookingTime, booking)">Update</button>
+                    <button type="button"
+                        class="block my-4 p-8 max-h-10 mx-1 border border-gray-300 font-medium rounded-lg text-xs md:text-sm py-2.5 'bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'"
+                        (click)="deleteBooking(date!,booking.bookingTime)">Delete</button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-template #noBookings>
+    <div class="flex justify-center my-20">
+        <p class="text-gray-500 text-sm sm:text-lg">Няма резервации за избраната дата</p>
+    </div>
+</ng-template>

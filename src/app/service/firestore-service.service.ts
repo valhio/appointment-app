@@ -6,7 +6,7 @@ import { map, Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class FirestoreService {
-
+ 
   constructor(private db: AngularFirestore) { }
 
   getVehicleCategories() {
@@ -27,6 +27,14 @@ export class FirestoreService {
 
   updateServices(services: string[]) {
     this.db.collection('system').doc('vehicle').set({ services: services }, { merge: true });
+  }
+
+  getSystemBookingFormData(){
+    return this.db.collection('system').doc('vehicle').get();
+  }
+
+  updateAdditionalServices(additionalServices: string[]) {
+    this.db.collection('system').doc('vehicle').set({ additionalServices: additionalServices }, { merge: true });
   }
 
   getNotifications(): Observable<string[]> {

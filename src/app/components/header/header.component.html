@@ -3,15 +3,16 @@
     <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <div class="flex px-2 font-semibold text-xs md:text-base">
             <p>{{systemSettings['phone']}}</p>
-            <!-- <p>Тел. за връзка - 0884545505</p> -->
         </div>
-        <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
+        <div
+            class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
             <p class="hidden lg:block">{{systemSettings['workHours'][0]}}</p>
             <p class="hidden lg:block">{{systemSettings['workHours'].slice(1).join(", ")}}</p>
             <p class="block lg:hidden" *ngFor="let item of systemSettings['workHours'] | slice:1">{{item}}</p>
         </div>
         <div class="flex px-2 font-semibold text-xs md:text-base">
-            <button (click)="openGoogleMaps(systemSettings['maps'][1])" class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
+            <button (click)="openGoogleMaps(systemSettings['maps'][1])"
+                class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
         </div>
     </div>
 </nav>
@@ -20,19 +21,12 @@
     class="top-0 sticky z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
     <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <a href="/" class="flex items-center">
-            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">ГОДИШНИ
-                ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
+            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">
+                ГОДИШНИ ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
         </a>
-        <!-- <div class="items-center justify-between w-full flex flex-col lg:flex-row lg:space-x-2 md:w-auto font-semibold text-xs md:text-base">
-            <p>Стандартно работно време:</p>
-            <p>Понеделник - Петък: 09:00 - 18:00</p>
-        </div>
-        <div class="flex px-2 font-semibold text-xs md:text-base">
-            <p>Тел. за връзка - 0884545505</p>
-        </div> -->
     </div>
     <div *ngIf="showAdditionalService && (router.url == '/' || router.url == '/home')"
-        class="absolute w-full md:w-6/12 lg:w-5/12 top-14 right-0 z-50">
+        class="absolute w-full lg:w-auto top-14 right-0 z-50">
         <div *ngFor="let notification of notifications$ | async as notifications; let i = index"
             class="flex pl-4 py-2 m-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
             <span
