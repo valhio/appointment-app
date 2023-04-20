@@ -8,6 +8,21 @@
         <hr class="w-full text-gray-600">
     </div>
     <form data-test="form" [formGroup]="form" (ngSubmit)="submit()" class="ng-untouched ng-pristine ng-valid">
+
+        <div class="flex pl-4 py-2 my-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
+            <span
+                class="flex-shrink-0 inline-flex item-center justify-center leading-none rounded-full bg-blue-600 text-gray-50">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </span>
+            <div class="flex-1">
+                <p class="text-xs sm:text-sm text-gray-500 tracking-tighter">Вече не е задължително да въвеждаш данни за полетата: <br>име, фамилия, телефон и регистрационен номер.</p>
+            </div>
+        </div>
+
         <!-- First Name Form Field -->
         <div class="space-y-1 mb-3 form-group">
             <label class="block text-sm" for="firstName">Име</label>
