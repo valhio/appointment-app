@@ -10,7 +10,7 @@
     <form data-test="form" [formGroup]="form" (ngSubmit)="submit()" class="ng-untouched ng-pristine ng-valid">
         <!-- First Name Form Field -->
         <div class="space-y-1 mb-3 form-group">
-            <label class="block text-sm" for="firstName">First name</label>
+            <label class="block text-sm" for="firstName">Име</label>
             <input [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
                 class="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-50 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 formControlName="firstName" placeholder="Име" type="text">
