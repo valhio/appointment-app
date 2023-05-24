@@ -115,7 +115,7 @@ export class CalendarSettingsComponent {
               // If not checked by the month, the first matching day will be returned, which is not what we want (for example, when not checking month, if we have 27th of last month and 27th of this month, the first 27th will be returned which is not what we want)          
               const day = this.calendar.find((day: any) => day.day.getDate() == dayData.day && day.day.getMonth() == this.selectedDateSubject.value.getMonth())
               day.numberOfBookedBookings = dayData.numberOfBookedBookings // Set the number of booked bookings for the day
-              day.bookingHours = dayData.bookingHours // Set the available booking hours for the day
+              day.bookingHours = dayData.bookingHours // Set the available booking hours for the day           
               day.isWorkDay = dayData.isWorkDay // Set the isWorkDay property to true/false for the days that are work days or not
               day.isFullyBooked = dayData.isFullyBooked // Set the isFullyBooked property to true for the fully booked days
             })
@@ -139,7 +139,7 @@ export class CalendarSettingsComponent {
   }
 
   setCurrentDateData() {
-    let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate()) // Search the calendar for the day
+    let day = this.calendar.find((day: any) => day.day.getDate() == this.selectedDateSubject.value.getDate() && day.day.getMonth() == this.selectedDateSubject.value.getMonth()) // Search the calendar for the day
     if (!day) return // Safety check (should never happen, but just in case)
     day.numberOfBookedBookings != undefined ? day.numberOfBookedBookings : day.numberOfBookedBookings = 0 // If the number of booked bookings is undefined, set it to 0 (default value). If the property is defined, do nothing
     day.bookingHours != undefined ? day.bookingHours : day.bookingHours = this.defaultBookingHoursSubject.value // If the available booking hours are undefined, set them to the default booking hours. If the property is defined, do nothing
@@ -168,7 +168,7 @@ export class CalendarSettingsComponent {
 
   onChangeSelectedDate(date: Date) {
     this.selectedDateSubject.next(date);
-    this.generateCalendar();
+    this.generateCalendar();    
   }
 
   deleteBooking(date: Date, bookingId: string) {
