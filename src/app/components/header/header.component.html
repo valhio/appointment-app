@@ -1,7 +1,7 @@
 <nav *ngIf="systemSettings$ | async as systemSettings"
-    class="top-0 relative z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
-    <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
-        <div class="flex px-2 font-semibold text-xs md:text-base">
+    class="top-0 relative z-50 w-full py-1 md:py-2 navbar-expand-lg bg-white shadow border border-gray-100 dark:border-gray-600">
+    <div class="flex flex-wrap md:space-x-8 items-center justify-center mx-auto">
+        <div class="flex font-semibold text-xs md:text-base">
             <p>{{systemSettings['phone']}}</p>
         </div>
         <div
@@ -10,7 +10,7 @@
             <p class="hidden lg:block">{{systemSettings['workHours'].slice(1).join(", ")}}</p>
             <p class="block lg:hidden" *ngFor="let item of systemSettings['workHours'] | slice:1">{{item}}</p>
         </div>
-        <div class="flex px-2 font-semibold text-xs md:text-base">
+        <div class="flex font-semibold text-xs md:text-base">
             <button (click)="openGoogleMaps(systemSettings['maps'][1])"
                 class="ml-2 underline">{{systemSettings['maps'][0]}}</button>
         </div>
@@ -18,10 +18,10 @@
 </nav>
 
 <nav
-    class="top-0 sticky z-50 w-full items-center justify-between py-3 navbar-expand-lg bg-white shadow dark:border-gray-600">
-    <div class="container flex flex-wrap items-center justify-center md:justify-between mx-auto">
+    class="top-0 sticky z-50 w-full items-center justify-between py-2 navbar-expand-lg bg-white shadow dark:border-gray-600">
+    <div class="md:mx-8 flex flex-wrap items-center justify-center md:justify-between mx-auto">
         <a href="/" class="flex items-center">
-            <span class="self-center text-lg font-bold leading-relaxed px-4 whitespace-nowrap dark:text-white">
+            <span class="self-center text-lg md:text-xl font-bold leading-relaxed whitespace-nowrap dark:text-white">
                 ГОДИШНИ ТЕХНИЧЕСКИ ПРЕГЛЕДИ</span>
         </a>
     </div>
