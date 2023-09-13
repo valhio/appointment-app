@@ -35,7 +35,7 @@
                 <textarea rows="1" [disabled]="!categoryAlertEditMode" #newCategoryAlert [value]="categoryAlert" 
                 class="block p-2.5 w-full text-xs md:text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
             </textarea>
-                <button type="submit"
+                <button type="button"
                     (click)="categoryAlertEditMode = !categoryAlertEditMode; !categoryAlertEditMode ? onUpdateCategoryAlert(newCategoryAlert.value) : null"
                     [textContent]="categoryAlertEditMode ? 'Запази' : 'Редактирай'"
                     [ngClass]="categoryAlertEditMode ? 'bg-teal-700 hover:bg-teal-600' : 'bg-slate-800 hover:bg-slate-700'"
@@ -125,7 +125,7 @@
                 <textarea rows="1" [disabled]="!serviceAlertEditMode" #newServiceAlert [value]="serviceAlert" 
                 class="block p-2.5 w-full text-xs md:text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
             </textarea>
-                <button type="submit"
+                <button type="button"
                     (click)="serviceAlertEditMode = !serviceAlertEditMode; !serviceAlertEditMode ? onUpdateServiceAlert(newServiceAlert.value) : null"
                     [textContent]="serviceAlertEditMode ? 'Запази' : 'Редактирай'"
                     [ngClass]="serviceAlertEditMode ? 'bg-teal-700 hover:bg-teal-600' : 'bg-slate-800 hover:bg-slate-700'"
@@ -215,7 +215,7 @@
                 <textarea rows="1" [disabled]="!additionalServicesAlertEditMode" #newAdditionalServiceAlert [value]="additionalServicesAlert" 
                 class="block p-2.5 w-full text-xs md:text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
             </textarea>
-                <button type="submit"
+                <button type="button"
                     (click)="additionalServicesAlertEditMode = !additionalServicesAlertEditMode; !additionalServicesAlertEditMode ? onUpdateAdditionalServicesAlert(newAdditionalServiceAlert.value) : null"
                     [textContent]="additionalServicesAlertEditMode ? 'Запази' : 'Редактирай'"
                     [ngClass]="additionalServicesAlertEditMode ? 'bg-teal-700 hover:bg-teal-600' : 'bg-slate-800 hover:bg-slate-700'"
