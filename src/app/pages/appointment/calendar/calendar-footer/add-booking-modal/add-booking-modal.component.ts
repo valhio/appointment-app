@@ -31,20 +31,25 @@ export class AddBookingModalComponent {
   readonly bookingFormData$: Observable<{
     vehicleCategories: string[],
     services: string[],
-    additionalServices: string[]
+    additionalServices: string[],
+    fieldAlerts: {
+      categoryAlert: string,
+      serviceAlert: string,
+      additionalServiceAlert: string,
+    }
   }> = this.firestoreService.getSystemBookingFormData().pipe(
     map((doc: any) => {
       return {
         vehicleCategories: doc.data()['categories'] as string[],
         services: doc.data()['services'] as string[],
         additionalServices: doc.data()['additionalServices'] as string[],
+        fieldAlerts: {
+          categoryAlert: doc.data()['alerts']['categoryField'] as string || '',
+          serviceAlert: doc.data()['alerts']['serviceField'] as string || '',
+          additionalServiceAlert: doc.data()['alerts']['additionalServiceField'] as string || ''
+        }
       }
-    }),
-    tap( // Set default values for vehicleCategory and bookingType. This is done here because it didn't work by setting a selected attribute, to an option element, when item index == 0
-      (data: any) => {
-        this.form.get('vehicleCategory')?.setValue(data['vehicleCategories'][0])
-        this.form.get('bookingType')?.setValue(data['services'][0])
-      })
+    })
   )
 
   userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
