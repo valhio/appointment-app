@@ -153,6 +153,22 @@ export class CalendarComponent {
     this.showBookingHours = of(status);
   }
 
+  onNavigatePreviousMonth() {
+    // If the current date, for example, is 31st of March, and we navigate to the previous month, the new date will be 31st of February, which does not exist.
+    // To fix this, if the current date does not exist in the previous month, we set the date to 1st of the current month (which is always valid), and then decrement the month by 1. (31st of March -> 31st of February = invalid -> 1st of March -> 1st of February)
+    // If the previous month has the selected date, we skip this step, and just decrement the month by 1.
+    let newDate: Date = new Date(this.selectedDateSubject.value);
+    newDate.setMonth(this.selectedDateSubject.value.getMonth() - 1)
+    if (newDate.getMonth() != this.selectedDateSubject.value.getMonth() - 1) {
+      this.selectedDateSubject.value.setDate(1);
+    }
+
+    this.selectedDateSubject.next(
+      new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() - 1))
+    );
+    this.generateCalendar();
+  }
+
   onNavigateNextMonth() {
     // If the current date, for example, is 31st of January, and we navigate to the next month, the new date will be 31st of February, which does not exist.
     // When 31st of January's month is incremented by 1, we expect the new date to be 31st of February, but since February has only 28 days, the new date will be the next valid month, which is March. (31st of January -> 31st of February = invalid -> 3rd of March) 
@@ -168,20 +184,6 @@ export class CalendarComponent {
       new Date(this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() + 1))
     );
     console.log(this.selectedDateSubject.value);
-    this.generateCalendar();
-  } 
-  
-  onNavigatePreviousMonth() {
-    // If the current date, for example, is 31st of March, and we navigate to the previous month, the new date will be 31st of February, which does not exist.
-    // To fix this, if the current date does not exist in the previous month, we set the date to 1st of the current month (which is always valid), and then decrement the month by 1. (31st of March -> 31st of February = invalid -> 1st of March -> 1st of February)
-    // If the previous month has the selected date, we skip this step, and just decrement the month by 1.
-    let newDate: Date = new Date(this.selectedDateSubject.value);
-    newDate.setMonth(this.selectedDateSubject.value.getMonth() - 1)
-    if (newDate.getMonth() != this.selectedDateSubject.value.getMonth() - 1) {
-      this.selectedDateSubject.value.setDate(1);
-    }
-
-    this.selectedDateSubject.value.setMonth(this.selectedDateSubject.value.getMonth() - 1);
     this.generateCalendar();
   }
 
