@@ -65,7 +65,7 @@
 
         <ng-container *ngIf="bookingFormData$ | async as data">
             <!-- Vehicle Category Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm md:text-base font-semibold pl-1" for="vehicleCategory">Категория</label>
                 <p *ngIf="data.fieldAlerts.categoryAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.categoryAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
@@ -81,7 +81,7 @@
             </div>
 
             <!-- Booking Type Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm md:text-base font-semibold pl-1" for="bookingType">Услуга</label>
                 <p *ngIf="data.fieldAlerts.serviceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.serviceAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
@@ -97,7 +97,7 @@
             </div>
 
             <!-- Additional Services -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <h3 class="text-sm md:text-base font-semibold pl-1">Допълнителни услуги</h3>
                 <p *ngIf="data.fieldAlerts.additionalServiceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.additionalServiceAlert + "*"}}</p>
                 <ul
