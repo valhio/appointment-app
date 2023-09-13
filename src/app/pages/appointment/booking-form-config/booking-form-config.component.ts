@@ -26,9 +26,11 @@ export class BookingFormConfigComponent {
   services: string[] = [];
   serviceAlert!: string;
   additionalServices: string[] = [];
+  additionalServicesAlert!: string;
 
   categoryAlertEditMode = false;
   serviceAlertEditMode = false;
+  additionalServicesAlertEditMode = false;
 
   constructor(private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
@@ -43,6 +45,7 @@ export class BookingFormConfigComponent {
         this.originalAdditionalServices = doc.data()['additionalServices'];
         this.categoryAlert = doc.data()['alerts']['categoryField'] as string || '';
         this.serviceAlert = doc.data()['alerts']['serviceField'] as string || '';
+        this.additionalServicesAlert = doc.data()['alerts']['additionalServiceField'] as string || '';
       }),
     )
   }
@@ -74,6 +77,10 @@ export class BookingFormConfigComponent {
   updateAdditionalServices(additionalServices: string[]) {
     this.firestoreService.updateAdditionalServices(additionalServices);
     this.ngOnInit();
+  }
+
+  onUpdateAdditionalServicesAlert(newAlert: string) {
+    this.firestoreService.updateAdditionalServicesAlert(newAlert.trim());
   }
 
   deleteCategory(collection: string[], index: number) {
