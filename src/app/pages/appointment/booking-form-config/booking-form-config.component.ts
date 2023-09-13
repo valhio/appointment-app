@@ -62,7 +62,9 @@ export class BookingFormConfigComponent {
   }
 
   onUpdateCategoryAlert(newAlert: string) {
+    if(newAlert.trim() === this.categoryAlert) return;
     this.firestoreService.updatecategoryFieldAlert(newAlert.trim());
+    this.categoryAlert = newAlert.trim();
   }
 
   updateServices(services: string[]) {
@@ -71,7 +73,9 @@ export class BookingFormConfigComponent {
   }
 
   onUpdateServiceAlert(newAlert: string) {
+    if(newAlert.trim() === this.serviceAlert) return;
     this.firestoreService.updateServiceFieldAlert(newAlert.trim());
+    this.serviceAlert = newAlert.trim();
   }
 
   updateAdditionalServices(additionalServices: string[]) {
@@ -80,7 +84,9 @@ export class BookingFormConfigComponent {
   }
 
   onUpdateAdditionalServicesAlert(newAlert: string) {
+    if(newAlert.trim() === this.additionalServicesAlert) return;
     this.firestoreService.updateAdditionalServicesAlert(newAlert.trim());
+    this.additionalServicesAlert = newAlert.trim();
   }
 
   deleteCategory(collection: string[], index: number) {
