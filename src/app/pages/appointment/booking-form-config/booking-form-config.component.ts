@@ -22,8 +22,11 @@ export class BookingFormConfigComponent {
   bookingFormData$ = of({});
 
   categories: string[] = [];
+  categoryAlert!: string;
   services: string[] = [];
   additionalServices: string[] = [];
+
+  categoryAlertEditMode = false;
 
   constructor(private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
@@ -36,6 +39,8 @@ export class BookingFormConfigComponent {
         this.originalServices = doc.data()['services'];
         this.additionalServices = doc.data()['additionalServices'];
         this.originalAdditionalServices = doc.data()['additionalServices'];
+        this.categoryAlert = doc.data()['alerts']['categoryField'] as string || '';
+
       }),
     )
   }
@@ -48,6 +53,11 @@ export class BookingFormConfigComponent {
 
   updateCategories(categories: string[]) {
     this.firestoreService.updateVehicleCategories(categories);
+    this.ngOnInit();
+  }
+
+  onUpdateCategoryAlert(newAlert: string) {
+    this.firestoreService.updatecategoryFieldAlert(newAlert.trim());
     this.ngOnInit();
   }
 

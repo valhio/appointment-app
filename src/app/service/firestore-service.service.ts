@@ -19,6 +19,10 @@ export class FirestoreService {
     this.db.collection('system').doc('vehicle').set({ categories: categories }, { merge: true });
   }
 
+  updatecategoryFieldAlert(newAlert: string) {
+    this.db.collection('system').doc('vehicle').set({ alerts: { categoryField: newAlert } }, { merge: true });
+  }
+
   getServices() {
     return this.db.collection('system').doc('vehicle').get().pipe(
       map((doc: any) => doc.data()['services'])
