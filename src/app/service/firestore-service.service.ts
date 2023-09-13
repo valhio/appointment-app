@@ -33,6 +33,10 @@ export class FirestoreService {
     this.db.collection('system').doc('vehicle').set({ services: services }, { merge: true });
   }
 
+  updateServiceFieldAlert(newAlert: string) {
+    this.db.collection('system').doc('vehicle').set({ alerts: { serviceField: newAlert } }, { merge: true });  
+  }
+
   getSystemBookingFormData(){
     return this.db.collection('system').doc('vehicle').get();
   }
