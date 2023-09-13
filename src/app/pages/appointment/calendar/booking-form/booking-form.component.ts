@@ -32,13 +32,23 @@ export class BookingFormComponent {
   readonly bookingFormData$: Observable<{
     vehicleCategories: string[],
     services: string[],
-    additionalServices: string[]
+    additionalServices: string[],
+    fieldAlerts: {
+      categoryAlert: string,
+      serviceAlert: string,
+      additionalServiceAlert: string,
+    }
   }> = this.firestoreService.getSystemBookingFormData().pipe(
     map((doc: any) => {
       return {
         vehicleCategories: doc.data()['categories'] as string[],
         services: doc.data()['services'] as string[],
         additionalServices: doc.data()['additionalServices'] as string[],
+        fieldAlerts: {
+          categoryAlert: doc.data()['alerts']['categoryField'] as string || '',
+          serviceAlert: doc.data()['alerts']['serviceField'] as string || '',
+          additionalServiceAlert: doc.data()['alerts']['additionalServiceField'] as string || ''
+        }
       }
     })
   )
