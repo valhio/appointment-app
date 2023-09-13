@@ -30,6 +30,7 @@ export class CalendarBodyComponent {
   }
 
   onChangeSelectedDate(date: Date): void {
+    if (!this.user && date.getMonth() < new Date().getMonth()) return;
     this.changeSelectedDate.emit(date);
   }
 
