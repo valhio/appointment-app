@@ -65,9 +65,9 @@
 
         <ng-container *ngIf="bookingFormData$ | async as data">
             <!-- Vehicle Category Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm md:text-base font-semibold pl-1" for="vehicleCategory">Категория</label>
-                <p class="text-xs italic">*За превозни средства с ВНГ/СПГ се доплаща допълнителна такса от 6.00 лв.*</p>
+                <p *ngIf="data.fieldAlerts.categoryAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.categoryAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     formControlName="vehicleCategory" id="vehicleCategory">
@@ -81,8 +81,9 @@
             </div>
 
             <!-- Booking Type Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm md:text-base font-semibold pl-1" for="bookingType">Услуга</label>
+                <p *ngIf="data.fieldAlerts.serviceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.serviceAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     formControlName="bookingType" id="bookingType">
@@ -96,8 +97,9 @@
             </div>
 
             <!-- Additional Services -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <h3 class="text-sm md:text-base font-semibold pl-1">Допълнителни услуги</h3>
+                <p *ngIf="data.fieldAlerts.additionalServiceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.additionalServiceAlert + "*"}}</p>
                 <ul
                     class="w-full mb-4 text-sm font-medium divide-y text-gray-900 bg-transparent border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <li *ngFor="let item of data.additionalServices" class="w-full dark:border-gray-600">

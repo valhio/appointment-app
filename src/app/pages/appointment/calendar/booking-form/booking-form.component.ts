@@ -32,13 +32,23 @@ export class BookingFormComponent {
   readonly bookingFormData$: Observable<{
     vehicleCategories: string[],
     services: string[],
-    additionalServices: string[]
+    additionalServices: string[],
+    fieldAlerts: {
+      categoryAlert: string,
+      serviceAlert: string,
+      additionalServiceAlert: string,
+    }
   }> = this.firestoreService.getSystemBookingFormData().pipe(
     map((doc: any) => {
       return {
         vehicleCategories: doc.data()['categories'] as string[],
         services: doc.data()['services'] as string[],
         additionalServices: doc.data()['additionalServices'] as string[],
+        fieldAlerts: {
+          categoryAlert: doc.data()['alerts']['categoryField'] as string || '',
+          serviceAlert: doc.data()['alerts']['serviceField'] as string || '',
+          additionalServiceAlert: doc.data()['alerts']['additionalServiceField'] as string || ''
+        }
       }
     })
   )
@@ -50,9 +60,6 @@ export class BookingFormComponent {
   selectedAdditionalServices: string[] = [];
   subscriptions: Subscription[] = [];
 
-  vehicleCategories$: any = null;
-  vehicleServices$: any = null;
-
   constructor(
     private db: AngularFirestore,
     private bookingService: BookingService,
@@ -61,13 +68,11 @@ export class BookingFormComponent {
     private afAuth: AngularFireAuth,
   ) {
     this.afAuth.user.subscribe(user => {
-      this.userSubject.next(user ? user : null);      
+      this.userSubject.next(user ? user : null);
     });
   }
 
   ngOnInit(): void {
-    this.getVehicleCategories()
-    this.getVehicleServices()
   }
 
   ngOnDestroy(): void {
@@ -94,7 +99,7 @@ export class BookingFormComponent {
       bookingDate: this.date,
       bookingTime: this.bookingTime,
       createdBy: this.userSubject.value ? this.userSubject.value.email : 'guest',
-      userId: this.userSubject.value ? this.userSubject.value.uid :  'guest',
+      userId: this.userSubject.value ? this.userSubject.value.uid : 'guest',
       createdAt: new Date(),
     }
 
@@ -110,7 +115,7 @@ export class BookingFormComponent {
                 if (added) { // If booking was created, get number of booked bookings for that day. Otherwise, return false.
                   return this.bookingService.getNumberOfBookedBookings(this.date!).pipe( // Get number of booked bookings for that day
                     switchMap(bookedHoursCount => {
-                      bookedHoursCount = bookedHoursCount && bookedHoursCount>0 ? bookedHoursCount : 0; // If bookedHoursCount is null/undefined/NaN or negative value, set it to 0
+                      bookedHoursCount = bookedHoursCount && bookedHoursCount > 0 ? bookedHoursCount : 0; // If bookedHoursCount is null/undefined/NaN or negative value, set it to 0
                       // bookedHoursCount = bookedHoursCount || 0; // If bookedHoursCount is null/undefined/NaN, set it to 0
                       this.updateBookedBookings(year!, month!, day!, bookedHoursCount + 1) // Update number of booked bookings for that day
                       return of(true); // Return true to indicate that booking was created (and number of booked bookings was updated)
@@ -149,14 +154,6 @@ export class BookingFormComponent {
       .collection(month.toString())
       .doc(day.toString())
       .set({ numberOfBookedBookings }, { merge: true });
-  }
-
-  getVehicleCategories() {
-    this.vehicleCategories$ = this.firestoreService.getVehicleCategories();
-  }
-
-  getVehicleServices() {
-    this.vehicleServices$ = this.firestoreService.getServices();
   }
 
   checkValue(event: any) {

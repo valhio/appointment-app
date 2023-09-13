@@ -4,6 +4,22 @@
         LOGOUT
     </a>
 
+    <!-- Notification -->
+    <div
+        class="flex w-10/12 md:w-6/12 mx-auto pl-4 py-2 my-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
+        <span
+            class="relative flex-shrink-0 inline-flex item-center justify-center leading-none rounded-full bg-blue-600 text-gray-50">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6">
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"></path>
+            </svg>
+        </span>
+        <!-- <p class="text-xs sm:text-sm text-gray-500 tracking-tighter">Вече можеш да добавяш/променяш уведомленията за полетата: Категория, Услуга и Допълнителни услуги. За целта, отвори страницата за настройки на формата (Booking Form секцията) и кликни върху съответното поле. В отворения диалогов прозорец, можеш да добавиш/промениш уведомлението за съответното поле. След като направиш промените, кликни върху бутона "Запази" и промените ще бъдат запазени.</p> -->
+        <textarea
+            class="w-full h-8 text-xs tracking-tight leading-3 font-normal border-none focus:outline-none shadow-none bg-transparent">Вече можеш да добавяш/променяш уведомленията за полетата: Категория, Услуга и Допълнителни услуги. За целта, отвори страницата за настройки на формата (Booking Form секцията) и кликни върху съответното поле. В отворения диалогов прозорец, можеш да добавиш/промениш уведомлението за съответното поле. След като направиш промените, кликни върху бутона "Запази" и промените ще бъдат запазени.</textarea>
+    </div>
+
     <div
         class="mx-auto my-4 max-w-5xl flex justify-center text-xs sm:text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px">
@@ -12,10 +28,16 @@
                     [class]="activeTab === 'calendar' ? 'inline-block py-4 px-3 md:px-5 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : 'inline-block py-4 px-3 md:px-5 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'">
                     Calendar</a>
             </li>
-            <li>
+            <li class="relative">
                 <a (click)="activeTab = 'booking-form'"
                     [class]="activeTab === 'booking-form' ? 'inline-block py-4 px-3 md:px-5 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : 'inline-block py-4 px-3 md:px-5 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'">
-                    Booking Form</a>
+                    Booking Form
+                </a>
+                <span class="flex absolute h-2 w-2 top-0 right-0 mt-3 sm:mr-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                </span>
             </li>
             <li>
                 <a (click)="activeTab = 'notifications'"

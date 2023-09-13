@@ -22,8 +22,15 @@ export class BookingFormConfigComponent {
   bookingFormData$ = of({});
 
   categories: string[] = [];
+  categoryAlert!: string;
   services: string[] = [];
+  serviceAlert!: string;
   additionalServices: string[] = [];
+  additionalServicesAlert!: string;
+
+  categoryAlertEditMode = false;
+  serviceAlertEditMode = false;
+  additionalServicesAlertEditMode = false;
 
   constructor(private firestoreService: FirestoreService, private dialog: MatDialog) { }
 
@@ -36,6 +43,9 @@ export class BookingFormConfigComponent {
         this.originalServices = doc.data()['services'];
         this.additionalServices = doc.data()['additionalServices'];
         this.originalAdditionalServices = doc.data()['additionalServices'];
+        this.categoryAlert = doc.data()['alerts']['categoryField'] as string || '';
+        this.serviceAlert = doc.data()['alerts']['serviceField'] as string || '';
+        this.additionalServicesAlert = doc.data()['alerts']['additionalServiceField'] as string || '';
       }),
     )
   }
@@ -51,14 +61,32 @@ export class BookingFormConfigComponent {
     this.ngOnInit();
   }
 
+  onUpdateCategoryAlert(newAlert: string) {
+    if(newAlert.trim() === this.categoryAlert) return;
+    this.firestoreService.updatecategoryFieldAlert(newAlert.trim());
+    this.categoryAlert = newAlert.trim();
+  }
+
   updateServices(services: string[]) {
     this.firestoreService.updateServices(services);
     this.ngOnInit();
   }
 
+  onUpdateServiceAlert(newAlert: string) {
+    if(newAlert.trim() === this.serviceAlert) return;
+    this.firestoreService.updateServiceFieldAlert(newAlert.trim());
+    this.serviceAlert = newAlert.trim();
+  }
+
   updateAdditionalServices(additionalServices: string[]) {
     this.firestoreService.updateAdditionalServices(additionalServices);
     this.ngOnInit();
+  }
+
+  onUpdateAdditionalServicesAlert(newAlert: string) {
+    if(newAlert.trim() === this.additionalServicesAlert) return;
+    this.firestoreService.updateAdditionalServicesAlert(newAlert.trim());
+    this.additionalServicesAlert = newAlert.trim();
   }
 
   deleteCategory(collection: string[], index: number) {

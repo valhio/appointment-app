@@ -9,7 +9,8 @@
     </div>
     <form data-test="form" [formGroup]="form" (ngSubmit)="submit()" class="ng-untouched ng-pristine ng-valid">
 
-        <div class="flex pl-4 py-2 my-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
+        <!-- Notification -->
+        <!-- <div class="flex pl-4 py-2 my-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
             <span
                 class="flex-shrink-0 inline-flex item-center justify-center leading-none rounded-full bg-blue-600 text-gray-50">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6">
@@ -21,7 +22,20 @@
             <div class="flex-1">
                 <p class="text-xs sm:text-sm text-gray-500 tracking-tighter">Вече не е задължително да въвеждаш данни за полетата: име, фамилия, телефон и регистрационен номер.</p>
             </div>
-        </div>
+        </div> -->
+
+        <!-- Notification -->
+        <!-- <div class="flex pl-4 py-2 my-2 gap-2 items-center border rounded-lg shadow overflow-hidden bg-gray-50 border-blue-600">
+            <span
+                class="relative flex-shrink-0 inline-flex item-center justify-center leading-none rounded-full bg-blue-600 text-gray-50">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </span>
+            <textarea class="w-full h-11 text-xs font-normal border-none focus:outline-none shadow-none bg-transparent">Вече можеш да добавяш/променяш уведомленията за полетата: Категория, Услуга и Допълнителни услуги. За целта, отвори страницата за настройки на формата (Booking Form секцията) и кликни върху съответното поле. В отворения диалогов прозорец, можеш да добавиш/промениш уведомлението за съответното поле. След като направиш промените, кликни върху бутона "Запази" и промените ще бъдат запазени.</textarea>
+        </div> -->
 
         <!-- First Name Form Field -->
         <div class="space-y-1 mb-3 form-group">
@@ -77,8 +91,9 @@
 
         <ng-container *ngIf="bookingFormData$ | async as data">
             <!-- Vehicle Category Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm pl-1" for="vehicleCategory">Категория</label>
+                <p *ngIf="data.fieldAlerts.categoryAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.categoryAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['vehicleCategory'].errors }"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     formControlName="vehicleCategory" id="vehicleCategory">
@@ -91,8 +106,9 @@
             </div>
 
             <!-- Booking Type Form Field -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <label class="text-sm pl-1" for="bookingType">Услуга</label>
+                <p *ngIf="data.fieldAlerts.serviceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.serviceAlert + "*"}}</p>
                 <select [ngClass]="{ 'is-invalid': submitted && f['bookingType'].errors }"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     formControlName="bookingType" id="bookingType">
@@ -105,8 +121,9 @@
             </div>
 
             <!-- Additional Services -->
-            <div class="space-y-1 mb-3">
+            <div class="mb-3">
                 <h3 class="text-sm pl-1">Допълнителни услуги</h3>
+                <p *ngIf="data.fieldAlerts.additionalServiceAlert != ''" class="text-xs italic">{{"*" + data.fieldAlerts.additionalServiceAlert + "*"}}</p>
                 <ul
                     class="w-full mb-4 text-sm font-medium text-gray-900 bg-transparent divide-y border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <li *ngFor="let item of data.additionalServices"
