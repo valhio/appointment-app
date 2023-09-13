@@ -58,7 +58,6 @@ export class BookingFormConfigComponent {
 
   onUpdateCategoryAlert(newAlert: string) {
     this.firestoreService.updatecategoryFieldAlert(newAlert.trim());
-    this.ngOnInit();
   }
 
   updateServices(services: string[]) {
