@@ -27,16 +27,11 @@
                     [class]="activeTab === 'calendar' ? 'inline-block py-4 px-3 md:px-5 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : 'inline-block py-4 px-3 md:px-5 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'">
                     Calendar</a>
             </li>
-            <li class="relative">
+            <li>
                 <a (click)="activeTab = 'booking-form'"
                     [class]="activeTab === 'booking-form' ? 'inline-block py-4 px-3 md:px-5 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : 'inline-block py-4 px-3 md:px-5 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'">
                     Booking Form
                 </a>
-                <span class="flex absolute h-2 w-2 top-0 right-0 mt-3 sm:mr-2">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                </span>
             </li>
             <li>
                 <a (click)="activeTab = 'notifications'"
